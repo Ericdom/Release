@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Release • Into the Void</title>
+
+    <!-- PWA & Mobile Optimization -->
+    <meta name="theme-color" content="#050505">
+    <meta name="msapplication-navbutton-color" content="#050505">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <!-- UI Frameworks & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nexus-orange': '#FF4500',
+                        'calm-blue': '#4aa3df',
+                        'bg-deep': '#050505',
+                        'text-light': '#E5E5E5',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="h-screen w-screen selection:bg-orange-500/30">
+
+    <!-- Global Background Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div
+            class="absolute top-[10%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] bg-nexus-orange/5 rounded-full blur-[120px]">
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <header id="nav-bar"
+        class="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-[60] safe-top pointer-events-none">
+        <div class="flex items-center gap-2 pointer-events-auto cursor-pointer" onclick="navigate('home')">
+            <div class="w-1 h-1 bg-nexus-orange rounded-full"></div>
+            <h1 class="text-xs font-black uppercase tracking-[0.4em] opacity-80">Release</h1>
+        </div>
+        <div class="flex items-center gap-4 pointer-events-auto">
+            <button type="button" onclick="toggleWaitlist(true)"
+                class="bg-nexus-orange text-black px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                Waitlist
+            </button>
+            <button type="button" onclick="shareLink()" aria-label="Share" title="Share"
+                class="w-10 h-10 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+                <i class="fa-solid fa-arrow-up-from-bracket text-xs"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main View Switcher -->
+    <main class="relative w-full h-full z-10">
+
+        <!-- VIEW: HOME -->
+        <section id="view-home" class="view-container active">
+            <div class="aurora-wrapper">
+                <div class="aurora-container"></div>
+                <div class="aurora-noise"></div>
+                <div class="aurora-overlay"></div>
+            </div>
+            <div class="dot-pattern pointer-events-none"></div>
+            <div class="scroll-wrapper items-center justify-center px-6">
+                <div class="w-full max-w-2xl text-left my-auto py-12 px-2 animate-fade">
+                    <p class="text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-4">The Void</p>
+                    <h1 class="text-4xl md:text-5xl font-thin tracking-tight leading-tight mb-6">Vent <span
+                            id="hyper-text-home" class="hyper-text-target">anxiety, anger, panic</span> <span
+                            id="shiny-tagline-home" class="text-shiny-orange font-semibold">without judgment.</span>
+                    </h1>
+                    <p class="text-sm text-white/50 font-light leading-relaxed max-w-xl mb-12">Catch the wave before it
+                        spills over. Release it all here. A new way to be heard is on the horizon. Join the waitlist to
+                        be notified.</p>
+
+                    <div class="grid gap-4 w-full max-w-2xl mx-auto">
+                        <!-- Mode 01: Burn It -->
+                        <button type="button" onclick="navigate('burn')"
+                            class="group relative overflow-hidden h-32 glass-card rounded-[32px] p-6 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] hover-glow-orange">
+                            <div class="shine-effect"></div>
+                            <div
+                                class="absolute right-0 top-0 p-8 opacity-5 group-hover:opacity-15 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-200">
+                                <i class="fa-solid fa-fire text-6xl"></i>
+                            </div>
+                            <div
+                                class="relative z-10 h-full flex flex-col justify-between transition-transform duration-150 group-hover:translate-x-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-nexus-orange animate-pulse"></span>
+                                    <span class="font-bold uppercase tracking-widest text-[10px] opacity-80">Mode
+                                        01</span>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="text-xl font-light tracking-tight group-hover:font-normal transition-all">
+                                        Burn It</h3>
+                                    <p class="text-[9px] uppercase tracking-widest opacity-40 mt-1">Anxiety • Worry •
+                                        Thoughts</p>
+                                </div>
+                            </div>
+                        </button>
+
+                        <!-- Mode 02: Calm It -->
+                        <button type="button" onclick="navigate('calm')"
+                            class="group relative overflow-hidden h-32 glass-card rounded-[32px] p-6 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] hover-glow-blue">
+                            <div class="shine-effect"></div>
+                            <div
+                                class="absolute right-0 top-0 p-8 opacity-5 group-hover:opacity-15 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-200">
+                                <i class="fa-solid fa-wind text-6xl text-calm-blue"></i>
+                            </div>
+                            <div
+                                class="relative z-10 h-full flex flex-col justify-between transition-transform duration-150 group-hover:translate-x-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-calm-blue animate-pulse"></span>
+                                    <span class="font-bold uppercase tracking-widest text-[10px] text-calm-blue/80">Mode
+                                        02</span>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="text-xl font-light tracking-tight group-hover:font-normal transition-all">
+                                        Calm It</h3>
+                                    <p class="text-[9px] uppercase tracking-widest opacity-40 mt-1">Breath • Focus •
+                                        Peace</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: BURN -->
+        <section id="view-burn" class="view-container">
+            <div class="dot-pattern pointer-events-none"></div>
+            <div class="scroll-wrapper items-center pt-12 p-6">
+
+                <!-- Nexus Header -->
+                <div class="w-full max-w-5xl flex items-center justify-between mb-16 relative z-[70]">
+                    <button onclick="navigate('home')" id="ui-btn-back"
+                        class="px-6 py-2 rounded-full border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Back</button>
+                    <div class="text-center">
+                        <p id="ui-text-release" class="text-[9px] uppercase tracking-[0.4em] opacity-40 font-bold mb-1">
+                            Release</p>
+                        <h2 id="ui-text-project" class="text-lg font-medium tracking-tight">A Nexus Project</h2>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button id="ui-btn-mode" onclick="toggleMode()"
+                            class="px-6 py-2 rounded-full border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer relative z-[100]">
+                            <i class="fa-solid fa-microphone mr-2"></i>Voice
+                        </button>
+                        <button id="ui-btn-tune" onclick="document.getElementById('ctrl-theme-container').click()"
+                            class="px-6 py-2 rounded-full border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer relative z-[100]">Tune</button>
+                    </div>
+                </div>
+
+                <div class="w-full max-w-2xl text-left mb-12 relative z-10 px-0 mx-auto">
+                    <p class="text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-4">The Void</p>
+                    <h1 class="text-4xl md:text-5xl font-thin tracking-tight leading-tight mb-6">Vent <span
+                            id="hyper-text-burn" class="hyper-text-target">anxiety, anger, panic</span> <span
+                            id="shiny-tagline-burn" class="text-shiny-orange font-semibold">without judgment.</span>
+                    </h1>
+                    <p class="text-sm text-white/50 font-light leading-relaxed max-w-xl">Catch the wave before it spills
+                        over. Release it all here. A new way to be heard is on the horizon. Join the waitlist to be
+                        notified.</p>
+                </div>
+
+                <div class="flex-0 w-full flex flex-col items-center justify-center p-0 relative z-10">
+
+                    <!-- Editor Controls (Moved Out & Right) -->
+                    <div class="w-full max-w-2xl flex justify-end gap-3 mb-4 px-0 relative z-[70] pointer-events-auto">
+                        <!-- Font Control -->
+                        <div id="ctrl-font-container" onclick="toggleControl('ctrl-font')"
+                            class="editor-control flex items-center bg-white/5 rounded-full px-3 py-2 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                            <i id="ui-icon-font"
+                                class="fa-solid fa-font text-[10px] text-white/50 hover:text-white/80 transition-colors"></i>
+                            <div id="ctrl-font"
+                                class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center">
+                                <input type="range" min="0" max="3" value="1" step="1"
+                                    oninput="changeTextSize(this.value)" onclick="event.stopPropagation()"
+                                    aria-label="Text Size"
+                                    class="w-24 h-1 ml-4 bg-white/10 rounded-lg appearance-none cursor-pointer accent-nexus-orange">
+                            </div>
+                        </div>
+                        <!-- Theme Control -->
+                        <div id="ctrl-theme-container" onclick="toggleControl('ctrl-theme')"
+                            class="editor-control flex items-center bg-white/5 rounded-full px-3 py-2 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                            <i id="ui-icon-theme"
+                                class="fa-solid fa-palette text-xs text-white/50 hover:text-white/80 transition-colors"></i>
+                            <div id="ctrl-theme"
+                                class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
+                                <!-- Black (Default) -->
+                                <button onclick="changeThemeColor(0); event.stopPropagation()"
+                                    class="w-4 h-4 rounded-full bg-black border border-white/20 hover:scale-125 transition-transform"
+                                    title="Void"></button>
+                                <!-- Ivory -->
+                                <button onclick="changeThemeColor(1); event.stopPropagation()"
+                                    class="w-4 h-4 rounded-full bg-[#fff3e0] border border-white/10 hover:scale-125 transition-transform"
+                                    title="Ivory"></button>
+                                <!-- Mist -->
+                                <button onclick="changeThemeColor(2); event.stopPropagation()"
+                                    class="w-4 h-4 rounded-full bg-[#e5f3f8] border border-white/10 hover:scale-125 transition-transform"
+                                    title="Mist"></button>
+                                <!-- Pewter -->
+                                <button onclick="changeThemeColor(3); event.stopPropagation()"
+                                    class="w-4 h-4 rounded-full bg-[#dadecf] border border-white/10 hover:scale-125 transition-transform"
+                                    title="Pewter"></button>
+                                <!-- Midnight -->
+                                <button onclick="changeThemeColor(4); event.stopPropagation()"
+                                    class="w-4 h-4 rounded-full bg-[#191738] border border-white/10 hover:scale-125 transition-transform"
+                                    title="Midnight"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="editor-card"
+                        class="relative w-full max-w-2xl h-[45vh] glass-card rounded-[40px] flex items-center justify-center p-6 transition-all duration-500 group/editor shadow-card-elevated overflow-hidden border-white/5">
+
+
+
+                        <textarea id="burn-area" oninput="updateButtonState()"
+                            class="relative z-10 w-full h-full text-center text-3xl md:text-5xl font-bold bg-transparent border-none outline-none resize-none placeholder-white/10 leading-relaxed transition-opacity duration-300"
+                            placeholder="What is weighing on you?"></textarea>
+
+                        <!-- Audio Recorder Interface -->
+                        <div id="audio-wrapper"
+                            class="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 hidden pointer-events-none opacity-0 transition-opacity duration-300">
+                            <canvas id="audio-visualizer" class="w-full h-32 mb-8 opacity-80"></canvas>
+
+                            <div class="flex items-center gap-6 pointer-events-auto relative">
+                                <!-- Playback (Hidden initially) -->
+                                <button id="btn-play-audio" onclick="togglePlayback()" aria-label="Play Recording"
+                                    class="hidden w-20 h-20 rounded-full bg-nexus-orange/20 hover:bg-nexus-orange/30 items-center justify-center transition-all relative z-20 cursor-pointer">
+                                    <i class="fa-solid fa-play text-white text-2xl"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex flex-col items-center mt-6 gap-2">
+                                <p id="audio-timer" class="text-2xl font-mono text-white/50 font-light tracking-widest">
+                                    00:00</p>
+                                <p id="audio-status"
+                                    class="text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold">Tap to Record
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="burn-action"
+                    class="w-full max-w-2xl px-0 py-4 mx-auto transition-all duration-700 relative z-10">
+                    <button type="button" onclick="handleMainAction()" id="btn-main-action"
+                        class="w-full h-16 rounded-[40px] font-black uppercase tracking-[0.4em] text-[10px] active:scale-95 transition-all glass-card opacity-50">
+                        Burn
+                    </button>
+                </div>
+
+                <!-- Marketing Card (Hidden) -->
+                <div id="burn-marketing" class="hidden w-full max-w-2xl pt-0 mx-auto animate-fly-top relative z-10">
+                    <div class="glass-card rounded-[40px] p-8 text-center space-y-6">
+                        <p class="text-sm opacity-80 font-light leading-relaxed">That thought is gone. If the weight
+                            remains, a Nexus Sentinel is listening.</p>
+                        <div class="flex flex-col sm:flex-row gap-3 w-full animate-fade">
+                            <input type="email" id="waitlist-email-inline" placeholder="Enter your email"
+                                class="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-xs font-light tracking-wide focus:outline-none focus:border-nexus-orange/50 transition-all text-white placeholder:text-white/20">
+                            <button type="button" onclick="submitInlineWaitlist()"
+                                class="bg-[#5DADE2] text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#3498db] transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="w-full max-w-2xl py-12 text-center relative z-10 mx-auto">
+                    <p id="ui-text-footer" class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic">For
+                        relaxing/venting
+                        only.
+                        Not medical advice.</p>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- VIEW: SMASH -->
+        <section id="view-smash" class="view-container" onclick="triggerHammer(event)">
+            <div class="dot-pattern pointer-events-none"></div>
+            <div class="scroll-wrapper items-center justify-center bg-black overflow-hidden">
+                <div id="smash-overlay"
+                    class="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300">
+                </div>
+
+                <div class="relative z-0 text-center pointer-events-none">
+                    <h3 class="text-sm font-thin tracking-[1em] opacity-20 uppercase">Surface</h3>
+                    <p id="smash-hint" class="text-[9px] uppercase tracking-widest opacity-10 mt-2">Tap repeatedly to
+                        release energy</p>
+                </div>
+
+                <!-- Marketing Card (Hidden) -->
+                <div id="smash-marketing"
+                    class="hidden absolute inset-0 z-30 bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center p-8 text-center">
+                    <div class="max-w-xs space-y-8">
+                        <i class="fa-solid fa-hammer text-3xl opacity-20"></i>
+                        <p class="text-lg font-light italic leading-relaxed">Violence releases energy, not pain. Talk it
+                            out
+                            on Nexus.</p>
+                        <button type="button" onclick="toggleWaitlist(true)"
+                            class="bg-white text-black px-10 py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em]">Join
+                            Waitlist</button>
+                        <br>
+                        <button type="button" onclick="resetMode('smash')"
+                            class="text-nexus-orange text-[10px] font-black uppercase tracking-[0.2em]">Repair
+                            Screen</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW: CALM -->
+        <section id="view-calm" class="view-container">
+            <div class="dot-pattern pointer-events-none"></div>
+            <div class="scroll-wrapper items-center justify-center p-6">
+                <div class="flex-1 w-full flex flex-col items-center justify-center min-h-[80vh]">
+                    <div class="relative w-48 h-48 flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full border border-calm-blue/30 breathing-core"></div>
+                        <div class="absolute inset-4 rounded-full bg-calm-blue/5 backdrop-blur-3xl animate-pulse"></div>
+                        <span id="breathing-txt"
+                            class="relative z-10 text-[10px] font-black uppercase tracking-[0.5em] text-calm-blue transition-all duration-1000">Inhale</span>
+                    </div>
+                </div>
+
+                <div id="calm-action" class="w-full max-w-sm pb-12">
+                    <button type="button" onclick="finishCalm()"
+                        class="w-full border border-calm-blue/40 text-calm-blue h-16 rounded-3xl font-black uppercase tracking-[0.4em] text-[10px] active:bg-calm-blue/10 transition-colors">
+                        I feel grounded
+                    </button>
+                </div>
+
+                <!-- Marketing Card (Hidden) -->
+                <div id="calm-marketing"
+                    class="hidden absolute inset-0 z-30 bg-black/90 backdrop-blur-2xl flex flex-col items-center justify-center p-8 text-center">
+                    <div class="max-w-xs space-y-12 animate-slide">
+                        <p class="text-2xl font-thin italic text-calm-blue leading-tight">Hold onto this <span
+                                class="font-bold underline underline-offset-8">peace.</span></p>
+                        <div class="space-y-4">
+                            <p class="text-[10px] tracking-widest uppercase opacity-40 font-light">Find deep connection
+                                on
+                                Nexus.</p>
+                            <button type="button" onclick="toggleWaitlist(true)"
+                                class="text-nexus-orange text-[10px] font-black uppercase tracking-[0.2em] underline underline-offset-8">Join
+                                Nexus Waitlist</button>
+                        </div>
+                        <button type="button" onclick="navigate('home')"
+                            class="text-[9px] uppercase tracking-widest opacity-20 hover:opacity-100">Back to the
+                            void</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- UI Overlays -->
+    <canvas id="burn-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+
+
+    <!-- Waitlist Modal -->
+    <div id="waitlist-modal"
+        class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/98 backdrop-blur-3xl">
+        <div class="w-full max-w-sm glass-card rounded-[48px] p-10 relative overflow-hidden group">
+            <div class="absolute -top-20 -right-20 w-40 h-40 bg-nexus-orange/10 blur-3xl rounded-full"></div>
+            <button type="button" onclick="toggleWaitlist(false)" aria-label="Close"
+                class="absolute top-8 right-10 text-xl opacity-20 hover:opacity-100">&times;</button>
+
+            <div class="relative z-10 text-center">
+                <h4 class="text-3xl font-thin tracking-tighter uppercase mb-2">The <span
+                        class="text-nexus-orange font-bold">Nexus</span></h4>
+                <p class="text-[9px] uppercase tracking-[0.4em] opacity-40 mb-10">Ascend with us.</p>
+
+                <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST" class="space-y-4">
+                    <input type="email" name="email" required placeholder="name@email.com"
+                        class="w-full bg-white/[0.03] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-nexus-orange transition-all placeholder:opacity-20">
+                    <button type="submit" onclick="track('Waitlist Joined')"
+                        class="w-full bg-nexus-orange text-white h-14 rounded-2xl font-black uppercase tracking-[0.4em] text-[10px] shadow-2xl shadow-nexus-orange/30">
+                        Join Waitlist
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO Placeholder (Hidden) -->
+    <audio id="crack-sound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- CORE CORE ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const state = {
+                view: 'home',
+                hits: 0,
+                interval: null,
+                textSizeIndex: 1, // Default: Medium
+                themeColorIndex: 0, // Default: White
+                mode: 'text', // 'text' or 'audio'
+                audioBlob: null,
+                isRecording: false,
+                isPlaying: false,
+                mediaRecorder: null,
+                audioChunks: [],
+                audioContext: null,
+                analyser: null,
+                source: null,
+                visualizerId: null,
+                startTime: null,
+                timerInterval: null,
+                burnComplete: false
+            };
+
+            window.updateButtonState = function () {
+                const area = document.getElementById('burn-area');
+                const btn = document.getElementById('btn-main-action');
+                if (state.mode === 'audio') return;
+
+                if (area.value.trim().length > 0) {
+                    btn.classList.add('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
+                    btn.classList.remove('glass-card', 'opacity-50');
+                } else {
+                    btn.classList.remove('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
+                    btn.classList.add('glass-card', 'opacity-50');
+                }
+            };
+
+            const textSizes = [
+                { class: 'text-xl md:text-3xl', label: 'Small' },
+                { class: 'text-3xl md:text-5xl', label: 'Medium' }, // Default
+                { class: 'text-4xl md:text-6xl', label: 'Large' },
+                { class: 'text-5xl md:text-7xl', label: 'Extra Large' }
+            ];
+
+            const themeColors = [
+                { isCardDark: true, bgClass: 'bg-black', cardBg: 'bg-white/5', textClass: 'text-gray-300', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(255,255,255,0.05)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Void
+                { isCardDark: false, bgClass: 'bg-[#fff3e0]/50', cardBg: '!bg-[#fff3e0]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Ivory
+                { isCardDark: false, bgClass: 'bg-[#e5f3f8]/50', cardBg: '!bg-[#e5f3f8]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Mist
+                { isCardDark: false, bgClass: 'bg-[#dadecf]/50', cardBg: '!bg-[#dadecf]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Pewter
+                { isCardDark: true, bgClass: 'bg-[#191738]', cardBg: 'bg-white/5', textClass: 'text-gray-200', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.4)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }  // Midnight
+            ];
+
+            const canvas = document.getElementById('burn-canvas');
+            const ctx = canvas ? canvas.getContext('2d') : null;
+            let particles = [];
+
+            function track(event) {
+                console.log(`[POSTHOG DUMMY] ${event}`);
+                // if(typeof posthog !== 'undefined') posthog.capture(event);
+            }
+
+            // --- NAVIGATION ---
+            function navigate(viewId) {
+                document.querySelectorAll('.view-container').forEach(v => v.classList.remove('active'));
+                const target = document.getElementById(`view-${viewId}`);
+                target.classList.add('active');
+                state.view = viewId;
+
+                // Header state
+                const nav = document.getElementById('nav-bar');
+                nav.style.opacity = (viewId === 'home') ? '1' : '0.4';
+
+                // Feature Inits
+                if (viewId === 'calm') runCalmLoop();
+                if (viewId === 'burn') setupCanvas();
+
+                track(`App ${viewId.charAt(0).toUpperCase() + viewId.slice(1)} Opened`);
+            }
+
+            track('App Opened');
+
+            function setupCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            function createParticle(x, y) {
+                return {
+                    x, y,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: (Math.random() - 1.5) * 4,
+                    life: 1.0,
+                    size: Math.random() * 4
+                };
+            }
+
+            function renderParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach((p, i) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.01;
+                    ctx.fillStyle = `rgba(255, 69, 0, ${p.life})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    if (p.life <= 0) particles.splice(i, 1);
+                });
+                if (particles.length > 0) requestAnimationFrame(renderParticles);
+            }
+
+            function handleMainAction() {
+                const area = document.getElementById('burn-area');
+                const mainBtn = document.getElementById('btn-main-action');
+
+                // AUDIO MODE
+                if (state.mode === 'audio') {
+                    // Case 1: Start Recording
+                    if (!state.isRecording && !state.audioBlob) {
+                        toggleRecording();
+                        return;
+                    }
+                    // Case 2: Stop Recording
+                    if (state.isRecording) {
+                        stopRecording();
+                        return;
+                    }
+                    // Case 3: Burn It (Recorded)
+                    if (state.audioBlob) {
+                        performBurn();
+                        return;
+                    }
+                    return;
+                }
+
+                // TEXT MODE
+                if (state.mode === 'text' && area.value.trim().length > 0) {
+                    performBurn();
+                    return;
+                }
+            }
+            // Expose to window to ensure HTML onclick can see it
+            window.handleMainAction = handleMainAction;
+
+            function performBurn() {
+                const area = document.getElementById('burn-area');
+                const btn = document.getElementById('btn-main-action');
+
+                // AUDIO MODE BURN
+                if (state.mode === 'audio') {
+                    if (!state.audioBlob && !state.isRecording) return;
+
+                    track('Audio Burned');
+                    // document.getElementById('burn-action').style.opacity = '0'; // Keep visible
+
+                    // Visual Glitch Effect on Canvas
+                    const canvas = document.getElementById('audio-visualizer');
+                    canvas.classList.add('transition-all', 'duration-[1s]', 'blur-xl', 'scale-150', 'opacity-0');
+
+                    state.burnComplete = true;
+
+                    setTimeout(() => {
+                        resetMode('burn');
+                        document.getElementById('burn-marketing').classList.remove('hidden');
+                    }, 1000);
+                    return;
+                }
+
+                // TEXT MODE BURN
+                if (!area.value.trim()) return;
+
+                track('Burned');
+                // document.getElementById('burn-action').style.opacity = '0'; // Keep visible
+                area.classList.add('transition-all', 'duration-[1.5s]', 'blur-2xl', 'opacity-0', 'scale-90');
+
+                state.burnComplete = true;
+
+                // Explosion
+                const rect = area.getBoundingClientRect();
+                for (let i = 0; i < 150; i++) {
+                    particles.push(createParticle(rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width, rect.top + rect.height / 2));
+                }
+                renderParticles();
+
+                setTimeout(() => {
+                    resetMode('burn');
+                    document.getElementById('burn-marketing').classList.remove('hidden');
+                }, 1500);
+            }
+
+            // --- AUDIO LOGIC ---
+            function toggleMode() {
+                const btn = document.getElementById('ui-btn-mode');
+                const textArea = document.getElementById('burn-area');
+                const audioWrapper = document.getElementById('audio-wrapper');
+
+                if (state.mode === 'text') {
+                    state.mode = 'audio';
+                    btn.innerHTML = '<i class="fa-solid fa-align-left mr-2"></i>Text';
+                    btn.classList.add('bg-white/20', 'opacity-100');
+                    btn.classList.remove('bg-white/5', 'opacity-40');
+
+                    // Update Main Button for Audio
+                    document.getElementById('btn-main-action').innerText = "RECORD";
+
+                    textArea.classList.add('opacity-0', 'pointer-events-none');
+                    audioWrapper.classList.remove('hidden', 'pointer-events-none');
+                    // Small delay to allow display:block to apply before opacity transition
+                    setTimeout(() => audioWrapper.classList.remove('opacity-0'), 10);
+
+                    initAudio();
+                } else {
+                    state.mode = 'text';
+                    btn.innerHTML = '<i class="fa-solid fa-microphone mr-2"></i>Voice';
+                    btn.classList.remove('bg-white/20', 'opacity-100');
+                    btn.classList.add('bg-white/5', 'opacity-40');
+
+                    // Update Main Button for Text
+                    document.getElementById('btn-main-action').innerText = "BURN";
+
+                    audioWrapper.classList.add('opacity-0');
+                    setTimeout(() => {
+                        audioWrapper.classList.add('hidden', 'pointer-events-none');
+                        textArea.classList.remove('opacity-0', 'pointer-events-none');
+                    }, 300);
+
+                    stopRecording(); // Safety stop
+
+                    // Cleanup Audio Resources
+                    if (state.source) {
+                        state.source.mediaStream.getTracks().forEach(track => track.stop());
+                        state.source = null;
+                    }
+                    if (state.audioContext) {
+                        state.audioContext.close();
+                        state.audioContext = null;
+                    }
+                }
+            }
+
+
+            async function initAudio() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                    state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    state.analyser = state.audioContext.createAnalyser();
+                    state.source = state.audioContext.createMediaStreamSource(stream);
+                    state.source.connect(state.analyser);
+
+                    state.analyser.fftSize = 256;
+                    drawVisualizer();
+
+                    // MIME Type Detection for Safari/iOS
+                    const mimeTypes = [
+                        'audio/webm;codecs=opus',
+                        'audio/webm',
+                        'audio/mp4',
+                        'audio/ogg',
+                        'audio/wav',
+                        'audio/aac'
+                    ];
+                    let selectedMimeType = '';
+                    for (const type of mimeTypes) {
+                        if (MediaRecorder.isTypeSupported(type)) {
+                            selectedMimeType = type;
+                            break;
+                        }
+                    }
+
+                    if (!selectedMimeType) {
+                        console.warn('No standard MIME type supported, letting browser choose default.');
+                    } else {
+                        console.log('Using MIME type:', selectedMimeType);
+                    }
+
+                    const options = selectedMimeType ? { mimeType: selectedMimeType } : {};
+                    state.mediaRecorder = new MediaRecorder(stream, options);
+
+                    state.mediaRecorder.ondataavailable = e => {
+                        if (e.data && e.data.size > 0) {
+                            state.audioChunks.push(e.data);
+                        }
+                    };
+
+                    state.mediaRecorder.onerror = e => {
+                        console.error('MediaRecorder Error:', e);
+                        alert('Recording error: ' + e.error.message);
+                    };
+
+                    state.mediaRecorder.onstop = () => {
+                        const blobType = selectedMimeType || 'audio/webm'; // Fallback
+                        state.audioBlob = new Blob(state.audioChunks, { type: blobType });
+                        state.audioChunks = [];
+                        console.log('Recording stopped. Blob created with type:', blobType, 'Size:', state.audioBlob.size);
+                    };
+                } catch (err) {
+                    console.error('Mic Error:', err);
+                    alert('Microphone access needed for Voice Burn. ' + err.message);
+                    toggleMode(); // Go back to text
+                }
+            }
+
+            function toggleRecording() {
+                if (!state.mediaRecorder) {
+                    alert("Microphone not ready. Please allow access and try again.");
+                    // Attempt re-init if stuck?
+                    if (state.mode === 'audio') initAudio();
+                    return;
+                }
+
+                // const recBtnIndicator = document.getElementById('record-indicator'); // REMOVED
+                const statusText = document.getElementById('audio-status');
+                // const btnRecord = document.getElementById('btn-record'); // REMOVED
+                const mainBtn = document.getElementById('btn-main-action');
+
+                if (state.isRecording) {
+                    stopRecording();
+                } else {
+                    // Start
+                    state.isRecording = true;
+                    // Clear previous blob if any
+                    state.audioBlob = null;
+                    state.audioChunks = [];
+                    document.getElementById('btn-play-audio').classList.add('hidden');
+
+                    state.mediaRecorder.start();
+                    mainBtn.innerText = "STOP"; // Update Main Button
+                    mainBtn.classList.add('bg-red-600', 'animate-pulse'); // Add visual cue
+
+                    statusText.innerText = "Recording...";
+                    statusText.classList.add('text-nexus-orange', 'animate-pulse');
+
+                    // Timer
+                    state.startTime = Date.now();
+                    state.timerInterval = setInterval(updateTimer, 1000);
+                }
+            }
+
+            function stopRecording() {
+                if (!state.isRecording) return;
+                state.isRecording = false;
+                if (state.mediaRecorder.state !== 'inactive') state.mediaRecorder.stop();
+
+                clearInterval(state.timerInterval);
+
+                const statusText = document.getElementById('audio-status');
+                const mainBtn = document.getElementById('btn-main-action');
+
+                mainBtn.innerText = "BURN IT"; // Update Main Button
+                mainBtn.classList.remove('bg-red-600', 'animate-pulse');
+
+                statusText.innerText = "Ready to Burn";
+                statusText.classList.remove('text-nexus-orange', 'animate-pulse');
+
+                // Show Play button
+                document.getElementById('btn-play-audio').classList.remove('hidden');
+            }
+
+            function updateTimer() {
+                const diff = Math.floor((Date.now() - state.startTime) / 1000);
+                const m = Math.floor(diff / 60).toString().padStart(2, '0');
+                const S = (diff % 60).toString().padStart(2, '0');
+                document.getElementById('audio-timer').innerText = `${m}:${S}`;
+            }
+
+            function togglePlayback() {
+                if (!state.audioBlob) return;
+
+                const btn = document.getElementById('btn-play-audio');
+                const icon = btn.querySelector('i');
+
+                // If currently playing, pause it
+                if (state.currentAudio && !state.currentAudio.paused) {
+                    state.currentAudio.pause();
+                    icon.classList.remove('fa-pause');
+                    icon.classList.add('fa-play');
+                    return;
+                }
+
+                // If paused or new, play it
+                if (!state.currentAudio) {
+                    state.currentAudio = new Audio(URL.createObjectURL(state.audioBlob));
+                    state.currentAudio.onended = () => {
+                        icon.classList.remove('fa-pause');
+                        icon.classList.add('fa-play');
+                        state.currentAudio = null;
+                    };
+                }
+
+                state.currentAudio.play()
+                    .then(() => {
+                        icon.classList.remove('fa-play');
+                        icon.classList.add('fa-pause');
+                    })
+                    .catch(e => {
+                        console.error("Playback failed:", e);
+                        alert("Playback failed: " + e.message);
+                    });
+            }
+            // Expose to window to ensure HTML onclick can see it
+            window.togglePlayback = togglePlayback;
+
+            function resetAudioState() {
+                // Stop playback if active
+                if (state.currentAudio) {
+                    state.currentAudio.pause();
+                    state.currentAudio = null;
+                }
+                const btn = document.getElementById('btn-play-audio');
+                const icon = btn.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-pause');
+                    icon.classList.add('fa-play');
+                }
+
+                state.audioBlob = null;
+                state.isRecording = false;
+                clearInterval(state.timerInterval);
+                document.getElementById('audio-timer').innerText = "00:00";
+
+                // Reset UI
+                const audioWrapper = document.getElementById('audio-wrapper');
+                const canvas = document.getElementById('audio-visualizer');
+                canvas.classList.remove('transition-all', 'duration-[1s]', 'blur-xl', 'scale-150', 'opacity-0');
+                document.getElementById('audio-status').innerText = "Tap to Record";
+                document.getElementById('btn-play-audio').classList.add('hidden');
+
+                // Reset Main Button Text
+                if (state.mode === 'audio') {
+                    document.getElementById('btn-main-action').innerText = "RECORD";
+                }
+            }
+
+            function drawVisualizer() {
+                if (state.mode !== 'audio') {
+                    cancelAnimationFrame(state.visualizerId);
+                    return;
+                }
+
+                const canvas = document.getElementById('audio-visualizer');
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+
+                const bufferLength = state.analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                state.analyser.getByteFrequencyData(dataArray);
+
+                ctx.clearRect(0, 0, width, height);
+
+                const barWidth = (width / bufferLength) * 2.5;
+                let barHeight;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    barHeight = dataArray[i] / 2;
+
+                    // Dynamic Color based on Theme would be cool, strictly white/orange for now
+                    const isActive = state.isRecording;
+                    const hue = isActive ? 16 : 0; // Orange or Red-ish
+                    const sat = isActive ? '100%' : '0%';
+                    const light = isActive ? '50%' : '100%';
+
+                    ctx.fillStyle = `hsl(${hue}, ${sat}, ${light})`;
+
+                    // Centered wave
+                    ctx.fillRect(x, height / 2 - barHeight / 2, barWidth, barHeight);
+
+                    x += barWidth + 1;
+                }
+
+                state.visualizerId = requestAnimationFrame(drawVisualizer);
+            }
+
+            function resetMode(mode) {
+                if (mode === 'burn') {
+                    state.burnComplete = false;
+                    const area = document.getElementById('burn-area');
+                    area.value = '';
+
+                    // Reset Button Text
+                    const mainBtn = document.getElementById('btn-main-action');
+                    if (state.mode === 'text') {
+                        mainBtn.innerText = "BURN";
+                    } else {
+                        mainBtn.innerText = "RECORD";
+                    }
+                    setMainButtonStyle('primary');
+
+                    // Reset Audio
+                    if (state.mode === 'audio') {
+                        resetAudioState();
+                    }
+
+                    // Remove animation classes
+                    area.classList.remove('transition-all', 'duration-[1.5s]', 'blur-2xl', 'opacity-0', 'scale-90');
+
+                    // Re-apply current settings to ensure consistency
+                    changeTextSize(state.textSizeIndex);
+                    changeThemeColor(state.themeColorIndex);
+                    document.getElementById('burn-action').classList.remove('hidden');
+                    document.getElementById('burn-action').style.opacity = '1';
+                    document.getElementById('burn-marketing').classList.add('hidden');
+                    if (window.updateMainButtonOpacity) window.updateMainButtonOpacity();
+                }
+                if (mode === 'smash') {
+                    state.hits = 0;
+                    document.querySelectorAll('.crack-layer').forEach(c => c.remove());
+                    document.getElementById('smash-marketing').classList.add('hidden');
+                    document.getElementById('smash-hint').innerText = "Tap repeatedly to release energy";
+                }
+            }
+
+            // --- SMASH IT ---
+            function triggerHammer(e) {
+                if (state.hits >= 10) return;
+                state.hits++;
+                track('Smashed');
+
+                // Haptic
+                if (navigator.vibrate) navigator.vibrate(50);
+
+                // Audio
+                const sound = document.getElementById('crack-sound');
+                sound.currentTime = 0;
+                sound.play().catch(e => { });
+
+                // Visual
+                const crack = document.createElement('img');
+                crack.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 L30,40 L5,60 M30,40 L60,30 L90,10 M60,30 L70,80 L40,90 M70,80 L95,65' stroke='white' fill='none' stroke-width='0.5'/%3E%3C/svg%3E";
+                crack.className = 'crack-layer w-40';
+                crack.style.left = `${e.clientX - 80}px`;
+                crack.style.top = `${e.clientY - 80}px`;
+                crack.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.8 + Math.random()})`;
+                document.getElementById('view-smash').appendChild(crack);
+
+                document.getElementById('smash-hint').innerText = `${state.hits} / 10`;
+
+                if (state.hits >= 10) {
+                    setTimeout(() => {
+                        document.getElementById('smash-marketing').classList.remove('hidden');
+                    }, 400);
+                }
+            }
+
+            // --- CALM IT ---
+            function runCalmLoop() {
+                const txt = document.getElementById('breathing-txt');
+                const phases = ["Inhale", "Hold", "Exhale"];
+                let p = 0;
+
+                if (state.interval) clearInterval(state.interval);
+                state.interval = setInterval(() => {
+                    p = (p + 1) % 3;
+                    txt.innerText = phases[p];
+                }, 4000);
+
+                track('Calmed');
+            }
+
+            function finishCalm() {
+                clearInterval(state.interval);
+                document.getElementById('calm-marketing').classList.remove('hidden');
+            }
+
+            // --- MODAL & SHARE ---
+            function toggleWaitlist(show) {
+                const modal = document.getElementById('waitlist-modal');
+                modal.classList.toggle('hidden', !show);
+                if (show) track('Waitlist Overlay Viewed');
+            }
+
+            async function shareLink() {
+                try {
+                    await navigator.share({
+                        title: 'Nexus',
+                        text: 'Into the void.',
+                        url: window.location.href
+                    });
+                } catch (e) { }
+            }
+
+            function submitInlineWaitlist() {
+                const input = document.getElementById('waitlist-email-inline');
+                const email = input.value.trim();
+                if (!email || !email.includes('@')) {
+                    input.classList.add('border-red-500/50');
+                    setTimeout(() => input.classList.remove('border-red-500/50'), 2000);
+                    return;
+                }
+
+                track(`Inline Waitlist Join: ${email}`);
+
+                // Show Success State
+                const container = input.parentElement;
+                container.innerHTML = `
+                    <div class="w-full py-2 text-nexus-orange font-black uppercase tracking-[0.2em] text-[10px] animate-fade">
+                        <i class="fa-solid fa-check mr-2"></i> You're on the list
+                    </div>
+                `;
+            }
+
+            window.submitInlineWaitlist = submitInlineWaitlist;
+
+            // --- PWA ---
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Fail'));
+                });
+            }
+
+            // Resize handler
+            window.addEventListener('resize', setupCanvas);
+
+            // Close controls when clicking elsewhere
+            window.addEventListener('click', (e) => {
+                if (!e.target.closest('#ctrl-font-container') && !e.target.closest('#ctrl-theme-container')) {
+                    document.getElementById('ctrl-font').classList.remove('w-32');
+                    document.getElementById('ctrl-font').classList.add('w-0');
+                    document.getElementById('ctrl-theme').classList.remove('w-32');
+                    document.getElementById('ctrl-theme').classList.remove('pl-4');
+                    document.getElementById('ctrl-theme').classList.add('w-0');
+                }
+            });
+
+            // --- HYPER TEXT EFFECT ---
+            const hyperText = {
+                chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+                animate(element, onComplete) {
+                    if (!element) return;
+                    element.style.opacity = "1";
+                    const nodes = [];
+                    this.collectTextNodes(element, nodes);
+                    let animationsFinished = 0;
+                    nodes.forEach(nodeData => {
+                        const originalText = nodeData.text;
+                        const node = nodeData.node;
+                        let iteration = 0;
+                        const interval = setInterval(() => {
+                            node.textContent = originalText
+                                .split("")
+                                .map((char, index) => {
+                                    if (index < iteration || char === " " || char === "\n") return char;
+                                    return this.chars[Math.floor(Math.random() * this.chars.length)];
+                                })
+                                .join("");
+                            if (iteration >= originalText.length) {
+                                clearInterval(interval);
+                                node.textContent = originalText;
+                                animationsFinished++;
+                                if (animationsFinished === nodes.length && onComplete) onComplete();
+                            }
+                            iteration += 2; // Increased speed (instant feel)
+                        }, 20); // Faster interval
+                    });
+                },
+                collectTextNodes(element, list) {
+                    for (let node of element.childNodes) {
+                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
+                            list.push({ node: node, text: node.textContent });
+                        } else if (node.nodeType === Node.ELEMENT_NODE) {
+                            this.collectTextNodes(node, list);
+                        }
+                    }
+                }
+            };
+
+            // Trigger on load
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    hyperText.animate(document.getElementById('hyper-text-home'), () => {
+                        document.getElementById('shiny-tagline-home').style.opacity = "1";
+                    });
+                    hyperText.animate(document.getElementById('hyper-text-burn'), () => {
+                        document.getElementById('shiny-tagline-burn').style.opacity = "1";
+                    });
+                }, 100); // reduced delay for instant feel
+            });
+
+            // --- EDITOR CONTROLS ---
+            function toggleControl(id) {
+                const el = document.getElementById(id);
+                // Close others
+                if (id === 'ctrl-font') {
+                    document.getElementById('ctrl-theme').classList.remove('w-32');
+                    document.getElementById('ctrl-theme').classList.remove('pl-4');
+                    document.getElementById('ctrl-theme').classList.add('w-0');
+                } else {
+                    document.getElementById('ctrl-font').classList.remove('w-32');
+                    document.getElementById('ctrl-font').classList.add('w-0');
+                }
+
+                // Toggle current
+                if (id === 'ctrl-font') {
+                    if (el.classList.contains('w-0')) {
+                        el.classList.remove('w-0');
+                        el.classList.add('w-32');
+                    } else {
+                        el.classList.add('w-0');
+                        el.classList.remove('w-32');
+                    }
+                } else { // Theme
+                    if (el.classList.contains('w-0')) {
+                        el.classList.remove('w-0');
+                        el.classList.add('w-32');
+                        el.classList.add('pl-4');
+                    } else {
+                        el.classList.add('w-0');
+                        el.classList.remove('w-32');
+                        el.classList.remove('pl-4');
+                    }
+                }
+            }
+
+            function changeTextSize(val) {
+                // If val is provided, use it (slider). Otherwise cycle (button fallback, though button is removed)
+                const area = document.getElementById('burn-area');
+
+                // Remove current size class
+                area.classList.remove(...textSizes[state.textSizeIndex].class.split(' '));
+
+                if (val !== undefined) {
+                    state.textSizeIndex = parseInt(val);
+                } else {
+                    // Cycle index (fallback)
+                    state.textSizeIndex = (state.textSizeIndex + 1) % textSizes.length;
+                }
+
+                // Add new size class
+                area.classList.add(...textSizes[state.textSizeIndex].class.split(' '));
+                track(`Text Size Changed: ${textSizes[state.textSizeIndex].label}`);
+            }
+
+            function changeThemeColor(index) {
+                const view = document.getElementById('view-burn');
+                const card = document.getElementById('editor-card');
+                const area = document.getElementById('burn-area');
+
+                // Remove current classes
+                view.classList.remove(themeColors[state.themeColorIndex].bgClass);
+                card.classList.remove(themeColors[state.themeColorIndex].cardBg);
+                area.classList.remove(themeColors[state.themeColorIndex].textClass);
+
+                // Card no longer has theme bg directly (it's glass now)
+
+                // Set new index
+                if (index !== undefined) {
+                    state.themeColorIndex = index;
+                } else {
+                    state.themeColorIndex = (state.themeColorIndex + 1) % themeColors.length;
+                }
+
+                // Add new classes
+                view.classList.add(themeColors[state.themeColorIndex].bgClass);
+                card.classList.add(themeColors[state.themeColorIndex].cardBg);
+                area.classList.add(themeColors[state.themeColorIndex].textClass);
+
+                // Update CSS Variable for dot pattern and shadow
+                view.style.setProperty('--dot-color', themeColors[state.themeColorIndex].dotColor);
+                card.style.setProperty('--shadow-color', themeColors[state.themeColorIndex].shadowColor);
+
+                // --- DYNAMIC UI UPDATES ---
+                const t = themeColors[state.themeColorIndex];
+                const uiNodes = [
+                    document.getElementById('ui-btn-back'),
+                    document.getElementById('ui-btn-tune'),
+                    document.getElementById('ctrl-font-container'),
+                    document.getElementById('ctrl-theme-container')
+                ];
+
+                const iconNodes = [
+                    document.getElementById('ui-icon-font'),
+                    document.getElementById('ui-icon-theme')
+                ];
+
+                const textNodes = [
+                    document.getElementById('ui-text-project')
+                ];
+
+                const dimNodes = [
+                    document.getElementById('ui-text-release'),
+                    document.getElementById('ui-text-footer')
+                ];
+
+                // 1. Buttons & Containers
+                uiNodes.forEach(el => {
+                    if (!el) return;
+                    el.classList.remove('bg-white/5', 'bg-black/5', 'border-white/5', 'border-black/5', 'text-white', 'text-black', 'hover:bg-white/10', 'hover:bg-black/10');
+                    el.classList.add(t.uiBg, t.uiBorder);
+                    // Add specific hover logic if needed, simplifed here:
+                    // Since page is always dark now, we use white hover
+                    el.classList.add('hover:bg-white/10');
+                });
+
+                // 2. Control Icons
+                iconNodes.forEach(el => {
+                    if (!el) return;
+                    el.classList.remove('text-white/50', 'text-black/50', 'hover:text-white/80', 'hover:text-black/80');
+                    el.classList.add(t.uiTextDim);
+                    // All pages are dark background now
+                    el.classList.add('hover:text-white/80');
+                });
+
+                // 3. Main UI Text
+                textNodes.forEach(el => {
+                    if (!el) return;
+                    el.classList.remove('text-white', 'text-black'); // if any
+                    // Actually these didn't have specific color classes, they inherited. 
+                    // But we might need to enforce.
+                    // For now, let's just ensure they contrast if needed or rely on inheritance from body/parent?
+                    // The parent #view-burn has the text color class removed/added.
+                    // But some elements might need overrides.
+                });
+
+                // 4. Dim UI Text
+                dimNodes.forEach(el => {
+                    if (!el) return;
+                    // These usually have opacity-40. We just need base color.
+                    // They inherit mostly. But let's force base color to match theme if needed.
+                });
+
+                // 5. Placeholder & Selection Dynamic Style
+                let styleEl = document.getElementById('dynamic-theme-style');
+                if (!styleEl) {
+                    styleEl = document.createElement('style');
+                    styleEl.id = 'dynamic-theme-style';
+                    document.head.appendChild(styleEl);
+                }
+
+                const phColor = t.isCardDark ? 'transparent' : 'rgba(0,0,0,0.1)';
+                const phStroke = t.isCardDark ? '1px rgba(255, 255, 255, 0.3)' : '1px rgba(0, 0, 0, 0.5)';
+                const selectionBg = t.isCardDark ? 'rgba(255, 69, 0, 0.3)' : 'rgba(255, 69, 0, 0.2)';
+                const shinyBase = '#fff';
+
+                styleEl.textContent = `
+                    #burn-area::placeholder {
+                        color: ${phColor};
+                        -webkit-text-stroke: ${phStroke};
+                    }
+                    ::selection {
+                        background: ${selectionBg};
+                    }
+                    .text-shiny-orange {
+                        background: linear-gradient(135deg, ${shinyBase} 40%, var(--nexus-orange) 50%, ${shinyBase} 60%);
+                        background-size: 300% auto;
+                        -webkit-background-clip: text;
+                        background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                         color: ${shinyBase};
+                    }
+                `;
+
+                track(`Theme Color Changed`);
+            }
+
+            // Export to window for HTML onclicks
+            window.navigate = navigate;
+            window.performBurn = performBurn;
+            window.resetMode = resetMode;
+            window.triggerHammer = triggerHammer;
+            window.toggleMode = toggleMode;
+            window.toggleRecording = toggleRecording;
+            window.finishCalm = finishCalm;
+            window.toggleWaitlist = toggleWaitlist;
+            window.shareLink = shareLink;
+            window.changeTextSize = changeTextSize;
+            window.changeThemeColor = changeThemeColor;
+            window.toggleControl = toggleControl;
+
+            function setMainButtonStyle(style) {
+                const btn = document.getElementById('btn-main-action');
+                if (!btn) return;
+                if (style === 'secondary') {
+                    btn.classList.add('btn-secondary');
+                    btn.classList.remove('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
+                } else {
+                    btn.classList.remove('btn-secondary');
+                    btn.classList.add('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
+                }
+            }
+            window.setMainButtonStyle = setMainButtonStyle;
+
+            const area = document.getElementById('burn-area');
+            const mainBtn = document.getElementById('btn-main-action');
+
+            function updateMainButtonOpacity(isHover = false) {
+                if (state.mode === 'audio') {
+                    if (window.setMainButtonStyle) window.setMainButtonStyle('primary');
+                    mainBtn.style.opacity = '1';
+                    mainBtn.style.pointerEvents = 'auto';
+                    return;
+                }
+
+                const hasText = area.value.trim().length > 0;
+                if (hasText) {
+                    if (window.setMainButtonStyle) window.setMainButtonStyle('primary');
+                    mainBtn.style.opacity = isHover ? '1' : '0.5';
+                    mainBtn.style.pointerEvents = 'auto';
+                } else {
+                    if (window.setMainButtonStyle) window.setMainButtonStyle('secondary');
+                    mainBtn.style.opacity = isHover ? '0.8' : '1';
+                    mainBtn.style.pointerEvents = 'auto';
+                }
+            }
+
+            area.addEventListener('input', () => updateMainButtonOpacity());
+            mainBtn.addEventListener('mouseenter', () => updateMainButtonOpacity(true));
+            mainBtn.addEventListener('mouseleave', () => updateMainButtonOpacity(false));
+
+            // Initialize Opacity
+            updateMainButtonOpacity();
+            window.updateMainButtonOpacity = updateMainButtonOpacity;
+
+            // Initialize Theme
+            changeThemeColor(state.themeColorIndex);
+        });
+    </script>
+</body>
+
+</html>
