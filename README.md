@@ -23,3 +23,5 @@
 ----------------------------------------------------------
 1. A NORMAL PRODUCT IN GOOD PACKAGING IS A WIN IN TODAYS TIME...WHAT LOOKS GOOD SELLS GOOD. CURATE THE IDEA TO CRAVE THE CX.
 2. Follow the Age Trend...gendZ, Gendx..cux they are living on dopamain n Subscriptions, they hv good purchasing power.
+
+https://nexus-waitlist-ashy.vercel.app/

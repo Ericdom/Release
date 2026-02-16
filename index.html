@@ -49,18 +49,18 @@
 
     <!-- Top Bar -->
     <header id="nav-bar"
-        class="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-[60] safe-top pointer-events-none">
+        class="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-[150] safe-top pointer-events-none">
         <div class="flex items-center gap-2 pointer-events-auto cursor-pointer" onclick="navigate('home')">
             <div class="w-1 h-1 bg-nexus-orange rounded-full"></div>
             <h1 class="text-xs font-black uppercase tracking-[0.4em] opacity-80">Release</h1>
         </div>
         <div class="flex items-center gap-4 pointer-events-auto">
             <button type="button" onclick="toggleWaitlist(true)"
-                class="bg-nexus-orange text-black px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                class="bg-nexus-orange text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:scale-110 active:scale-95 transition-all cursor-pointer relative z-[200] shadow-[0_0_20px_rgba(255,68,0,0.3)] hover:shadow-[0_0_30px_rgba(255,68,0,0.5)] overflow-hidden shiny-button-fix">
                 Waitlist
             </button>
             <button type="button" onclick="shareLink()" aria-label="Share" title="Share"
-                class="w-10 h-10 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
+                class="w-10 h-10 flex items-center justify-center glass-card border border-white/10 rounded-full hover:bg-white/10 transition-all cursor-pointer relative z-[200] shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
                 <i class="fa-solid fa-arrow-up-from-bracket text-xs"></i>
             </button>
         </div>
@@ -80,7 +80,7 @@
             <div class="scroll-wrapper items-center justify-center px-6">
                 <div class="w-full max-w-2xl text-left my-auto py-12 px-2 animate-fade">
                     <p class="text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-4">The Void</p>
-                    <h1 class="text-4xl md:text-5xl font-thin tracking-tight leading-tight mb-6">Vent <span
+                    <h1 class="text-[clamp(1.5rem,6vw,3.5rem)] font-thin tracking-tight leading-tight mb-6">Vent <span
                             id="hyper-text-home" class="hyper-text-target">anxiety, anger, panic</span> <span
                             id="shiny-tagline-home" class="text-shiny-orange font-semibold">without judgment.</span>
                     </h1>
@@ -88,8 +88,8 @@
                         spills over. Release it all here. A new way to be heard is on the horizon. Join the waitlist to
                         be notified.</p>
 
-                    <div class="grid gap-4 w-full max-w-2xl mx-auto">
-                        <!-- Mode 01: Burn It -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-5xl mx-auto">
+                        <!-- Mode 01: Ash It -->
                         <button type="button" onclick="navigate('burn')"
                             class="group relative overflow-hidden h-32 glass-card rounded-[32px] p-6 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] hover-glow-orange">
                             <div class="shine-effect"></div>
@@ -107,7 +107,7 @@
                                 <div>
                                     <h3
                                         class="text-xl font-light tracking-tight group-hover:font-normal transition-all">
-                                        Burn It</h3>
+                                        Ash It</h3>
                                     <p class="text-[9px] uppercase tracking-widest opacity-40 mt-1">Anxiety • Worry •
                                         Thoughts</p>
                                 </div>
@@ -140,48 +140,44 @@
                         </button>
                     </div>
                 </div>
+                <div class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto mt-auto">
+                    <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For
+                        relaxing/venting only. Not medical advice.</p>
+                    <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
+                </div>
             </div>
         </section>
 
-        <!-- VIEW: BURN -->
+        <!-- VIEW: ASH -->
         <section id="view-burn" class="view-container">
             <div class="dot-pattern pointer-events-none"></div>
-            <div class="scroll-wrapper items-center pt-12 p-6">
+            <div class="scroll-wrapper items-center pt-8 px-4 md:px-8 pb-6">
 
-                <!-- Nexus Header -->
-                <div class="w-full max-w-5xl flex items-center justify-between mb-16 relative z-[70]">
-                    <button onclick="navigate('home')" id="ui-btn-back"
-                        class="px-6 py-2 rounded-full border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/10 transition-all">Back</button>
-                    <div class="text-center">
-                        <p id="ui-text-release" class="text-[9px] uppercase tracking-[0.4em] opacity-40 font-bold mb-1">
-                            Release</p>
-                        <h2 id="ui-text-project" class="text-lg font-medium tracking-tight">A Nexus Project</h2>
+                <div class="w-full max-w-5xl flex items-start gap-4 mb-8 relative z-10 px-0 mx-auto">
+                    <button onclick="navigate('home')" aria-label="Back"
+                        class="mt-1 text-white/20 hover:text-white transition-colors cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-chevron-left text-sm"></i>
+                    </button>
+                    <div>
+                        <p class="mt-[9px] text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-1">
+                            Enter the
+                            Void</p>
+                        <h1
+                            class="text-[clamp(1.1rem,4.5vw,2.2rem)] font-thin tracking-tight leading-tight mb-2 whitespace-nowrap">
+                            A sanctuary <span id="hyper-text-burn" class="hyper-text-target">for your</span> <span
+                                id="shiny-tagline-burn" class="text-shiny-orange font-semibold">CALM IS COMING...</span>
+                        </h1>
+                        <p class="text-xs md:text-sm text-white/50 font-light leading-relaxed max-w-xl">Release the
+                            weight
+                            before it breaks you. No judgment. No records. Just release.</p>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button id="ui-btn-mode" onclick="toggleMode()"
-                            class="px-6 py-2 rounded-full border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer relative z-[100]">
-                            <i class="fa-solid fa-microphone mr-2"></i>Voice
-                        </button>
-                        <button id="ui-btn-tune" onclick="document.getElementById('ctrl-theme-container').click()"
-                            class="px-6 py-2 rounded-full border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer relative z-[100]">Tune</button>
-                    </div>
-                </div>
-
-                <div class="w-full max-w-2xl text-left mb-12 relative z-10 px-0 mx-auto">
-                    <p class="text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-4">The Void</p>
-                    <h1 class="text-4xl md:text-5xl font-thin tracking-tight leading-tight mb-6">Vent <span
-                            id="hyper-text-burn" class="hyper-text-target">anxiety, anger, panic</span> <span
-                            id="shiny-tagline-burn" class="text-shiny-orange font-semibold">without judgment.</span>
-                    </h1>
-                    <p class="text-sm text-white/50 font-light leading-relaxed max-w-xl">Catch the wave before it spills
-                        over. Release it all here. A new way to be heard is on the horizon. Join the waitlist to be
-                        notified.</p>
                 </div>
 
                 <div class="flex-0 w-full flex flex-col items-center justify-center p-0 relative z-10">
 
-                    <!-- Editor Controls (Moved Out & Right) -->
-                    <div class="w-full max-w-2xl flex justify-end gap-3 mb-4 px-0 relative z-[70] pointer-events-auto">
+                    <!-- Editor Controls (Anchored to Top-Right of Card) -->
+                    <div
+                        class="w-full max-w-5xl flex justify-end gap-3 mb-[10px] px-0 relative z-[70] pointer-events-auto">
                         <!-- Font Control -->
                         <div id="ctrl-font-container" onclick="toggleControl('ctrl-font')"
                             class="editor-control flex items-center bg-white/5 rounded-full px-3 py-2 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
@@ -227,25 +223,46 @@
                     </div>
 
                     <div id="editor-card"
-                        class="relative w-full max-w-2xl h-[45vh] glass-card rounded-[40px] flex items-center justify-center p-6 transition-all duration-500 group/editor shadow-card-elevated overflow-hidden border-white/5">
+                        class="relative w-full max-w-5xl h-[45vh] md:h-[55vh] glass-card rounded-[40px] flex items-center justify-center p-6 transition-all duration-500 group/editor shadow-card-elevated overflow-hidden border-white/5">
 
 
 
                         <textarea id="burn-area" oninput="updateButtonState()"
-                            class="relative z-10 w-full h-full text-center text-3xl md:text-5xl font-bold bg-transparent border-none outline-none resize-none placeholder-white/10 leading-relaxed transition-opacity duration-300"
+                            class="relative z-10 w-full h-full text-center text-[clamp(1.5rem,5vw,3rem)] md:text-[clamp(2.5rem,6vw,4.5rem)] font-bold bg-transparent border-none outline-none resize-none placeholder-white/10 leading-relaxed transition-opacity duration-300"
                             placeholder="What is weighing on you?"></textarea>
+
+                        <!-- Mode Toggles (Bottom Right) -->
+                        <div class="absolute bottom-4 right-4 flex items-center gap-3 z-30 pointer-events-auto">
+                            <button id="ui-btn-mode" onclick="toggleMode()" aria-label="Toggle Voice Mode"
+                                class="h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-40 hover:opacity-100 transition-all cursor-pointer shadow-[0_0_15px_rgba(255,68,0,0.2)] hover:shadow-[0_0_25px_rgba(255,68,0,0.4)]">
+                                <i class="fa-solid fa-microphone"></i>
+                                <span>Voice</span>
+                            </button>
+                            <button id="ui-btn-haptic" onclick="toggleHaptics()" aria-label="Toggle Haptics"
+                                class="md:hidden h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-40 hover:opacity-100 transition-all cursor-pointer shadow-[0_0_15px_rgba(255,68,0,0.2)] hover:shadow-[0_0_25px_rgba(255,68,0,0.4)]">
+                                <i class="fa-solid fa-vibration"></i>
+                                <span>Haptic</span>
+                            </button>
+                        </div>
 
                         <!-- Audio Recorder Interface -->
                         <div id="audio-wrapper"
                             class="absolute inset-0 z-20 flex flex-col items-center justify-center p-8 hidden pointer-events-none opacity-0 transition-opacity duration-300">
                             <canvas id="audio-visualizer" class="w-full h-32 mb-8 opacity-80"></canvas>
 
-                            <div class="flex items-center gap-6 pointer-events-auto relative">
+                            <div class="flex items-center justify-center pointer-events-auto relative">
                                 <!-- Playback (Hidden initially) -->
                                 <button id="btn-play-audio" onclick="togglePlayback()" aria-label="Play Recording"
                                     class="hidden w-20 h-20 rounded-full bg-nexus-orange/20 hover:bg-nexus-orange/30 items-center justify-center transition-all relative z-20 cursor-pointer">
                                     <i class="fa-solid fa-play text-white text-2xl"></i>
                                 </button>
+                                <!-- Download (DISABLED - Contradicts Ashing philosophy)
+                                <button id="btn-download-audio" onclick="downloadAudio()"
+                                    aria-label="Download Recording"
+                                    class="hidden w-20 h-20 rounded-full bg-white/5 hover:bg-white/10 items-center justify-center transition-all relative z-20 cursor-pointer border border-white/5">
+                                    <i class="fa-solid fa-download text-white text-2xl"></i>
+                                </button>
+                                -->
                             </div>
 
                             <div class="flex flex-col items-center mt-6 gap-2">
@@ -260,15 +277,15 @@
                 </div>
 
                 <div id="burn-action"
-                    class="w-full max-w-2xl px-0 py-4 mx-auto transition-all duration-700 relative z-10">
+                    class="w-full max-w-5xl px-0 py-4 mx-auto transition-all duration-700 relative z-10">
                     <button type="button" onclick="handleMainAction()" id="btn-main-action"
-                        class="w-full h-16 rounded-[40px] font-black uppercase tracking-[0.4em] text-[10px] active:scale-95 transition-all glass-card opacity-50">
-                        Burn
+                        class="w-full h-16 rounded-[40px] font-black uppercase tracking-[0.4em] text-[10px] active:scale-95 transition-all glass-card text-white/20">
+                        Ash It
                     </button>
                 </div>
 
                 <!-- Marketing Card (Hidden) -->
-                <div id="burn-marketing" class="hidden w-full max-w-2xl pt-0 mx-auto animate-fly-top relative z-10">
+                <div id="burn-marketing" class="hidden w-full max-w-5xl pt-0 mx-auto animate-fly-top relative z-10">
                     <div class="glass-card rounded-[40px] p-8 text-center space-y-6">
                         <p class="text-sm opacity-80 font-light leading-relaxed">That thought is gone. If the weight
                             remains, a Nexus Sentinel is listening.</p>
@@ -284,11 +301,11 @@
                 </div>
 
                 <!-- Footer -->
-                <div class="w-full max-w-2xl py-12 text-center relative z-10 mx-auto">
-                    <p id="ui-text-footer" class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic">For
-                        relaxing/venting
-                        only.
-                        Not medical advice.</p>
+                <div id="ash-footer" class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto">
+                    <p id="ui-text-footer"
+                        class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For
+                        relaxing/venting only. Not medical advice.</p>
+                    <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
                 </div>
             </div>
             </div>
@@ -319,11 +336,15 @@
                         <button type="button" onclick="toggleWaitlist(true)"
                             class="bg-white text-black px-10 py-4 rounded-full font-black uppercase text-[10px] tracking-[0.2em]">Join
                             Waitlist</button>
-                        <br>
                         <button type="button" onclick="resetMode('smash')"
                             class="text-nexus-orange text-[10px] font-black uppercase tracking-[0.2em]">Repair
                             Screen</button>
                     </div>
+                </div>
+                <div class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto">
+                    <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For
+                        relaxing/venting only. Not medical advice.</p>
+                    <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
                 </div>
             </div>
         </section>
@@ -368,12 +389,18 @@
                     </div>
                 </div>
             </div>
+            <div class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto">
+                <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For relaxing/venting
+                    only. Not medical advice.</p>
+                <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
+            </div>
+            </div>
         </section>
 
     </main>
 
     <!-- UI Overlays -->
-    <canvas id="burn-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+    <canvas id="burn-canvas" class="fixed inset-0 pointer-events-none z-[3000]"></canvas>
 
 
 
@@ -428,22 +455,10 @@
                 visualizerId: null,
                 startTime: null,
                 timerInterval: null,
-                burnComplete: false
+                burnComplete: false,
+                hapticsEnabled: true
             };
 
-            window.updateButtonState = function () {
-                const area = document.getElementById('burn-area');
-                const btn = document.getElementById('btn-main-action');
-                if (state.mode === 'audio') return;
-
-                if (area.value.trim().length > 0) {
-                    btn.classList.add('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
-                    btn.classList.remove('glass-card', 'opacity-50');
-                } else {
-                    btn.classList.remove('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
-                    btn.classList.add('glass-card', 'opacity-50');
-                }
-            };
 
             const textSizes = [
                 { class: 'text-xl md:text-3xl', label: 'Small' },
@@ -476,9 +491,22 @@
                 target.classList.add('active');
                 state.view = viewId;
 
-                // Header state
+                // Header state - Dim secondary items, keep logo and waitlist bright
                 const nav = document.getElementById('nav-bar');
-                nav.style.opacity = (viewId === 'home') ? '1' : '0.4';
+                const navWaitlist = nav.querySelector('button[onclick*="toggleWaitlist"]');
+                const navLogo = nav.querySelector('div[onclick*="navigate(\'home\')"]');
+                const navShare = nav.querySelector('button[onclick*="shareLink"]');
+
+                if (viewId === 'home') {
+                    nav.style.opacity = '1';
+                    if (navShare) navShare.style.opacity = '1';
+                } else {
+                    // Overall header slightly dimmed but important items forced bright
+                    nav.style.opacity = '1';
+                    if (navLogo) navLogo.style.opacity = '0.6';
+                    if (navShare) navShare.style.opacity = '1';
+                    // Waitlist button stays 100%
+                }
 
                 // Feature Inits
                 if (viewId === 'calm') runCalmLoop();
@@ -560,8 +588,7 @@
                 if (state.mode === 'audio') {
                     if (!state.audioBlob && !state.isRecording) return;
 
-                    track('Audio Burned');
-                    // document.getElementById('burn-action').style.opacity = '0'; // Keep visible
+                    track('Audio Ashed');
 
                     // Visual Glitch Effect on Canvas
                     const canvas = document.getElementById('audio-visualizer');
@@ -571,7 +598,20 @@
 
                     setTimeout(() => {
                         resetMode('burn');
-                        document.getElementById('burn-marketing').classList.remove('hidden');
+                        const mkt = document.getElementById('burn-marketing');
+                        mkt.classList.remove('hidden');
+
+                        // Hide footer to prevent overscroll and visual clutter
+                        const footer = document.getElementById('ash-footer');
+                        if (footer) footer.classList.add('hidden');
+
+                        // Sync scroll with fly-in
+                        const wrapper = mkt.closest('.scroll-wrapper');
+                        if (wrapper) {
+                            setTimeout(() => {
+                                wrapper.scrollTo({ top: wrapper.scrollHeight, behavior: 'smooth' });
+                            }, 500);
+                        }
                     }, 1000);
                     return;
                 }
@@ -579,11 +619,14 @@
                 // TEXT MODE BURN
                 if (!area.value.trim()) return;
 
-                track('Burned');
-                // document.getElementById('burn-action').style.opacity = '0'; // Keep visible
+                track('Ashed');
                 area.classList.add('transition-all', 'duration-[1.5s]', 'blur-2xl', 'opacity-0', 'scale-90');
 
                 state.burnComplete = true;
+
+                if (state.hapticsEnabled && navigator.vibrate) {
+                    navigator.vibrate([100, 50, 100]);
+                }
 
                 // Explosion
                 const rect = area.getBoundingClientRect();
@@ -594,7 +637,20 @@
 
                 setTimeout(() => {
                     resetMode('burn');
-                    document.getElementById('burn-marketing').classList.remove('hidden');
+                    const mkt = document.getElementById('burn-marketing');
+                    mkt.classList.remove('hidden');
+
+                    // Hide footer to prevent overscroll and visual clutter
+                    const footer = document.getElementById('ash-footer');
+                    if (footer) footer.classList.add('hidden');
+
+                    // Sync scroll with fly-in
+                    const wrapper = mkt.closest('.scroll-wrapper');
+                    if (wrapper) {
+                        setTimeout(() => {
+                            wrapper.scrollTo({ top: wrapper.scrollHeight, behavior: 'smooth' });
+                        }, 500);
+                    }
                 }, 1500);
             }
 
@@ -606,7 +662,7 @@
 
                 if (state.mode === 'text') {
                     state.mode = 'audio';
-                    btn.innerHTML = '<i class="fa-solid fa-align-left mr-2"></i>Text';
+                    btn.innerHTML = '<i class="fa-solid fa-align-left"></i><span>Text</span>';
                     btn.classList.add('bg-white/20', 'opacity-100');
                     btn.classList.remove('bg-white/5', 'opacity-40');
 
@@ -618,15 +674,16 @@
                     // Small delay to allow display:block to apply before opacity transition
                     setTimeout(() => audioWrapper.classList.remove('opacity-0'), 10);
 
+                    if (window.updateMainButtonOpacity) window.updateMainButtonOpacity();
                     initAudio();
                 } else {
                     state.mode = 'text';
-                    btn.innerHTML = '<i class="fa-solid fa-microphone mr-2"></i>Voice';
+                    btn.innerHTML = '<i class="fa-solid fa-microphone"></i><span>Voice</span>';
                     btn.classList.remove('bg-white/20', 'opacity-100');
                     btn.classList.add('bg-white/5', 'opacity-40');
 
                     // Update Main Button for Text
-                    document.getElementById('btn-main-action').innerText = "BURN";
+                    document.getElementById('btn-main-action').innerText = "ASH IT";
 
                     audioWrapper.classList.add('opacity-0');
                     setTimeout(() => {
@@ -635,6 +692,9 @@
                     }, 300);
 
                     stopRecording(); // Safety stop
+
+                    // Reset Button Style/Opacity for Text mode
+                    if (window.updateMainButtonOpacity) window.updateMainButtonOpacity();
 
                     // Cleanup Audio Resources
                     if (state.source) {
@@ -706,7 +766,7 @@
                     };
                 } catch (err) {
                     console.error('Mic Error:', err);
-                    alert('Microphone access needed for Voice Burn. ' + err.message);
+                    alert('Microphone access needed for Voice Ash. ' + err.message);
                     toggleMode(); // Go back to text
                 }
             }
@@ -733,6 +793,7 @@
                     state.audioBlob = null;
                     state.audioChunks = [];
                     document.getElementById('btn-play-audio').classList.add('hidden');
+                    // document.getElementById('btn-download-audio').classList.add('hidden');
 
                     state.mediaRecorder.start();
                     mainBtn.innerText = "STOP"; // Update Main Button
@@ -757,7 +818,7 @@
                 const statusText = document.getElementById('audio-status');
                 const mainBtn = document.getElementById('btn-main-action');
 
-                mainBtn.innerText = "BURN IT"; // Update Main Button
+                mainBtn.innerText = "ASH IT"; // Update Main Button
                 mainBtn.classList.remove('bg-red-600', 'animate-pulse');
 
                 statusText.innerText = "Ready to Burn";
@@ -765,6 +826,7 @@
 
                 // Show Play button
                 document.getElementById('btn-play-audio').classList.remove('hidden');
+                // document.getElementById('btn-download-audio').classList.remove('hidden');
             }
 
             function updateTimer() {
@@ -808,8 +870,28 @@
                         alert("Playback failed: " + e.message);
                     });
             }
-            // Expose to window to ensure HTML onclick can see it
             window.togglePlayback = togglePlayback;
+
+            function downloadAudio() {
+                if (!state.audioBlob) return;
+
+                const url = URL.createObjectURL(state.audioBlob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+                a.download = `ash-recording-${timestamp}.webm`;
+                document.body.appendChild(a);
+                a.click();
+
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 100);
+
+                track('Audio Downloaded');
+            }
+            window.downloadAudio = downloadAudio;
 
             function resetAudioState() {
                 // Stop playback if active
@@ -828,6 +910,7 @@
                 state.isRecording = false;
                 clearInterval(state.timerInterval);
                 document.getElementById('audio-timer').innerText = "00:00";
+                if (state.hapticsEnabled && navigator.vibrate) navigator.vibrate(50);
 
                 // Reset UI
                 const audioWrapper = document.getElementById('audio-wrapper');
@@ -835,6 +918,7 @@
                 canvas.classList.remove('transition-all', 'duration-[1s]', 'blur-xl', 'scale-150', 'opacity-0');
                 document.getElementById('audio-status').innerText = "Tap to Record";
                 document.getElementById('btn-play-audio').classList.add('hidden');
+                // document.getElementById('btn-download-audio').classList.add('hidden');
 
                 // Reset Main Button Text
                 if (state.mode === 'audio') {
@@ -890,14 +974,14 @@
                     const area = document.getElementById('burn-area');
                     area.value = '';
 
-                    // Reset Button Text
+                    // Reset Button Style & Text
                     const mainBtn = document.getElementById('btn-main-action');
                     if (state.mode === 'text') {
-                        mainBtn.innerText = "BURN";
+                        mainBtn.innerText = "ASH IT";
                     } else {
                         mainBtn.innerText = "RECORD";
                     }
-                    setMainButtonStyle('primary');
+                    if (window.updateMainButtonOpacity) window.updateMainButtonOpacity();
 
                     // Reset Audio
                     if (state.mode === 'audio') {
@@ -913,6 +997,8 @@
                     document.getElementById('burn-action').classList.remove('hidden');
                     document.getElementById('burn-action').style.opacity = '1';
                     document.getElementById('burn-marketing').classList.add('hidden');
+                    const footer = document.getElementById('ash-footer');
+                    if (footer) footer.classList.remove('hidden');
                     if (window.updateMainButtonOpacity) window.updateMainButtonOpacity();
                 }
                 if (mode === 'smash') {
@@ -1017,7 +1103,26 @@
             // --- PWA ---
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW Fail'));
+                    navigator.serviceWorker.register('sw.js').then(reg => {
+                        reg.onupdatefound = () => {
+                            const installingWorker = reg.installing;
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // New update available, sw.js skipWaiting() will trigger controllerchange
+                                    console.log('New update available.');
+                                }
+                            };
+                        };
+                    }).catch(e => console.log('SW Fail'));
+                });
+
+                // Reload when new worker takes over
+                let refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (!refreshing) {
+                        window.location.reload();
+                        refreshing = true;
+                    }
                 });
             }
 
@@ -1124,6 +1229,21 @@
                 }
             }
 
+            function toggleHaptics() {
+                state.hapticsEnabled = !state.hapticsEnabled;
+                const btn = document.getElementById('ui-btn-haptic');
+                if (state.hapticsEnabled) {
+                    btn.classList.add('opacity-100');
+                    btn.classList.remove('opacity-40');
+                    if (navigator.vibrate) navigator.vibrate(50);
+                } else {
+                    btn.classList.remove('opacity-100');
+                    btn.classList.add('opacity-40');
+                }
+                track(`Haptics Toggled: ${state.hapticsEnabled}`);
+            }
+            window.toggleHaptics = toggleHaptics;
+
             function changeTextSize(val) {
                 // If val is provided, use it (slider). Otherwise cycle (button fallback, though button is removed)
                 const area = document.getElementById('burn-area');
@@ -1140,7 +1260,7 @@
 
                 // Add new size class
                 area.classList.add(...textSizes[state.textSizeIndex].class.split(' '));
-                track(`Text Size Changed: ${textSizes[state.textSizeIndex].label}`);
+                track(`Theme Color Changed`);
             }
 
             function changeThemeColor(index) {
@@ -1252,15 +1372,66 @@
                     ::selection {
                         background: ${selectionBg};
                     }
+                    @keyframes shimmer {
+                        0% { background-position: -200% center; }
+                        100% { background-position: 200% center; }
+                    }
                     .text-shiny-orange {
-                        background: linear-gradient(135deg, ${shinyBase} 40%, var(--nexus-orange) 50%, ${shinyBase} 60%);
-                        background-size: 300% auto;
+                        background: linear-gradient(90deg, #fff 0%, var(--nexus-orange) 50%, #fff 100%);
+                        background-size: 200% auto;
                         -webkit-background-clip: text;
                         background-clip: text;
                         -webkit-text-fill-color: transparent;
-                         color: ${shinyBase};
+                        animation: shimmer 3s infinite linear;
+                    }
+                    .active-theme-ring {
+                        box-shadow: 0 0 0 2px var(--nexus-orange);
+                        transform: scale(1.2);
+                    }
+                    @keyframes shine {
+                        0% { left: -100%; }
+                        20% { left: 100%; }
+                        100% { left: 100%; }
+                    }
+                    .shiny-button-fix {
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .shiny-button-fix::after {
+                        content: "";
+                        position: absolute;
+                        top: -50%;
+                        left: -100%;
+                        width: 50%;
+                        height: 200%;
+                        background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+                        transform: rotate(30deg);
+                        animation: shine 4s infinite;
                     }
                 `;
+
+                // 6. Highlight active theme button
+                const themeContainer = document.getElementById('ctrl-theme');
+                if (themeContainer) {
+                    themeContainer.querySelectorAll('button').forEach((btn, idx) => {
+                        if (idx === state.themeColorIndex) {
+                            btn.classList.add('active-theme-ring');
+                        } else {
+                            btn.classList.remove('active-theme-ring');
+                        }
+                    });
+                }
+
+                // 7. Adaptive colors for Mode Toggles
+                const modeToggles = [
+                    document.getElementById('ui-btn-mode'),
+                    document.getElementById('ui-btn-haptic')
+                ];
+                modeToggles.forEach(btn => {
+                    if (!btn) return;
+                    btn.style.color = t.isCardDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+                    // Also update shadows based on theme if needed
+                });
 
                 track(`Theme Color Changed`);
             }
@@ -1283,11 +1454,11 @@
                 const btn = document.getElementById('btn-main-action');
                 if (!btn) return;
                 if (style === 'secondary') {
-                    btn.classList.add('btn-secondary');
-                    btn.classList.remove('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
+                    btn.classList.add('glass-card', 'text-white/20');
+                    btn.classList.remove('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]', 'opacity-50');
                 } else {
-                    btn.classList.remove('btn-secondary');
-                    btn.classList.add('bg-nexus-orange', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
+                    btn.classList.remove('glass-card', 'text-white/20', 'opacity-50');
+                    btn.classList.add('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
                 }
             }
             window.setMainButtonStyle = setMainButtonStyle;
@@ -1297,21 +1468,23 @@
 
             function updateMainButtonOpacity(isHover = false) {
                 if (state.mode === 'audio') {
-                    if (window.setMainButtonStyle) window.setMainButtonStyle('primary');
+                    setMainButtonStyle('primary');
                     mainBtn.style.opacity = '1';
                     mainBtn.style.pointerEvents = 'auto';
+                    mainBtn.disabled = false;
                     return;
                 }
 
                 const hasText = area.value.trim().length > 0;
+
                 if (hasText) {
-                    if (window.setMainButtonStyle) window.setMainButtonStyle('primary');
-                    mainBtn.style.opacity = isHover ? '1' : '0.5';
+                    setMainButtonStyle('primary');
                     mainBtn.style.pointerEvents = 'auto';
+                    mainBtn.disabled = false;
                 } else {
-                    if (window.setMainButtonStyle) window.setMainButtonStyle('secondary');
-                    mainBtn.style.opacity = isHover ? '0.8' : '1';
-                    mainBtn.style.pointerEvents = 'auto';
+                    setMainButtonStyle('secondary');
+                    mainBtn.style.pointerEvents = 'none';
+                    mainBtn.disabled = true;
                 }
             }
 
