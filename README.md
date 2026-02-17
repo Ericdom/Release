@@ -24,4 +24,7 @@
 1. A NORMAL PRODUCT IN GOOD PACKAGING IS A WIN IN TODAYS TIME...WHAT LOOKS GOOD SELLS GOOD. CURATE THE IDEA TO CRAVE THE CX.
 2. Follow the Age Trend...gendZ, Gendx..cux they are living on dopamain n Subscriptions, they hv good purchasing power.
 
-https://nexus-waitlist-ashy.vercel.app/
+https://release-ashy.verce.app
+
+
+1. Start the Editor typing from start...align left. 2. make ctrl+enter as Hit the Ash key. 3. Increase the ASh it/record/stop font size to double. 4. Remoce the Boldness of the "join Waitlist" and increase font a bit

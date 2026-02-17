@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v2'; // Bumped version
+const CACHE_NAME = 'release-cache-v22'; // Breathing "Break" Phase Added
 const ASSETS = [
     'index.html',
     'css/styles.css',

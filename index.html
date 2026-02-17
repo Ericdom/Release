@@ -21,13 +21,27 @@
             theme: {
                 extend: {
                     colors: {
-                        'nexus-orange': '#FF4500',
-                        'calm-blue': '#4aa3df',
-                        'bg-deep': '#050505',
-                        'text-light': '#E5E5E5',
+                        'nexus-orange': 'var(--nexus-orange)',
+                        'calm-blue': 'var(--calm-blue)',
+                        'bg-deep': 'var(--bg-deep)',
+                        'text-light': 'var(--text-light)',
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'border-beam': 'border-beam 10s linear infinite',
+                        'border-rotate': 'border-rotate 4s linear infinite',
+                    },
+                    keyframes: {
+                        'border-beam': {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' },
+                        },
+                        'border-rotate': {
+                            'from': { transform: 'rotate(0deg)' },
+                            'to': { transform: 'rotate(360deg)' },
+                        }
                     }
                 }
             }
@@ -55,13 +69,22 @@
             <h1 class="text-xs font-black uppercase tracking-[0.4em] opacity-80">Release</h1>
         </div>
         <div class="flex items-center gap-4 pointer-events-auto">
-            <button type="button" onclick="toggleWaitlist(true)"
-                class="bg-nexus-orange text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:scale-110 active:scale-95 transition-all cursor-pointer relative z-[200] shadow-[0_0_20px_rgba(255,68,0,0.3)] hover:shadow-[0_0_30px_rgba(255,68,0,0.5)] overflow-hidden shiny-button-fix">
-                Waitlist
+            <button type="button" onclick="toggleGlobalTheme()" aria-label="Toggle Theme" title="Toggle Theme"
+                id="ui-btn-theme"
+                class="w-10 h-10 flex items-center justify-center transition-all cursor-pointer relative z-[200] opacity-50 hover:opacity-100 shadow-sm">
+                <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
             </button>
-            <button type="button" onclick="shareLink()" aria-label="Share" title="Share"
-                class="w-10 h-10 flex items-center justify-center glass-card border border-white/10 rounded-full hover:bg-white/10 transition-all cursor-pointer relative z-[200] shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
-                <i class="fa-solid fa-arrow-up-from-bracket text-xs"></i>
+            <button type="button" onclick="toggleWaitlist(true)"
+                class="waitlist-radial text-white px-2 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all cursor-pointer relative z-[200] shadow-[0_2px_10px_rgba(255,68,0,0.2)] hover:shadow-[0_4px_15px_rgba(255,68,0,0.4)] overflow-hidden shiny-button-fix w-24">
+                <div class="marquee-container">
+                    <div class="marquee-content">
+                        <span>Waitlist • Waitlist • Waitlist • Waitlist • </span>
+                    </div>
+                </div>
+            </button>
+            <button type="button" onclick="shareLink()" aria-label="Share" title="Share" id="ui-btn-share"
+                class="w-10 h-10 flex items-center justify-center glass-card border border-white/10 rounded-full hover:bg-white/10 transition-all cursor-pointer relative z-[200] shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
+                <i class="fa-solid fa-arrow-up-from-bracket text-xs text-light"></i>
             </button>
         </div>
     </header>
@@ -76,26 +99,32 @@
                 <div class="aurora-noise"></div>
                 <div class="aurora-overlay"></div>
             </div>
-            <div class="dot-pattern pointer-events-none"></div>
-            <div class="scroll-wrapper items-center justify-center px-6">
-                <div class="w-full max-w-2xl text-left my-auto py-12 px-2 animate-fade">
+            <!-- Hero Background Media (Atmospheric Image) -->
+            <div class="hero-bg-media">
+                <canvas id="bg-canvas"></canvas>
+            </div>
+
+            <div class="scroll-wrapper items-center justify-center px-6 relative z-10">
+                <div class="w-full max-w-2xl text-left my-auto py-12 px-2">
                     <p class="text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-4">The Void</p>
                     <h1 class="text-[clamp(1.5rem,6vw,3.5rem)] font-thin tracking-tight leading-tight mb-6">Vent <span
-                            id="hyper-text-home" class="hyper-text-target">anxiety, anger, panic</span> <span
-                            id="shiny-tagline-home" class="text-shiny-orange font-semibold">without judgment.</span>
+                            id="hyper-text-home">anxiety, anger, panic</span> <span id="shiny-tagline-home"
+                            class="text-shiny-orange font-black">without judgment.</span>
                     </h1>
-                    <p class="text-sm text-white/50 font-light leading-relaxed max-w-xl mb-12">Catch the wave before it
+                    <p class="text-sm text-text-light/50 font-light leading-relaxed max-w-xl mb-12">Catch the wave
+                        before it
                         spills over. Release it all here. A new way to be heard is on the horizon. Join the waitlist to
                         be notified.</p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-5xl mx-auto">
                         <!-- Mode 01: Ash It -->
                         <button type="button" onclick="navigate('burn')"
-                            class="group relative overflow-hidden h-32 glass-card rounded-[32px] p-6 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] hover-glow-orange">
-                            <div class="shine-effect"></div>
-                            <div
-                                class="absolute right-0 top-0 p-8 opacity-5 group-hover:opacity-15 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-200">
-                                <i class="fa-solid fa-fire text-6xl"></i>
+                            class="group relative h-32 white-glass-card rounded-[32px] p-6 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] hover-glow-orange">
+                            <div class="absolute inset-0 overflow-hidden rounded-[32px] pointer-events-none">
+                                <div class="shine-effect"></div>
+                                <div class="absolute right-0 top-0 p-8">
+                                    <i class="fa-solid fa-fire text-6xl glass-icon-white"></i>
+                                </div>
                             </div>
                             <div
                                 class="relative z-10 h-full flex flex-col justify-between transition-transform duration-150 group-hover:translate-x-1">
@@ -116,11 +145,14 @@
 
                         <!-- Mode 02: Calm It -->
                         <button type="button" onclick="navigate('calm')"
-                            class="group relative overflow-hidden h-32 glass-card rounded-[32px] p-6 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] hover-glow-blue">
-                            <div class="shine-effect"></div>
-                            <div
-                                class="absolute right-0 top-0 p-8 opacity-5 group-hover:opacity-15 group-hover:scale-110 group-hover:-translate-y-2 transition-all duration-200">
-                                <i class="fa-solid fa-wind text-6xl text-calm-blue"></i>
+                            class="group relative h-32 white-glass-card rounded-[32px] p-6 text-left transition-all duration-150 hover:scale-[1.02] active:scale-[0.98] hover-glow-blue">
+                            <!-- Inner clipping container for shine and icons -->
+                            <div class="absolute inset-0 overflow-hidden rounded-[32px] pointer-events-none">
+                                <div class="shine-effect"></div>
+                                <div
+                                    class="absolute right-0 top-0 p-8 opacity-100 group-hover:opacity-100 transition-all duration-200">
+                                    <i class="fa-solid fa-wind text-6xl glass-icon-white"></i>
+                                </div>
                             </div>
                             <div
                                 class="relative z-10 h-full flex flex-col justify-between transition-transform duration-150 group-hover:translate-x-1">
@@ -132,7 +164,7 @@
                                 <div>
                                     <h3
                                         class="text-xl font-light tracking-tight group-hover:font-normal transition-all">
-                                        Calm It</h3>
+                                        Air It</h3>
                                     <p class="text-[9px] uppercase tracking-widest opacity-40 mt-1">Breath • Focus •
                                         Peace</p>
                                 </div>
@@ -141,45 +173,46 @@
                     </div>
                 </div>
                 <div class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto mt-auto">
-                    <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For
+                    <p class="text-[9px] uppercase tracking-[0.4em] text-light opacity-30 font-bold italic mb-2">For
                         relaxing/venting only. Not medical advice.</p>
-                    <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
+                    <p class="text-[9px] uppercase tracking-[0.6em] text-light opacity-50 font-black">NO RECORDS • NO
+                        ALGORITHMS | Release | A Nexus Project</p>
                 </div>
             </div>
         </section>
 
         <!-- VIEW: ASH -->
         <section id="view-burn" class="view-container">
-            <div class="dot-pattern pointer-events-none"></div>
+
             <div class="scroll-wrapper items-center pt-8 px-4 md:px-8 pb-6">
 
                 <div class="w-full max-w-5xl flex items-start gap-4 mb-8 relative z-10 px-0 mx-auto">
                     <button onclick="navigate('home')" aria-label="Back"
-                        class="mt-1 text-white/20 hover:text-white transition-colors cursor-pointer active:scale-95">
+                        class="mt-1 text-light opacity-20 hover:opacity-100 transition-colors cursor-pointer active:scale-95">
                         <i class="fa-solid fa-chevron-left text-sm"></i>
                     </button>
                     <div>
                         <p class="mt-[9px] text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-1">
                             Enter the
                             Void</p>
-                        <h1
-                            class="text-[clamp(1.1rem,4.5vw,2.2rem)] font-thin tracking-tight leading-tight mb-2 whitespace-nowrap">
-                            A sanctuary <span id="hyper-text-burn" class="hyper-text-target">for your</span> <span
-                                id="shiny-tagline-burn" class="text-shiny-orange font-semibold">CALM IS COMING...</span>
+                        <h1 class="text-[clamp(1.1rem,4.5vw,2.2rem)] font-thin tracking-tight leading-tight mb-2">
+                            A sanctuary <span id="hyper-text-burn">for your</span> <span id="shiny-tagline-burn"
+                                class="text-shiny-orange font-black">CALM IS COMING...</span>
                         </h1>
-                        <p class="text-xs md:text-sm text-white/50 font-light leading-relaxed max-w-xl">Release the
+                        <p class="text-xs md:text-sm text-text-light/50 font-light leading-relaxed max-w-xl">Release the
                             weight
                             before it breaks you. No judgment. No records. Just release.</p>
                     </div>
                 </div>
 
-                <div class="flex-0 w-full flex flex-col items-center justify-center p-0 relative z-10">
+                <div class="flex-0 w-full flex flex-col items-center justify-center p-0 relative z-20">
 
                     <!-- Editor Controls (Anchored to Top-Right of Card) -->
                     <div
                         class="w-full max-w-5xl flex justify-end gap-3 mb-[10px] px-0 relative z-[70] pointer-events-auto">
                         <!-- Font Control -->
                         <div id="ctrl-font-container" onclick="toggleControl('ctrl-font')"
+                            onmouseleave="toggleControl(null)"
                             class="editor-control flex items-center bg-white/5 rounded-full px-3 py-2 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
                             <i id="ui-icon-font"
                                 class="fa-solid fa-font text-[10px] text-white/50 hover:text-white/80 transition-colors"></i>
@@ -193,6 +226,7 @@
                         </div>
                         <!-- Theme Control -->
                         <div id="ctrl-theme-container" onclick="toggleControl('ctrl-theme')"
+                            onmouseleave="toggleControl(null)"
                             class="editor-control flex items-center bg-white/5 rounded-full px-3 py-2 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
                             <i id="ui-icon-theme"
                                 class="fa-solid fa-palette text-xs text-white/50 hover:text-white/80 transition-colors"></i>
@@ -200,7 +234,7 @@
                                 class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
                                 <!-- Black (Default) -->
                                 <button onclick="changeThemeColor(0); event.stopPropagation()"
-                                    class="w-4 h-4 rounded-full bg-black border border-white/20 hover:scale-125 transition-transform"
+                                    class="w-4 h-4 rounded-full bg-[var(--bg-deep)] border border-white/20 hover:scale-125 transition-transform"
                                     title="Void"></button>
                                 <!-- Ivory -->
                                 <button onclick="changeThemeColor(1); event.stopPropagation()"
@@ -220,26 +254,31 @@
                                     title="Midnight"></button>
                             </div>
                         </div>
+                        <!-- Mobile Haptic Toggle (Icon Only) -->
+                        <div id="ctrl-haptic-mobile" onclick="toggleHaptics()"
+                            class="editor-control hidden md:hidden items-center bg-white/5 rounded-full px-4 py-2 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                            <i class="fa-solid fa-vibration text-xs text-white/50"></i>
+                        </div>
                     </div>
 
                     <div id="editor-card"
-                        class="relative w-full max-w-5xl h-[45vh] md:h-[55vh] glass-card rounded-[40px] flex items-center justify-center p-6 transition-all duration-500 group/editor shadow-card-elevated overflow-hidden border-white/5">
+                        class="relative w-full max-w-5xl h-[45vh] md:h-[55vh] glass-card rounded-[40px] flex items-center justify-center p-6 transition-all duration-500 group/editor shadow-card-elevated overflow-hidden border-white/5 z-50">
 
 
 
                         <textarea id="burn-area" oninput="updateButtonState()"
-                            class="relative z-10 w-full h-full text-center text-[clamp(1.5rem,5vw,3rem)] md:text-[clamp(2.5rem,6vw,4.5rem)] font-bold bg-transparent border-none outline-none resize-none placeholder-white/10 leading-relaxed transition-opacity duration-300"
-                            placeholder="What is weighing on you?"></textarea>
+                            class="relative z-10 w-full h-full text-left text-xl md:text-3xl font-light bg-transparent border-none outline-none resize-none placeholder-text-light/10 leading-relaxed transition-opacity duration-300"
+                            placeholder="Ash whatever's weighing you down"></textarea>
 
                         <!-- Mode Toggles (Bottom Right) -->
                         <div class="absolute bottom-4 right-4 flex items-center gap-3 z-30 pointer-events-auto">
                             <button id="ui-btn-mode" onclick="toggleMode()" aria-label="Toggle Voice Mode"
-                                class="h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-40 hover:opacity-100 transition-all cursor-pointer shadow-[0_0_15px_rgba(255,68,0,0.2)] hover:shadow-[0_0_25px_rgba(255,68,0,0.4)]">
+                                class="h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-70 hover:opacity-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(255,68,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,68,0,0.2)]">
                                 <i class="fa-solid fa-microphone"></i>
                                 <span>Voice</span>
                             </button>
                             <button id="ui-btn-haptic" onclick="toggleHaptics()" aria-label="Toggle Haptics"
-                                class="md:hidden h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-40 hover:opacity-100 transition-all cursor-pointer shadow-[0_0_15px_rgba(255,68,0,0.2)] hover:shadow-[0_0_25px_rgba(255,68,0,0.4)]">
+                                class="md:hidden h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-70 hover:opacity-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(255,68,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,68,0,0.2)]">
                                 <i class="fa-solid fa-vibration"></i>
                                 <span>Haptic</span>
                             </button>
@@ -253,23 +292,16 @@
                             <div class="flex items-center justify-center pointer-events-auto relative">
                                 <!-- Playback (Hidden initially) -->
                                 <button id="btn-play-audio" onclick="togglePlayback()" aria-label="Play Recording"
-                                    class="hidden w-20 h-20 rounded-full bg-nexus-orange/20 hover:bg-nexus-orange/30 items-center justify-center transition-all relative z-20 cursor-pointer">
-                                    <i class="fa-solid fa-play text-white text-2xl"></i>
+                                    class="hidden w-20 h-20 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all relative z-20 cursor-pointer border border-white/10">
+                                    <i class="fa-solid fa-play text-white text-2xl translate-x-1"></i>
                                 </button>
-                                <!-- Download (DISABLED - Contradicts Ashing philosophy)
-                                <button id="btn-download-audio" onclick="downloadAudio()"
-                                    aria-label="Download Recording"
-                                    class="hidden w-20 h-20 rounded-full bg-white/5 hover:bg-white/10 items-center justify-center transition-all relative z-20 cursor-pointer border border-white/5">
-                                    <i class="fa-solid fa-download text-white text-2xl"></i>
-                                </button>
-                                -->
                             </div>
 
                             <div class="flex flex-col items-center mt-6 gap-2">
-                                <p id="audio-timer" class="text-2xl font-mono text-white/50 font-light tracking-widest">
+                                <p id="audio-timer" class="text-4xl font-mono text-white/50 font-light tracking-widest">
                                     00:00</p>
-                                <p id="audio-status"
-                                    class="text-[10px] uppercase tracking-[0.3em] opacity-40 font-bold">Tap to Record
+                                <p id="audio-status" class="text-[10px] uppercase tracking-[0.3em] opacity-40">Tap to
+                                    Record
                                 </p>
                             </div>
                         </div>
@@ -279,23 +311,47 @@
                 <div id="burn-action"
                     class="w-full max-w-5xl px-0 py-4 mx-auto transition-all duration-700 relative z-10">
                     <button type="button" onclick="handleMainAction()" id="btn-main-action"
-                        class="w-full h-16 rounded-[40px] font-black uppercase tracking-[0.4em] text-[10px] active:scale-95 transition-all glass-card text-white/20">
-                        Ash It
+                        class="w-full h-14 rounded-[40px] uppercase tracking-[0.4em] text-base active:scale-95 transition-all glass-card text-text-light/20 flex items-center justify-center">
+                        <span>Ash It</span>
+                        <kbd
+                            class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium lowercase pointer-events-none tracking-normal">Ctrl+Enter</kbd>
                     </button>
                 </div>
 
                 <!-- Marketing Card (Hidden) -->
-                <div id="burn-marketing" class="hidden w-full max-w-5xl pt-0 mx-auto animate-fly-top relative z-10">
-                    <div class="glass-card rounded-[40px] p-8 text-center space-y-6">
-                        <p class="text-sm opacity-80 font-light leading-relaxed">That thought is gone. If the weight
-                            remains, a Nexus Sentinel is listening.</p>
-                        <div class="flex flex-col sm:flex-row gap-3 w-full animate-fade">
-                            <input type="email" id="waitlist-email-inline" placeholder="Enter your email"
-                                class="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-xs font-light tracking-wide focus:outline-none focus:border-nexus-orange/50 transition-all text-white placeholder:text-white/20">
-                            <button type="button" onclick="submitInlineWaitlist()"
-                                class="bg-[#5DADE2] text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#3498db] transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap">
-                                Join
-                            </button>
+                <div id="burn-marketing"
+                    class="hidden w-full max-w-5xl pt-0 mx-auto animate-fly-top relative z-10 px-0">
+                    <div
+                        class="white-glass-card rounded-[40px] p-4 text-center space-y-4 relative overflow-hidden border-none">
+                        <!-- Card Background Image -->
+                        <div class="absolute inset-0 z-0 pointer-events-none opacity-[0.28]">
+                            <img src="index/waitlist.jpg" alt="" class="w-full h-full object-cover">
+                        </div>
+                        <div class="relative z-10 space-y-4 p-4">
+                            <p class="text-sm opacity-80 font-light leading-relaxed">That thought is gone. If the weight
+                                remains, a Nexus Sentinel is listening.</p>
+                            <div class="relative w-full max-w-2xl mx-auto group/pill animate-fade">
+                                <!-- Perimeter Beam Border Mask -->
+                                <div class="relative p-[1px] rounded-full overflow-hidden shadow-2xl">
+                                    <!-- Rotating Beam -->
+                                    <div class="absolute inset-[-150%] animate-border-rotate opacity-80"
+                                        style="background: conic-gradient(from 0deg, transparent 0%, #ff6633 10%, transparent 20%);">
+                                    </div>
+
+                                    <!-- Inner Content -->
+                                    <div
+                                        class="bg-white rounded-full p-1.5 flex items-center relative z-10 border border-white/5">
+                                        <input type="email" id="waitlist-email-inline" placeholder="Enter your email"
+                                            class="flex-1 bg-transparent px-8 py-3.5 text-sm font-light tracking-wide focus:outline-none text-black placeholder:text-black/40 border-none outline-none">
+                                        <button type="button" onclick="submitInlineWaitlist()"
+                                            class="group/waitlist-btn bg-black text-white px-8 py-3.5 rounded-full text-base transition-all hover:bg-zinc-900 active:scale-[0.97] flex items-center gap-0 hover:gap-3">
+                                            <span class="whitespace-nowrap">Join Waitlist</span>
+                                            <i
+                                                class="fa-solid fa-arrow-right opacity-0 w-0 group-hover/waitlist-btn:opacity-100 group-hover/waitlist-btn:w-auto transition-all duration-300 text-xs"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -303,9 +359,12 @@
                 <!-- Footer -->
                 <div id="ash-footer" class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto">
                     <p id="ui-text-footer"
-                        class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For
+                        class="text-[9px] uppercase tracking-[0.4em] text-light opacity-30 font-bold italic mb-2">
+                        For
                         relaxing/venting only. Not medical advice.</p>
-                    <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
+                    <p class="text-[9px] uppercase tracking-[0.6em] text-light opacity-50 font-black">NO RECORDS •
+                        NO
+                        ALGORITHMS | Release | A Nexus Project</p>
                 </div>
             </div>
             </div>
@@ -313,8 +372,8 @@
 
         <!-- VIEW: SMASH -->
         <section id="view-smash" class="view-container" onclick="triggerHammer(event)">
-            <div class="dot-pattern pointer-events-none"></div>
-            <div class="scroll-wrapper items-center justify-center bg-black overflow-hidden">
+
+            <div class="scroll-wrapper items-center justify-center bg-transparent overflow-hidden">
                 <div id="smash-overlay"
                     class="absolute inset-0 z-10 pointer-events-none transition-opacity duration-300">
                 </div>
@@ -342,23 +401,47 @@
                     </div>
                 </div>
                 <div class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto">
-                    <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For
+                    <p class="text-[9px] uppercase tracking-[0.4em] text-light opacity-30 font-bold italic mb-2">For
                         relaxing/venting only. Not medical advice.</p>
-                    <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
+                    <p class="text-[9px] uppercase tracking-[0.6em] text-light opacity-50 font-black">NO RECORDS • NO
+                        ALGORITHMS | Release | A Nexus Project</p>
                 </div>
             </div>
         </section>
 
         <!-- VIEW: CALM -->
-        <section id="view-calm" class="view-container">
-            <div class="dot-pattern pointer-events-none"></div>
+        <section id="view-calm" class="view-container flex-col">
+
             <div class="scroll-wrapper items-center justify-center p-6">
                 <div class="flex-1 w-full flex flex-col items-center justify-center min-h-[80vh]">
                     <div class="relative w-48 h-48 flex items-center justify-center">
                         <div class="absolute inset-0 rounded-full border border-calm-blue/30 breathing-core"></div>
                         <div class="absolute inset-4 rounded-full bg-calm-blue/5 backdrop-blur-3xl animate-pulse"></div>
-                        <span id="breathing-txt"
-                            class="relative z-10 text-[10px] font-black uppercase tracking-[0.5em] text-calm-blue transition-all duration-1000">Inhale</span>
+                        <div class="relative z-10 flex flex-col items-center">
+                            <span id="calm-timer-countdown"
+                                class="text-4xl font-thin tracking-tighter mb-1 select-none"></span>
+                            <span id="breathing-txt"
+                                class="text-[10px] font-black uppercase tracking-[0.5em] pl-[0.5em] text-calm-blue transition-all duration-1000 select-none">Inhale</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timer Settings -->
+                <div class="w-full max-w-xs flex flex-col items-center gap-4 mb-20 opacity-60">
+                    <p class="text-[9px] uppercase tracking-[0.4em] font-black opacity-30">Pace</p>
+                    <div class="flex items-center gap-8">
+                        <button onclick="adjustCalmTime(-1)"
+                            class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 active:scale-90 transition-all">
+                            <i class="fa-solid fa-minus text-[10px]"></i>
+                        </button>
+                        <div class="text-center">
+                            <span id="calm-time-display" class="text-2xl font-thin tracking-tighter">4</span>
+                            <span class="text-[10px] uppercase tracking-widest opacity-30 ml-1">sec</span>
+                        </div>
+                        <button onclick="adjustCalmTime(1)"
+                            class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 active:scale-90 transition-all">
+                            <i class="fa-solid fa-plus text-[10px]"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -367,6 +450,15 @@
                         class="w-full border border-calm-blue/40 text-calm-blue h-16 rounded-3xl font-black uppercase tracking-[0.4em] text-[10px] active:bg-calm-blue/10 transition-colors">
                         I feel grounded
                     </button>
+                </div>
+
+                <!-- Footer -->
+                <div class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto mt-auto">
+                    <p class="text-[9px] uppercase tracking-[0.4em] text-light opacity-30 font-bold italic mb-2">For
+                        relaxing/venting
+                        only. Not medical advice.</p>
+                    <p class="text-[9px] uppercase tracking-[0.6em] text-light opacity-50 font-black">NO RECORDS • NO
+                        ALGORITHMS | Release | A Nexus Project</p>
                 </div>
 
                 <!-- Marketing Card (Hidden) -->
@@ -388,12 +480,6 @@
                             void</button>
                     </div>
                 </div>
-            </div>
-            <div class="w-full max-w-5xl py-12 text-center relative z-10 mx-auto">
-                <p class="text-[9px] uppercase tracking-[0.4em] opacity-30 font-bold italic mb-2">For relaxing/venting
-                    only. Not medical advice.</p>
-                <p class="text-[9px] uppercase tracking-[0.6em] opacity-50 font-black">Release | A Nexus Project</p>
-            </div>
             </div>
         </section>
 
@@ -421,7 +507,7 @@
                     <input type="email" name="email" required placeholder="name@email.com"
                         class="w-full bg-white/[0.03] border border-white/5 rounded-2xl p-5 text-sm outline-none focus:border-nexus-orange transition-all placeholder:opacity-20">
                     <button type="submit" onclick="track('Waitlist Joined')"
-                        class="w-full bg-nexus-orange text-white h-14 rounded-2xl font-black uppercase tracking-[0.4em] text-[10px] shadow-2xl shadow-nexus-orange/30">
+                        class="w-full bg-nexus-orange text-white h-14 rounded-2xl uppercase tracking-[0.4em] text-[14px] shadow-2xl shadow-nexus-orange/30">
                         Join Waitlist
                     </button>
                 </form>
@@ -441,9 +527,12 @@
                 view: 'home',
                 hits: 0,
                 interval: null,
-                textSizeIndex: 1, // Default: Medium
+                textSizeIndex: 1, // Default to Small (2nd option)
                 themeColorIndex: 0, // Default: White
                 mode: 'text', // 'text' or 'audio'
+                globalTheme: localStorage.getItem('release-theme') || 'dark',
+
+                // Audio Context & State
                 audioBlob: null,
                 isRecording: false,
                 isPlaying: false,
@@ -456,28 +545,48 @@
                 startTime: null,
                 timerInterval: null,
                 burnComplete: false,
-                hapticsEnabled: true
+                hapticsEnabled: true,
+                globalTheme: localStorage.getItem('release-theme') || 'dark',
+
+                // Calm Mode Config
+                calmBaseTime: 4, // Seconds for Inhale/Hold. Exhale is +2.
+
+                // Animation & Particles
+                particles: [],
+                particleLoopActive: false,
+                canvas: document.getElementById('burn-canvas'),
+                ctx: document.getElementById('burn-canvas').getContext('2d'),
+
+                // Cached elements for performance
+                el: {
+                    area: document.getElementById('burn-area'),
+                    mainBtn: document.getElementById('btn-main-action'),
+                    timer: document.getElementById('audio-timer'),
+                    status: document.getElementById('audio-status'),
+                    visualizer: document.getElementById('audio-visualizer'),
+                    editorCard: document.getElementById('editor-card'),
+                    navBar: document.getElementById('nav-bar')
+                }
             };
 
 
             const textSizes = [
+                { class: 'text-lg md:text-2xl', label: 'Tiny' },
                 { class: 'text-xl md:text-3xl', label: 'Small' },
                 { class: 'text-3xl md:text-5xl', label: 'Medium' }, // Default
                 { class: 'text-4xl md:text-6xl', label: 'Large' },
-                { class: 'text-5xl md:text-7xl', label: 'Extra Large' }
+                { class: 'text-5xl md:text-7xl', label: 'Extra' },
+                { class: 'text-6xl md:text-8xl', label: 'Huge' }
             ];
 
             const themeColors = [
-                { isCardDark: true, bgClass: 'bg-black', cardBg: 'bg-white/5', textClass: 'text-gray-300', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(255,255,255,0.05)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Void
-                { isCardDark: false, bgClass: 'bg-[#fff3e0]/50', cardBg: '!bg-[#fff3e0]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Ivory
-                { isCardDark: false, bgClass: 'bg-[#e5f3f8]/50', cardBg: '!bg-[#e5f3f8]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Mist
-                { isCardDark: false, bgClass: 'bg-[#dadecf]/50', cardBg: '!bg-[#dadecf]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }, // Pewter
-                { isCardDark: true, bgClass: 'bg-[#191738]', cardBg: 'bg-white/5', textClass: 'text-gray-200', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.4)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }  // Midnight
+                { isCardDark: true, bgClass: 'bg-bg-deep', cardBg: 'bg-text-light/5', textClass: 'text-text-light', dotColor: 'var(--dot-color)', shadowColor: 'rgba(0,0,0,0.05)', uiBg: 'bg-text-light/5', uiBorder: 'border-text-light/5', uiTextMain: 'text-text-light', uiTextDim: 'text-text-light/50' }, // Void
+                { isCardDark: false, bgClass: '!bg-[#fff3e0]/80', cardBg: '!bg-[#fff3e0]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Ivory
+                { isCardDark: false, bgClass: '!bg-[#e5f3f8]/80', cardBg: '!bg-[#e5f3f8]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Mist
+                { isCardDark: false, bgClass: '!bg-[#dadecf]/80', cardBg: '!bg-[#dadecf]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Pewter
+                { isCardDark: true, bgClass: '!bg-[#191738]', cardBg: '!bg-white/5', textClass: 'text-gray-200', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.4)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }  // Midnight
             ];
 
-            const canvas = document.getElementById('burn-canvas');
-            const ctx = canvas ? canvas.getContext('2d') : null;
-            let particles = [];
 
             function track(event) {
                 console.log(`[POSTHOG DUMMY] ${event}`);
@@ -509,6 +618,17 @@
                 }
 
                 // Feature Inits
+                if (state.view === 'calm' && viewId !== 'calm') {
+                    if (state.interval) {
+                        clearTimeout(state.interval);
+                        state.interval = null;
+                    }
+                    if (state.timerInterval) {
+                        clearInterval(state.timerInterval);
+                        state.timerInterval = null;
+                    }
+                }
+
                 if (viewId === 'calm') runCalmLoop();
                 if (viewId === 'burn') setupCanvas();
 
@@ -518,8 +638,8 @@
             track('App Opened');
 
             function setupCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                state.canvas.width = window.innerWidth;
+                state.canvas.height = window.innerHeight;
             }
 
             function createParticle(x, y) {
@@ -533,18 +653,35 @@
             }
 
             function renderParticles() {
+                const { canvas, ctx, particles } = state;
+                if (particles.length === 0) {
+                    state.particleLoopActive = false;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    return;
+                }
+
+                state.particleLoopActive = true;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach((p, i) => {
+
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
                     p.x += p.vx;
                     p.y += p.vy;
-                    p.life -= 0.01;
+                    p.vy += 0.1; // gravity
+                    p.life -= 0.02;
+
+                    if (p.life <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+
                     ctx.fillStyle = `rgba(255, 69, 0, ${p.life})`;
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fill();
-                    if (p.life <= 0) particles.splice(i, 1);
-                });
-                if (particles.length > 0) requestAnimationFrame(renderParticles);
+                }
+
+                requestAnimationFrame(renderParticles);
             }
 
             function handleMainAction() {
@@ -629,11 +766,15 @@
                 }
 
                 // Explosion
-                const rect = area.getBoundingClientRect();
+                const editorCard = document.getElementById('editor-card');
+                const rect = editorCard.getBoundingClientRect();
                 for (let i = 0; i < 150; i++) {
-                    particles.push(createParticle(rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width, rect.top + rect.height / 2));
+                    state.particles.push(createParticle(rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width, rect.bottom));
                 }
-                renderParticles();
+
+                if (!state.particleLoopActive) {
+                    renderParticles();
+                }
 
                 setTimeout(() => {
                     resetMode('burn');
@@ -660,11 +801,25 @@
                 const textArea = document.getElementById('burn-area');
                 const audioWrapper = document.getElementById('audio-wrapper');
 
+                // Controls containers
+                const fontCtrl = document.getElementById('ctrl-font-container');
+                const themeCtrl = document.getElementById('ctrl-theme-container');
+                const hapticMobile = document.getElementById('ctrl-haptic-mobile');
+
                 if (state.mode === 'text') {
                     state.mode = 'audio';
                     btn.innerHTML = '<i class="fa-solid fa-align-left"></i><span>Text</span>';
-                    btn.classList.add('bg-white/20', 'opacity-100');
-                    btn.classList.remove('bg-white/5', 'opacity-40');
+
+                    // Mode Visibility
+                    fontCtrl.classList.add('hidden');
+                    themeCtrl.classList.add('hidden');
+                    hapticMobile.classList.remove('hidden');
+                    hapticMobile.classList.add('flex');
+
+                    // Dynamic adaptation for the toggle button itself
+                    const isActualDark = (state.themeColorIndex === 0) ? (state.globalTheme === 'dark') : themeColors[state.themeColorIndex].isCardDark;
+                    btn.classList.remove('bg-white/5', 'bg-black/5', 'bg-white/20', 'bg-black/20', 'opacity-40', 'opacity-70');
+                    btn.classList.add(isActualDark ? 'bg-white/20' : 'bg-black/20', 'opacity-100');
 
                     // Update Main Button for Audio
                     document.getElementById('btn-main-action').innerText = "RECORD";
@@ -679,11 +834,19 @@
                 } else {
                     state.mode = 'text';
                     btn.innerHTML = '<i class="fa-solid fa-microphone"></i><span>Voice</span>';
-                    btn.classList.remove('bg-white/20', 'opacity-100');
-                    btn.classList.add('bg-white/5', 'opacity-40');
+
+                    // Mode Visibility
+                    fontCtrl.classList.remove('hidden');
+                    themeCtrl.classList.remove('hidden');
+                    hapticMobile.classList.add('hidden');
+                    hapticMobile.classList.remove('flex');
+
+                    const isActualDark = (state.themeColorIndex === 0) ? (state.globalTheme === 'dark') : themeColors[state.themeColorIndex].isCardDark;
+                    btn.classList.remove('bg-white/20', 'bg-black/20', 'opacity-100');
+                    btn.classList.add(isActualDark ? 'bg-white/5' : 'bg-black/5', 'opacity-70');
 
                     // Update Main Button for Text
-                    document.getElementById('btn-main-action').innerText = "ASH IT";
+                    document.getElementById('btn-main-action').innerHTML = `<span>Ash It</span><kbd class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium lowercase pointer-events-none tracking-normal">Ctrl+Enter</kbd>`;
 
                     audioWrapper.classList.add('opacity-0');
                     setTimeout(() => {
@@ -801,6 +964,7 @@
 
                     statusText.innerText = "Recording...";
                     statusText.classList.add('text-nexus-orange', 'animate-pulse');
+                    statusText.classList.remove('opacity-40');
 
                     // Timer
                     state.startTime = Date.now();
@@ -815,14 +979,12 @@
 
                 clearInterval(state.timerInterval);
 
-                const statusText = document.getElementById('audio-status');
-                const mainBtn = document.getElementById('btn-main-action');
+                state.el.mainBtn.innerText = "ASH IT"; // Update Main Button
+                state.el.mainBtn.classList.remove('bg-red-600', 'animate-pulse');
 
-                mainBtn.innerText = "ASH IT"; // Update Main Button
-                mainBtn.classList.remove('bg-red-600', 'animate-pulse');
-
-                statusText.innerText = "Ready to Burn";
-                statusText.classList.remove('text-nexus-orange', 'animate-pulse');
+                state.el.status.innerText = "Ready to Burn";
+                state.el.status.classList.remove('text-nexus-orange', 'animate-pulse');
+                state.el.status.classList.add('opacity-40');
 
                 // Show Play button
                 document.getElementById('btn-play-audio').classList.remove('hidden');
@@ -833,7 +995,7 @@
                 const diff = Math.floor((Date.now() - state.startTime) / 1000);
                 const m = Math.floor(diff / 60).toString().padStart(2, '0');
                 const S = (diff % 60).toString().padStart(2, '0');
-                document.getElementById('audio-timer').innerText = `${m}:${S}`;
+                state.el.timer.innerText = `${m}:${S}`;
             }
 
             function togglePlayback() {
@@ -847,6 +1009,7 @@
                     state.currentAudio.pause();
                     icon.classList.remove('fa-pause');
                     icon.classList.add('fa-play');
+                    icon.classList.add('translate-x-1');
                     return;
                 }
 
@@ -856,6 +1019,7 @@
                     state.currentAudio.onended = () => {
                         icon.classList.remove('fa-pause');
                         icon.classList.add('fa-play');
+                        icon.classList.add('translate-x-1');
                         state.currentAudio = null;
                     };
                 }
@@ -863,6 +1027,7 @@
                 state.currentAudio.play()
                     .then(() => {
                         icon.classList.remove('fa-play');
+                        icon.classList.remove('translate-x-1');
                         icon.classList.add('fa-pause');
                     })
                     .catch(e => {
@@ -871,27 +1036,6 @@
                     });
             }
             window.togglePlayback = togglePlayback;
-
-            function downloadAudio() {
-                if (!state.audioBlob) return;
-
-                const url = URL.createObjectURL(state.audioBlob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-                a.download = `ash-recording-${timestamp}.webm`;
-                document.body.appendChild(a);
-                a.click();
-
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                }, 100);
-
-                track('Audio Downloaded');
-            }
-            window.downloadAudio = downloadAudio;
 
             function resetAudioState() {
                 // Stop playback if active
@@ -904,6 +1048,7 @@
                 if (icon) {
                     icon.classList.remove('fa-pause');
                     icon.classList.add('fa-play');
+                    icon.classList.add('translate-x-1');
                 }
 
                 state.audioBlob = null;
@@ -927,43 +1072,60 @@
             }
 
             function drawVisualizer() {
-                if (state.mode !== 'audio') {
+                if (state.mode !== 'audio' || !state.analyser) {
                     cancelAnimationFrame(state.visualizerId);
                     return;
                 }
 
-                const canvas = document.getElementById('audio-visualizer');
+                const canvas = state.el.visualizer;
                 const ctx = canvas.getContext('2d');
                 const width = canvas.width;
                 const height = canvas.height;
 
                 const bufferLength = state.analyser.frequencyBinCount;
                 const dataArray = new Uint8Array(bufferLength);
-
                 state.analyser.getByteFrequencyData(dataArray);
 
                 ctx.clearRect(0, 0, width, height);
 
-                const barWidth = (width / bufferLength) * 2.5;
-                let barHeight;
-                let x = 0;
+                const barWidth = 2.5; // Fine bars
+                const gap = 3;
+                const barCount = Math.floor(width / (barWidth + gap));
 
-                for (let i = 0; i < bufferLength; i++) {
-                    barHeight = dataArray[i] / 2;
+                const isActualDark = (state.themeColorIndex === 0) ? (state.globalTheme === 'dark') : themeColors[state.themeColorIndex].isCardDark;
+                const isActive = state.isRecording;
 
-                    // Dynamic Color based on Theme would be cool, strictly white/orange for now
-                    const isActive = state.isRecording;
-                    const hue = isActive ? 16 : 0; // Orange or Red-ish
-                    const sat = isActive ? '100%' : '0%';
-                    const light = isActive ? '50%' : '100%';
-
-                    ctx.fillStyle = `hsl(${hue}, ${sat}, ${light})`;
-
-                    // Centered wave
-                    ctx.fillRect(x, height / 2 - barHeight / 2, barWidth, barHeight);
-
-                    x += barWidth + 1;
+                // Move fillStyle and path initiation out of loop for performance
+                if (isActive) {
+                    ctx.fillStyle = 'rgba(255, 69, 0, 0.8)';
+                } else if (isActualDark) {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                } else {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
                 }
+
+                ctx.beginPath();
+                const radius = barWidth / 2;
+
+                for (let i = 0; i < barCount; i++) {
+                    const percent = i / barCount;
+                    const freqIdx = Math.floor(Math.pow(percent, 0.75) * (bufferLength * 0.7));
+                    const value = dataArray[freqIdx];
+
+                    let barHeight = (value / 255) * height * 1.5;
+                    if (barHeight < 6) barHeight = 6;
+                    if (barHeight > height) barHeight = height;
+
+                    const x = i * (barWidth + gap);
+                    const y = (height - barHeight) / 2;
+
+                    if (ctx.roundRect) {
+                        ctx.roundRect(x, y, barWidth, barHeight, radius);
+                    } else {
+                        ctx.rect(x, y, barWidth, barHeight);
+                    }
+                }
+                ctx.fill();
 
                 state.visualizerId = requestAnimationFrame(drawVisualizer);
             }
@@ -971,15 +1133,13 @@
             function resetMode(mode) {
                 if (mode === 'burn') {
                     state.burnComplete = false;
-                    const area = document.getElementById('burn-area');
-                    area.value = '';
+                    state.el.area.value = '';
 
                     // Reset Button Style & Text
-                    const mainBtn = document.getElementById('btn-main-action');
                     if (state.mode === 'text') {
-                        mainBtn.innerText = "ASH IT";
+                        state.el.mainBtn.innerHTML = `<span>Ash It</span> <kbd class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium lowercase pointer-events-none tracking-normal">Ctrl+Enter</kbd>`;
                     } else {
-                        mainBtn.innerText = "RECORD";
+                        state.el.mainBtn.innerText = "RECORD";
                     }
                     if (window.updateMainButtonOpacity) window.updateMainButtonOpacity();
 
@@ -989,7 +1149,7 @@
                     }
 
                     // Remove animation classes
-                    area.classList.remove('transition-all', 'duration-[1.5s]', 'blur-2xl', 'opacity-0', 'scale-90');
+                    state.el.area.classList.remove('transition-all', 'duration-[1.5s]', 'blur-2xl', 'opacity-0', 'scale-90');
 
                     // Re-apply current settings to ensure consistency
                     changeTextSize(state.textSizeIndex);
@@ -1041,23 +1201,102 @@
                 }
             }
 
-            // --- CALM IT ---
+            // --- CAlM IT ---
+            function adjustCalmTime(delta) {
+                state.calmBaseTime = Math.max(3, Math.min(10, state.calmBaseTime + delta));
+                document.getElementById('calm-time-display').innerText = state.calmBaseTime;
+                updateCalmStyles();
+                if (state.interval) {
+                    clearInterval(state.timerInterval);
+                    runCalmLoop();
+                }
+            }
+            window.adjustCalmTime = adjustCalmTime;
+
+            function updateCalmStyles() {
+                const base = state.calmBaseTime;
+                const exhale = base + 2;
+                const rest = 2; // 2s Break
+                const total = (base * 2) + exhale + rest;
+
+                // Percentages for keyframes
+                const p1 = ((base / total) * 100).toFixed(1);
+                const p2 = (((base * 2) / total) * 100).toFixed(1);
+                const p3 = (((base * 2 + exhale) / total) * 100).toFixed(1);
+
+                let calmStyle = document.getElementById('dynamic-calm-style');
+                if (!calmStyle) {
+                    calmStyle = document.createElement('style');
+                    calmStyle.id = 'dynamic-calm-style';
+                    document.head.appendChild(calmStyle);
+                }
+
+                calmStyle.innerHTML = `
+                    :root { --calm-duration: ${total}s; }
+                    @keyframes circle-breathe {
+                        0% { transform: scale(1); opacity: 0.2; }
+                        ${p1}% { transform: scale(1.6); opacity: 0.7; }
+                        ${p2}% { transform: scale(1.6); opacity: 0.7; }
+                        ${p3}% { transform: scale(1); opacity: 0.2; }
+                        100% { transform: scale(1); opacity: 0.2; }
+                    }
+                `;
+            }
+
             function runCalmLoop() {
                 const txt = document.getElementById('breathing-txt');
-                const phases = ["Inhale", "Hold", "Exhale"];
-                let p = 0;
+                const countdownEl = document.getElementById('calm-timer-countdown');
+                const base = state.calmBaseTime;
+                const exhale = base + 2;
+                const rest = 2;
 
-                if (state.interval) clearInterval(state.interval);
-                state.interval = setInterval(() => {
-                    p = (p + 1) % 3;
-                    txt.innerText = phases[p];
-                }, 4000);
+                if (state.interval) {
+                    clearTimeout(state.interval);
+                    clearInterval(state.timerInterval);
+                    state.interval = null;
+                }
 
+                function nextPhase(phase) {
+                    const phases = [
+                        { text: "Inhale", duration: base },
+                        { text: "Hold", duration: base },
+                        { text: "Exhale", duration: exhale },
+                        { text: "Rest", duration: rest }
+                    ];
+
+                    const current = phases[phase];
+                    txt.innerText = current.text;
+                    let timeLeft = current.duration;
+
+                    countdownEl.innerText = timeLeft;
+
+                    // Per-second tick
+                    if (state.timerInterval) clearInterval(state.timerInterval);
+                    state.timerInterval = setInterval(() => {
+                        timeLeft--;
+                        if (timeLeft > 0) {
+                            countdownEl.innerText = timeLeft;
+                        } else {
+                            clearInterval(state.timerInterval);
+                        }
+                    }, 1000);
+
+                    state.interval = setTimeout(() => {
+                        nextPhase((phase + 1) % 4);
+                    }, current.duration * 1000);
+                }
+
+                nextPhase(0);
+                updateCalmStyles();
                 track('Calmed');
             }
 
             function finishCalm() {
-                clearInterval(state.interval);
+                if (state.interval) {
+                    clearTimeout(state.interval);
+                    clearInterval(state.timerInterval);
+                    state.interval = null;
+                }
                 document.getElementById('calm-marketing').classList.remove('hidden');
             }
 
@@ -1132,79 +1371,32 @@
             // Close controls when clicking elsewhere
             window.addEventListener('click', (e) => {
                 if (!e.target.closest('#ctrl-font-container') && !e.target.closest('#ctrl-theme-container')) {
-                    document.getElementById('ctrl-font').classList.remove('w-32');
-                    document.getElementById('ctrl-font').classList.add('w-0');
-                    document.getElementById('ctrl-theme').classList.remove('w-32');
-                    document.getElementById('ctrl-theme').classList.remove('pl-4');
-                    document.getElementById('ctrl-theme').classList.add('w-0');
+                    toggleControl(null);
                 }
             });
 
-            // --- HYPER TEXT EFFECT ---
-            const hyperText = {
-                chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
-                animate(element, onComplete) {
-                    if (!element) return;
-                    element.style.opacity = "1";
-                    const nodes = [];
-                    this.collectTextNodes(element, nodes);
-                    let animationsFinished = 0;
-                    nodes.forEach(nodeData => {
-                        const originalText = nodeData.text;
-                        const node = nodeData.node;
-                        let iteration = 0;
-                        const interval = setInterval(() => {
-                            node.textContent = originalText
-                                .split("")
-                                .map((char, index) => {
-                                    if (index < iteration || char === " " || char === "\n") return char;
-                                    return this.chars[Math.floor(Math.random() * this.chars.length)];
-                                })
-                                .join("");
-                            if (iteration >= originalText.length) {
-                                clearInterval(interval);
-                                node.textContent = originalText;
-                                animationsFinished++;
-                                if (animationsFinished === nodes.length && onComplete) onComplete();
-                            }
-                            iteration += 2; // Increased speed (instant feel)
-                        }, 20); // Faster interval
-                    });
-                },
-                collectTextNodes(element, list) {
-                    for (let node of element.childNodes) {
-                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
-                            list.push({ node: node, text: node.textContent });
-                        } else if (node.nodeType === Node.ELEMENT_NODE) {
-                            this.collectTextNodes(node, list);
-                        }
-                    }
-                }
-            };
-
-            // Trigger on load
-            window.addEventListener('load', () => {
-                setTimeout(() => {
-                    hyperText.animate(document.getElementById('hyper-text-home'), () => {
-                        document.getElementById('shiny-tagline-home').style.opacity = "1";
-                    });
-                    hyperText.animate(document.getElementById('hyper-text-burn'), () => {
-                        document.getElementById('shiny-tagline-burn').style.opacity = "1";
-                    });
-                }, 100); // reduced delay for instant feel
-            });
 
             // --- EDITOR CONTROLS ---
             function toggleControl(id) {
+                const fontControl = document.getElementById('ctrl-font');
+                const themeControl = document.getElementById('ctrl-theme');
+
+                if (id === null) {
+                    fontControl.classList.remove('w-32');
+                    fontControl.classList.add('w-0');
+                    themeControl.classList.remove('w-32', 'pl-4');
+                    themeControl.classList.add('w-0');
+                    return;
+                }
+
                 const el = document.getElementById(id);
                 // Close others
                 if (id === 'ctrl-font') {
-                    document.getElementById('ctrl-theme').classList.remove('w-32');
-                    document.getElementById('ctrl-theme').classList.remove('pl-4');
-                    document.getElementById('ctrl-theme').classList.add('w-0');
+                    themeControl.classList.remove('w-32', 'pl-4');
+                    themeControl.classList.add('w-0');
                 } else {
-                    document.getElementById('ctrl-font').classList.remove('w-32');
-                    document.getElementById('ctrl-font').classList.add('w-0');
+                    fontControl.classList.remove('w-32');
+                    fontControl.classList.add('w-0');
                 }
 
                 // Toggle current
@@ -1219,12 +1411,10 @@
                 } else { // Theme
                     if (el.classList.contains('w-0')) {
                         el.classList.remove('w-0');
-                        el.classList.add('w-32');
-                        el.classList.add('pl-4');
+                        el.classList.add('w-32', 'pl-4');
                     } else {
                         el.classList.add('w-0');
-                        el.classList.remove('w-32');
-                        el.classList.remove('pl-4');
+                        el.classList.remove('w-32', 'pl-4');
                     }
                 }
             }
@@ -1293,6 +1483,23 @@
 
                 // --- DYNAMIC UI UPDATES ---
                 const t = themeColors[state.themeColorIndex];
+
+                // Determine if the theme's background is ACTUALLY dark right now
+                let isActualDark = t.isCardDark;
+                if (state.themeColorIndex === 0) { // Void theme
+                    isActualDark = (state.globalTheme === 'dark');
+                } else if (state.themeColorIndex === 4) { // Midnight theme
+                    isActualDark = true;
+                }
+
+                // Adaptive properties based on actual darkness
+                const activeUiBg = isActualDark ? 'bg-white/5' : 'bg-black/5';
+                const activeUiBorder = isActualDark ? 'border-white/5' : 'border-black/5';
+                const activeHover = isActualDark ? 'hover:bg-white/10' : 'hover:bg-black/10';
+                const activeTextMain = isActualDark ? 'text-white' : 'text-black';
+                const activeTextDim = isActualDark ? 'text-white/50' : 'text-black/50';
+                const activeHoverIcon = isActualDark ? 'hover:text-white/80' : 'hover:text-black/80';
+
                 const uiNodes = [
                     document.getElementById('ui-btn-back'),
                     document.getElementById('ui-btn-tune'),
@@ -1306,49 +1513,70 @@
                 ];
 
                 const textNodes = [
-                    document.getElementById('ui-text-project')
+                    document.getElementById('ui-text-project'),
+                    ...document.querySelectorAll('#view-burn h1, #view-burn h1 span, #view-burn p')
                 ];
 
                 const dimNodes = [
                     document.getElementById('ui-text-release'),
-                    document.getElementById('ui-text-footer')
+                    document.getElementById('ui-text-footer'),
+                    document.getElementById('audio-status')
+                ];
+
+                const accentNodes = [
+                    document.getElementById('audio-timer')
                 ];
 
                 // 1. Buttons & Containers
                 uiNodes.forEach(el => {
                     if (!el) return;
-                    el.classList.remove('bg-white/5', 'bg-black/5', 'border-white/5', 'border-black/5', 'text-white', 'text-black', 'hover:bg-white/10', 'hover:bg-black/10');
-                    el.classList.add(t.uiBg, t.uiBorder);
-                    // Add specific hover logic if needed, simplifed here:
-                    // Since page is always dark now, we use white hover
-                    el.classList.add('hover:bg-white/10');
+                    el.classList.remove('bg-white/5', 'bg-black/5', 'border-white/5', 'border-black/5', 'text-white', 'text-black', 'hover:bg-white/10', 'hover:bg-black/10', 'bg-text-light/5', 'border-text-light/5');
+                    el.classList.add(activeUiBg, activeUiBorder, activeHover);
                 });
 
                 // 2. Control Icons
                 iconNodes.forEach(el => {
                     if (!el) return;
                     el.classList.remove('text-white/50', 'text-black/50', 'hover:text-white/80', 'hover:text-black/80');
-                    el.classList.add(t.uiTextDim);
-                    // All pages are dark background now
-                    el.classList.add('hover:text-white/80');
+                    el.classList.add(activeTextDim, activeHoverIcon);
                 });
 
                 // 3. Main UI Text
                 textNodes.forEach(el => {
                     if (!el) return;
-                    el.classList.remove('text-white', 'text-black'); // if any
-                    // Actually these didn't have specific color classes, they inherited. 
-                    // But we might need to enforce.
-                    // For now, let's just ensure they contrast if needed or rely on inheritance from body/parent?
-                    // The parent #view-burn has the text color class removed/added.
-                    // But some elements might need overrides.
+                    el.classList.remove('text-white', 'text-black', 'text-text-light');
+                    el.classList.add(activeTextMain);
+                    // Force high contrast for headings and paragraphs
+                    if (el.tagName === 'H1' || el.tagName === 'P' || el.tagName === 'SPAN') {
+                        el.style.color = isActualDark ? 'rgba(255,255,255,0.95)' : 'rgba(0,0,0,0.95)';
+                        // Handle shiny tagline gradient override
+                        if (el.id === 'shiny-tagline-burn') {
+                            if (isActualDark) {
+                                el.style.background = `linear-gradient(-35deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.95) 40%, var(--nexus-orange) 50%, rgba(255,255,255,0.95) 60%, rgba(255,255,255,0.95) 100%)`;
+                            } else {
+                                el.style.background = `linear-gradient(-35deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.95) 40%, var(--nexus-orange) 50%, rgba(0,0,0,0.95) 60%, rgba(0,0,0,0.95) 100%)`;
+                            }
+                            el.style.backgroundSize = '400% auto';
+                            el.style.webkitBackgroundClip = 'text';
+                            el.style.backgroundClip = 'text';
+                        }
+                    }
                 });
 
                 // 4. Dim UI Text
                 dimNodes.forEach(el => {
                     if (!el) return;
-                    // These usually have opacity-40. We just need base color.
-                    // They inherit mostly. But let's force base color to match theme if needed.
+                    el.classList.remove('text-white/50', 'text-black/50', 'text-text-light/50');
+                    el.classList.add(activeTextDim);
+                });
+
+                // 5. Accent UI Text (Timer)
+                accentNodes.forEach(el => {
+                    if (!el) return;
+                    el.classList.remove('text-white', 'text-black', 'text-text-light', 'text-white/50', 'text-black/50');
+                    el.classList.add(activeTextMain);
+                    // Slight dim for timer but still high contrast
+                    el.style.opacity = '0.8';
                 });
 
                 // 5. Placeholder & Selection Dynamic Style
@@ -1359,54 +1587,25 @@
                     document.head.appendChild(styleEl);
                 }
 
-                const phColor = t.isCardDark ? 'transparent' : 'rgba(0,0,0,0.1)';
-                const phStroke = t.isCardDark ? '1px rgba(255, 255, 255, 0.3)' : '1px rgba(0, 0, 0, 0.5)';
-                const selectionBg = t.isCardDark ? 'rgba(255, 69, 0, 0.3)' : 'rgba(255, 69, 0, 0.2)';
+                // If theme index is 0 (Void), placeholder darkness follows global theme
+                const isDark = isActualDark;
+                const phColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
+                const phStroke = isDark ? '1px rgba(255, 255, 255, 0.3)' : '1px rgba(0, 0, 0, 0.5)';
+                const selectionBg = isDark ? 'rgba(255, 69, 0, 0.3)' : 'rgba(255, 69, 0, 0.2)';
                 const shinyBase = '#fff';
 
                 styleEl.textContent = `
                     #burn-area::placeholder {
                         color: ${phColor};
-                        -webkit-text-stroke: ${phStroke};
+                        opacity: 0.8;
+                        font-weight: 300;
                     }
                     ::selection {
                         background: ${selectionBg};
                     }
-                    @keyframes shimmer {
-                        0% { background-position: -200% center; }
-                        100% { background-position: 200% center; }
-                    }
-                    .text-shiny-orange {
-                        background: linear-gradient(90deg, #fff 0%, var(--nexus-orange) 50%, #fff 100%);
-                        background-size: 200% auto;
-                        -webkit-background-clip: text;
-                        background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                        animation: shimmer 3s infinite linear;
-                    }
                     .active-theme-ring {
                         box-shadow: 0 0 0 2px var(--nexus-orange);
                         transform: scale(1.2);
-                    }
-                    @keyframes shine {
-                        0% { left: -100%; }
-                        20% { left: 100%; }
-                        100% { left: 100%; }
-                    }
-                    .shiny-button-fix {
-                        position: relative;
-                        overflow: hidden;
-                    }
-                    .shiny-button-fix::after {
-                        content: "";
-                        position: absolute;
-                        top: -50%;
-                        left: -100%;
-                        width: 50%;
-                        height: 200%;
-                        background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
-                        transform: rotate(30deg);
-                        animation: shine 4s infinite;
                     }
                 `;
 
@@ -1429,9 +1628,22 @@
                 ];
                 modeToggles.forEach(btn => {
                     if (!btn) return;
-                    btn.style.color = t.isCardDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
-                    // Also update shadows based on theme if needed
+                    // Force high contrast: 85% opacity text and 25% opacity border
+                    btn.style.color = isActualDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.85)';
+                    btn.classList.remove('border-white/5', 'border-black/5', 'border-white/20', 'border-black/20');
+                    btn.style.borderColor = isActualDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)';
                 });
+
+                // Style Audio Play Control - Standard Grey
+                const playBtn = document.getElementById('btn-play-audio');
+                if (playBtn) {
+                    playBtn.style.backgroundColor = isActualDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+                    playBtn.style.borderColor = isActualDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)';
+                    const playIcon = playBtn.querySelector('i');
+                    if (playIcon) {
+                        playIcon.style.color = isActualDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.85)';
+                    }
+                }
 
                 track(`Theme Color Changed`);
             }
@@ -1450,20 +1662,60 @@
             window.changeThemeColor = changeThemeColor;
             window.toggleControl = toggleControl;
 
+            function toggleGlobalTheme() {
+                state.globalTheme = state.globalTheme === 'dark' ? 'light' : 'dark';
+                applyGlobalTheme();
+                localStorage.setItem('release-theme', state.globalTheme);
+                track(`Global Theme Toggled: ${state.globalTheme}`);
+            }
+            window.toggleGlobalTheme = toggleGlobalTheme;
+
+            function applyGlobalTheme() {
+                const body = document.body;
+                const icon = document.getElementById('theme-icon');
+                if (state.globalTheme === 'light') {
+                    body.classList.add('light-theme');
+                    if (icon) {
+                        icon.classList.remove('fa-moon');
+                        icon.classList.add('fa-sun');
+                    }
+                } else {
+                    body.classList.remove('light-theme');
+                    if (icon) {
+                        icon.classList.remove('fa-sun');
+                        icon.classList.add('fa-moon');
+                    }
+                }
+                const themeColor = state.globalTheme === 'light' ? '#f8f9fa' : '#050505';
+                const metaTheme = document.querySelector('meta[name="theme-color"]');
+                if (metaTheme) metaTheme.setAttribute('content', themeColor);
+
+                // Refresh Ash page theme if it exists
+                if (typeof changeThemeColor === 'function') changeThemeColor(state.themeColorIndex);
+            }
+            window.applyGlobalTheme = applyGlobalTheme;
+
             function setMainButtonStyle(style) {
                 const btn = document.getElementById('btn-main-action');
                 if (!btn) return;
                 if (style === 'secondary') {
-                    btn.classList.add('glass-card', 'text-white/20');
+                    btn.classList.add('glass-card', 'text-text-light/30');
                     btn.classList.remove('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]', 'opacity-50');
                 } else {
-                    btn.classList.remove('glass-card', 'text-white/20', 'opacity-50');
+                    btn.classList.remove('glass-card', 'text-text-light/30', 'opacity-50');
                     btn.classList.add('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
                 }
             }
             window.setMainButtonStyle = setMainButtonStyle;
 
             const area = document.getElementById('burn-area');
+            area.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    e.preventDefault();
+                    handleMainAction();
+                }
+            });
+
             const mainBtn = document.getElementById('btn-main-action');
 
             function updateMainButtonOpacity(isHover = false) {
@@ -1497,9 +1749,11 @@
             window.updateMainButtonOpacity = updateMainButtonOpacity;
 
             // Initialize Theme
+            applyGlobalTheme();
             changeThemeColor(state.themeColorIndex);
         });
     </script>
+    <script src="js/liquid-bg.js"></script>
 </body>
 
 </html>
