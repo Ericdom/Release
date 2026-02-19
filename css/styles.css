@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --bg-deep: #050505;
     --text-light: #ffffff;
     --text-dim: rgba(255, 255, 255, 0.4);
@@ -13,7 +13,7 @@
     --transition-speed: 0.3s;
 }
 
-body.light-theme {
+.light-theme {
     --bg-deep: #ffffff;
     --text-light: #111111;
     --text-dim: rgba(0, 0, 0, 0.6);
@@ -39,10 +39,12 @@ body {
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
+/* Base Styles Removed Flash Fix */
+
 /* View Containers */
 .view-container {
     position: fixed;
-    inset: 0;
+    inset: 12px 0 0 0;
     display: none;
     opacity: 0;
     transform: scale(0.98);
@@ -52,6 +54,13 @@ body {
     will-change: opacity, transform;
     transform: translateZ(0);
     backface-visibility: hidden;
+}
+
+#view-calm {
+    background-image: url('../index/white.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .view-container.active {
@@ -406,12 +415,12 @@ body.light-theme .text-shiny-orange {
 }
 
 .animate-fly-top {
-    animation: flyInFromTop 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    animation: flyInFromTop 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 @keyframes flyInFromTop {
     0% {
-        transform: translateY(-150vh);
+        transform: translateY(-50vh);
         opacity: 0;
     }
 
@@ -626,6 +635,36 @@ body:not(.light-theme) .white-glass-card {
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
+/* Waitlist Card Dark Mode Color Swap (Orange + White -> Orange + Yellow) */
+body:not(.light-theme) #burn-marketing .white-glass-card::after {
+    background: linear-gradient(135deg,
+            #ff4400 0%,
+            #ffff00 15%,
+            #ff4400 30%,
+            #ff4400 70%,
+            #ffff00 85%,
+            #ff4400 100%);
+    background-size: 300% 300%;
+    opacity: 0.5;
+}
+
+body:not(.light-theme) #marketing-beam {
+    background: conic-gradient(from 0deg, transparent 0%, #ffff00 10%, transparent 20%) !important;
+}
+
+body:not(.light-theme) #marketing-pill-inner {
+    background: white !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body:not(.light-theme) #waitlist-email-inline {
+    color: black !important;
+}
+
+body:not(.light-theme) #waitlist-email-inline::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
 .shiny-button-fix {
     position: relative;
     overflow: hidden;
@@ -674,4 +713,57 @@ body:not(.light-theme) .white-glass-card {
 body.light-theme .tiles-container div {
     background: #444;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2) inset;
+}
+
+/* Burning State */
+.glass-card.is-burning {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.1s ease;
+}
+
+@property --border-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotate-shine {
+    to {
+        --border-angle: 360deg;
+    }
+}
+
+.shine-border {
+    position: relative;
+    border: none !important;
+    isolation: isolate;
+}
+
+.shine-border::before {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    padding: 4px;
+    border-radius: inherit;
+    background: conic-gradient(from var(--border-angle),
+            var(--nexus-orange),
+            #FFFFFF,
+            var(--nexus-orange),
+            #FFFFFF,
+            var(--nexus-orange));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 10;
+    animation: rotate-shine 10s linear infinite;
+    filter: blur(3px);
+    opacity: 0.6;
+}
+
+.shine-border>* {
+    position: relative;
+    z-index: 20;
 }
