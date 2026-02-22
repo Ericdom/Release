@@ -369,7 +369,7 @@
                         class="white-glass-card rounded-[40px] p-4 text-center space-y-4 relative overflow-hidden border-none">
                         <!-- Card Background Image -->
                         <div class="absolute inset-0 z-0 pointer-events-none opacity-[0.28]">
-                            <img src="index/waitlist.jpg" alt="" class="w-full h-full object-cover">
+                            <img src="index/waitlist.webp" alt="" class="w-full h-full object-cover" loading="lazy">
                         </div>
                         <div class="relative z-10 space-y-4 p-4">
                             <p class="text-sm opacity-80 font-light leading-relaxed">That thought is gone. If the weight
@@ -448,11 +448,10 @@
             </div>
         </section>
 
-        <!-- VIEW: CALM -->
-        <section id="view-calm" class="view-container flex-col">
-            <div class="scroll-wrapper items-center justify-center p-6 bg-[#f0f2f5]">
+        <section id="view-calm" class="view-container">
+            <div class="scroll-wrapper items-center pt-8 px-4 md:px-8 pb-6 text-black">
                 <!-- Main Breathing Area -->
-                <div class="flex-1 w-full flex flex-col items-center justify-center min-h-[55vh] relative z-10">
+                <div class="w-full flex flex-col items-center relative z-10">
                     <div class="relative w-80 h-80 flex items-center justify-center">
                         <!-- Dynamic Physics Visualizer -->
                         <canvas id="calm-visualizer"
@@ -470,37 +469,37 @@
 
                 <!-- Presets Selector -->
                 <div class="w-full max-w-lg mb-8 relative z-20">
-                    <div class="flex overflow-x-auto gap-4 pb-4 no-scrollbar px-2 snap-x" id="calm-presets-list">
+                    <div class="flex items-center justify-center overflow-x-auto gap-6 py-4 no-scrollbar px-2 snap-x"
+                        id="calm-presets-list">
                         <!-- Presets will be injected here via JS -->
                     </div>
                 </div>
 
                 <!-- Controls Panel (White Glassmorphism) -->
                 <div
-                    class="w-full max-w-lg white-glass-card rounded-[40px] p-8 mb-12 relative z-20 flex flex-col gap-6 shadow-2xl">
+                    class="w-full max-w-lg white-glass-card rounded-[32px] p-5 mb-8 relative z-20 flex flex-col gap-4 shadow-2xl">
                     <!-- Technique Name Header -->
-                    <div class="flex flex-col items-center gap-1 border-b border-black/5 pb-4">
-                        <p class="text-[9px] uppercase tracking-[0.4em] font-black opacity-30">Active Technique</p>
-                        <h3 id="active-technique-name" class="text-xl font-light tracking-tight text-black/70">Box
+                    <div class="flex flex-col items-center gap-0 border-b border-black/5 pb-2">
+                        <h3 id="active-technique-name" class="text-lg font-light tracking-tight text-black/70">Box
                             Breathing</h3>
                     </div>
 
                     <!-- Play/Pause & Actions -->
                     <div class="flex items-center justify-between">
                         <button onclick="toggleCalmPause()" id="btn-calm-pause" title="Play/Pause"
-                            class="w-14 h-14 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition-all border border-black/5">
-                            <i class="fa-solid fa-pause text-black/60"></i>
+                            class="w-12 h-12 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center transition-all border border-black/5">
+                            <i class="fa-solid fa-pause text-black/60 text-sm"></i>
                         </button>
-                        <div class="flex-1 px-6">
+                        <div class="flex-1 px-4">
                             <button type="button" onclick="finishCalm()"
-                                class="w-full h-14 rounded-2xl bg-calm-blue/10 text-calm-blue border border-calm-blue/20 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-calm-blue/20 transition-all">
+                                class="w-full h-12 rounded-2xl bg-calm-blue/10 text-calm-blue border border-calm-blue/20 font-black uppercase tracking-[0.2em] text-[10px] hover:bg-calm-blue/20 transition-all">
                                 I feel grounded
                             </button>
                         </div>
                     </div>
 
                     <!-- Param Adjustments -->
-                    <div class="grid grid-cols-4 gap-4 text-black/60 border-t border-black/5 pt-6">
+                    <div class="grid grid-cols-4 gap-4 text-black/60 border-t border-black/5 pt-4">
                         <div class="flex flex-col items-center gap-2">
                             <p class="text-[8px] uppercase tracking-widest font-black opacity-30">Inhale</p>
                             <span id="display-inhale" class="text-lg font-light">4</span>
@@ -594,12 +593,13 @@
         uniform vec2 uCardSize;
         uniform vec2 uCardPos;
         uniform vec2 uResolution;
+        uniform float uDpr;
         varying vec2 vUv;
 
         float hash(vec2 p) {
-            p = fract(p * vec2(123.34, 456.21));
-            p += dot(p, p + 45.32);
-            return fract(p.x * p.y);
+            vec3 p3  = fract(vec3(p.xyx) * 0.1031);
+            p3 += dot(p3, p3.yzx + 33.33);
+            return fract((p3.x + p3.y) * p3.z);
         }
 
         float noise(vec2 p) {
@@ -671,7 +671,7 @@
             // Rounded Card Masking (40px radius)
             vec2 p = vec2(pixelX, pixelY) - uCardPos;
             vec2 b = uCardSize / 2.0;
-            float d = sdRoundedBox(p, b, 40.0);
+            float d = sdRoundedBox(p, b, 40.0 * uDpr);
             bool insideCard = d <= 0.0;
             
             if (insideCard) {
@@ -830,7 +830,7 @@
                 burnTexture: null,
                 burnProgress: 0,
                 burnCount: 0,
-                visualIntensity: 1.0,
+                visualIntensity: 0.0,
                 fireAnimationEnabled: localStorage.getItem('fire-animation-enabled') !== 'false',
                 isSubmittingBurn: false,
 
@@ -936,11 +936,40 @@
 
             track('App Opened');
 
+            let lastCanvasWidth = 0;
+            let lastCanvasHeight = 0;
             function setupCanvas() {
-                state.canvas.width = window.innerWidth;
-                state.canvas.height = window.innerHeight;
+                const widthChanged = Math.abs(window.innerWidth - lastCanvasWidth) > 10;
+                const heightChanged = Math.abs(window.innerHeight - lastCanvasHeight) > 100;
+
+                if (!widthChanged && !heightChanged && state.canvas.width > 0) return;
+
+                lastCanvasWidth = window.innerWidth;
+                lastCanvasHeight = window.innerHeight;
+
+                const dpr = window.devicePixelRatio || 1;
+                state.canvas.width = window.innerWidth * dpr;
+                state.canvas.height = window.innerHeight * dpr;
+
                 if (state.burnGl) {
                     state.burnGl.viewport(0, 0, state.canvas.width, state.canvas.height);
+
+                    // Force render immediately to prevent flicker
+                    if (state.view === 'burn' && !state.isSubmittingBurn && state.burnProgram) {
+                        const gl = state.burnGl;
+                        gl.useProgram(state.burnProgram);
+                        gl.clearColor(0, 0, 0, 0);
+                        gl.clear(gl.COLOR_BUFFER_BIT);
+                        if (state.uBurnTime) {
+                            gl.uniform1f(state.uBurnTime, performance.now() / 1000);
+                            gl.uniform1f(state.uBurnProgress, 0);
+                            gl.uniform1f(state.uBurnIntensity, state.visualIntensity);
+                            gl.uniform2f(state.uBurnResolution, state.canvas.width, state.canvas.height);
+                            gl.uniform1f(state.uBurnDpr, window.devicePixelRatio || 1);
+                            gl.uniform2f(state.uBurnCardPos, -1000, -1000);
+                        }
+                        gl.drawArrays(gl.TRIANGLES, 0, 6);
+                    }
                 }
             }
 
@@ -985,6 +1014,7 @@
                 state.uBurnCardPos = gl.getUniformLocation(program, 'uCardPos');
                 state.uBurnResolution = gl.getUniformLocation(program, 'uResolution');
                 state.uBurnIntensity = gl.getUniformLocation(program, 'uIntensity');
+                state.uBurnDpr = gl.getUniformLocation(program, 'uDpr');
             }
             initBurnWebGL();
             renderAtmos();
@@ -1013,6 +1043,7 @@
                         gl.uniform1f(state.uBurnIntensity, state.visualIntensity);
 
                         gl.uniform2f(state.uBurnResolution, state.canvas.width, state.canvas.height);
+                        gl.uniform1f(state.uBurnDpr, window.devicePixelRatio || 1);
                         // Hide card uniforms by setting large negative pos
                         gl.uniform2f(state.uBurnCardPos, -1000, -1000);
                         gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -1146,10 +1177,12 @@
                     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
                     // Get card position
+                    const dpr = window.devicePixelRatio || 1;
                     const rect = state.el.editorCard.getBoundingClientRect();
-                    gl.uniform2f(state.uBurnCardSize, rect.width, rect.height);
-                    gl.uniform2f(state.uBurnCardPos, rect.left + rect.width / 2, rect.top + rect.height / 2);
+                    gl.uniform2f(state.uBurnCardSize, rect.width * dpr, rect.height * dpr);
+                    gl.uniform2f(state.uBurnCardPos, (rect.left + rect.width / 2) * dpr, (rect.top + rect.height / 2) * dpr);
                     gl.uniform2f(state.uBurnResolution, state.canvas.width, state.canvas.height);
+                    gl.uniform1f(state.uBurnDpr, window.devicePixelRatio || 1);
                     gl.uniform1f(state.uBurnSeed, Math.random() * 100.0);
 
                     // Hide original card
@@ -1198,9 +1231,9 @@
                 // Lerp visual intensity here too
                 // Limit to Dark Mode + Animation Enabled (Bottom ONLY in Dark Mode)
                 const isFireActive = state.globalTheme === 'dark' && state.fireAnimationEnabled;
-                const targetIntensity = isFireActive ? Math.pow(0.9, state.burnCount) : 0.0;
                 state.visualIntensity += (targetIntensity - state.visualIntensity) * 0.05;
                 gl.uniform1f(state.uBurnIntensity, state.visualIntensity);
+                gl.uniform1f(state.uBurnDpr, window.devicePixelRatio || 1);
 
                 gl.drawArrays(gl.TRIANGLES, 0, 6);
 
@@ -1622,9 +1655,10 @@
                 const list = document.getElementById('calm-presets-list');
                 if (!list) return;
                 list.innerHTML = state.calmTechniques.map((t, idx) => `
-                    <div onclick="setTechnique(${idx})" class="preset-pill snap-start flex-shrink-0 flex items-center gap-3 px-5 py-3 rounded-2xl cursor-pointer transition-all ${state.activeTechniqueIndex === idx ? 'bg-black text-white' : 'white-glass-card text-black/40 hover:bg-black/5'}">
+                    <div onclick="setTechnique(${idx})" 
+                        title="${t.name}"
+                        class="preset-pill snap-start flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all backdrop-blur-xl ${state.activeTechniqueIndex === idx ? 'bg-black/20 text-black scale-110 shadow-lg' : 'bg-white/10 text-black/30 hover:bg-white/20 hover:scale-105'}">
                         <i class="fa-solid ${t.icon} text-sm"></i>
-                        <span class="text-[10px] font-black uppercase tracking-widest leading-none">${t.name}</span>
                     </div>
                 `).join('');
 
@@ -1651,8 +1685,13 @@
                 initCalmPresets(); // Re-render list for active state
                 updateCalmStyles();
 
-                if (state.interval && !state.calmPaused) {
-                    runCalmLoop();
+                // Always force reset to Inhale phase when switching techniques
+                runCalmLoop(0, null);
+
+                // If switch happens while paused, ensure internal state is primed for Inhale
+                if (state.calmPaused) {
+                    state.currentCalmPhase = 0;
+                    state.currentPhaseStartTime = performance.now();
                 }
 
                 if (navigator.vibrate) navigator.vibrate(10);
@@ -1692,6 +1731,11 @@
                     return;
                 }
 
+                if (state.calmPaused) {
+                    requestAnimationFrame(animateCalmVis);
+                    return;
+                }
+
                 const ctx = state.calmVisCtx;
                 if (!ctx) return;
 
@@ -1700,16 +1744,46 @@
                 ctx.clearRect(0, 0, w, h);
 
                 const tech = state.calmTechniques[state.activeTechniqueIndex];
-                const phase = state.currentCalmPhase || 0;
-                const timeLeft = state.currentCalmTimeLeft || 0;
-                const duration = [state.calmBaseTime, state.calmHoldTime, state.calmExhaleTime, state.calmRestTime][phase] || 1;
-                const progress = 1 - (timeLeft / duration);
+
+                // --- Phase Management ---
+                const phases = [
+                    { text: "Inhale", duration: state.calmBaseTime },
+                    { text: "Hold", duration: state.calmHoldTime },
+                    { text: "Exhale", duration: state.calmExhaleTime },
+                    { text: "Rest", duration: state.calmRestTime }
+                ].filter(p => p.duration > 0 || p.text === "Inhale" || p.text === "Exhale");
+
+                let now = performance.now();
+                let elapsed = now - state.currentPhaseStartTime;
+
+                // Handle Phase Transition
+                if (elapsed >= state.currentPhaseDuration) {
+                    const overflow = elapsed - state.currentPhaseDuration;
+                    state.currentCalmPhase = (state.currentCalmPhase + 1) % phases.length;
+                    const nextPhaseData = phases[state.currentCalmPhase];
+
+                    state.currentPhaseDuration = nextPhaseData.duration * 1000;
+                    state.currentPhaseStartTime = now - overflow;
+                    elapsed = now - state.currentPhaseStartTime;
+
+                    // Update UI Text immediately on transition
+                    document.getElementById('breathing-txt').innerText = nextPhaseData.text;
+                }
+
+                const progress = Math.min(1, elapsed / state.currentPhaseDuration);
+
+                // Update Countdown UI based on high-precision time
+                const timeLeftSec = Math.ceil((state.currentPhaseDuration - elapsed) / 1000);
+                const countdownEl = document.getElementById('calm-timer-countdown');
+                if (countdownEl && countdownEl.innerText != timeLeftSec && timeLeftSec >= 0) {
+                    countdownEl.innerText = timeLeftSec;
+                }
 
                 // Physics/Dynamic Visualization based on technique
                 if (tech.name === 'Box') {
-                    renderBoxVis(ctx, w, h, phase, progress);
+                    renderBoxVis(ctx, w, h, state.currentCalmPhase, progress);
                 } else {
-                    renderFlowVis(ctx, w, h, phase, progress);
+                    renderFlowVis(ctx, w, h, state.currentCalmPhase, progress);
                 }
 
                 requestAnimationFrame(animateCalmVis);
@@ -1786,7 +1860,7 @@
                 // Now disabled/hidden in the new UI, but keeping logic for internal use if needed
                 state.calmBaseTime = Math.max(3, Math.min(10, state.calmBaseTime + delta));
                 updateCalmStyles();
-                if (state.interval && !state.calmPaused) {
+                if (!state.calmPaused) {
                     runCalmLoop();
                 }
             }
@@ -1823,8 +1897,7 @@
                 state.calmRestTime = Math.max(1, Math.min(10, state.calmRestTime + delta));
                 document.getElementById('calm-rest-display').innerText = state.calmRestTime;
                 updateCalmStyles();
-                if (state.interval && !state.calmPaused) {
-                    clearInterval(state.timerInterval);
+                if (!state.calmPaused) {
                     runCalmLoop();
                 }
             }
@@ -1838,14 +1911,7 @@
                 if (state.calmPaused) {
                     icon.classList.remove('fa-pause');
                     icon.classList.add('fa-play');
-                    if (state.interval) {
-                        clearTimeout(state.interval);
-                        state.interval = null;
-                    }
-                    if (state.timerInterval) {
-                        clearInterval(state.timerInterval);
-                        state.timerInterval = null;
-                    }
+                    // Phase-perfect pause handled by the animation loop
                 } else {
                     icon.classList.remove('fa-play');
                     icon.classList.add('fa-pause');
@@ -1858,58 +1924,28 @@
             function runCalmLoop(startPhase = 0, startTimeLeft = null) {
                 const txt = document.getElementById('breathing-txt');
                 const countdownEl = document.getElementById('calm-timer-countdown');
-                const base = state.calmBaseTime;
-                const exhale = base + 2;
-                const rest = state.calmRestTime;
 
-                if (state.interval) {
-                    clearTimeout(state.interval);
-                    state.interval = null;
-                }
-                if (state.timerInterval) {
-                    clearInterval(state.timerInterval);
-                    state.timerInterval = null;
-                }
+                const phases = [
+                    { text: "Inhale", duration: state.calmBaseTime },
+                    { text: "Hold", duration: state.calmHoldTime },
+                    { text: "Exhale", duration: state.calmExhaleTime },
+                    { text: "Rest", duration: state.calmRestTime }
+                ].filter(p => p.duration > 0 || p.text === "Inhale" || p.text === "Exhale");
 
-                function nextPhase(phase, timeLeftOverride = null) {
-                    if (state.calmPaused) return;
+                state.currentCalmPhase = startPhase % phases.length;
+                const current = phases[state.currentCalmPhase];
 
-                    const phases = [
-                        { text: "Inhale", duration: state.calmBaseTime },
-                        { text: "Hold", duration: state.calmHoldTime },
-                        { text: "Exhale", duration: state.calmExhaleTime },
-                        { text: "Rest", duration: state.calmRestTime }
-                    ].filter(p => p.duration > 0 || p.text === "Inhale" || p.text === "Exhale"); // Fallback check
+                txt.innerText = current.text;
 
-                    state.currentCalmPhase = phase % phases.length;
-                    const current = phases[state.currentCalmPhase];
-                    txt.innerText = current.text;
-                    let timeLeft = timeLeftOverride !== null ? timeLeftOverride : current.duration;
-                    state.currentCalmTimeLeft = timeLeft;
-
-                    countdownEl.innerText = timeLeft;
-
-                    if (state.timerInterval) clearInterval(state.timerInterval);
-                    state.timerInterval = setInterval(() => {
-                        if (state.calmPaused) {
-                            clearInterval(state.timerInterval);
-                            return;
-                        }
-                        timeLeft--;
-                        state.currentCalmTimeLeft = timeLeft;
-                        if (timeLeft > 0) {
-                            countdownEl.innerText = timeLeft;
-                        } else {
-                            clearInterval(state.timerInterval);
-                        }
-                    }, 1000);
-
-                    state.interval = setTimeout(() => {
-                        nextPhase((phase + 1) % phases.length);
-                    }, timeLeft * 1000);
+                const timeLeft = startTimeLeft !== null ? startTimeLeft : current.duration;
+                state.currentPhaseDuration = current.duration * 1000;
+                state.currentPhaseStartTime = performance.now();
+                if (startTimeLeft !== null) {
+                    state.currentPhaseStartTime -= (current.duration - startTimeLeft) * 1000;
                 }
 
-                nextPhase(startPhase, startTimeLeft);
+                countdownEl.innerText = Math.ceil(timeLeft);
+
                 updateCalmStyles();
                 track('Calmed');
             }
@@ -2407,6 +2443,10 @@
                         emailInput.classList.add('placeholder:text-black/40');
                     }
                 }
+
+                // Ash It Flash Fix: Reset intensity instantly to avoid flash/fade-in transitions
+                const isFireActive = state.globalTheme === 'dark' && state.fireAnimationEnabled;
+                state.visualIntensity = isFireActive ? Math.pow(0.9, state.burnCount) : 0.0;
 
                 if (state.view === 'burn' && !state.isSubmittingBurn) {
                     renderAtmos();

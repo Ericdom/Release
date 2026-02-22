@@ -57,9 +57,10 @@ body {
 }
 
 #view-calm {
-    background-image: url('../index/white.jpeg');
+    background-image: url('../index/white.webp');
     background-size: cover;
-    background-position: center;
+    background-position: center -15vh;
+    /* Lifted up */
     background-repeat: no-repeat;
 }
 

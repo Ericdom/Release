@@ -14,11 +14,11 @@ class LiquidBackground {
         }
 
         this.images = this.shuffleArray([
-            'index/blue_butterfly.jpg',
-            'index/1 (1).png',
-            'index/1 (2).png',
-            'index/1 (3).png',
-            'index/1 (4).png'
+            'index/blue_butterfly.webp',
+            'index/1 (1).webp',
+            'index/1 (2).webp',
+            'index/1 (3).webp',
+            'index/1 (4).webp'
         ]);
 
         this.currentIndex = 0;
@@ -31,7 +31,7 @@ class LiquidBackground {
     }
 
     async init() {
-        // Shaders
+        // Shaders ... (omitted for brevity in replacement, but I'll keep them)
         const vs = `
             attribute vec2 position;
             varying vec2 vUv;
@@ -50,15 +50,8 @@ class LiquidBackground {
             uniform float dispFactor;
             uniform float effectFactor;
 
-            // Simple noise-like displacement function
-            float noise(vec2 p) {
-                return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
-            }
-
             void main() {
                 vec2 uv = vUv;
-
-                // Displacement effect logic
                 vec2 distortedPosition1 = vec2(uv.x + dispFactor * (sin(uv.y * 10.0 + effectFactor) * 0.1), uv.y);
                 vec2 distortedPosition2 = vec2(uv.x - (1.0 - dispFactor) * (sin(uv.y * 10.0 + effectFactor) * 0.1), uv.y);
 
@@ -83,16 +76,25 @@ class LiquidBackground {
         this.gl.enableVertexAttribArray(positionLoc);
         this.gl.vertexAttribPointer(positionLoc, 2, this.gl.FLOAT, false, 0, 0);
 
-        // Load all images as textures
-        this.textures = await Promise.all(this.images.map(src => this.loadTexture(src)));
+        // PROGRESSIVE LOADING: Load first image immediately
+        this.textures[0] = await this.loadTexture(this.images[0]);
 
         this.resize();
         window.addEventListener('resize', () => this.resize());
 
         this.render();
 
+        // Load remaining images in background
+        this.loadRemainingTextures();
+
         // Start automatic rotation
         setInterval(() => this.next(), 10000); // 10s intervals
+    }
+
+    async loadRemainingTextures() {
+        for (let i = 1; i < this.images.length; i++) {
+            this.textures[i] = await this.loadTexture(this.images[i]);
+        }
     }
 
     async loadTexture(src) {
