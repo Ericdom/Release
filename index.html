@@ -81,36 +81,51 @@
         </div>
     </div>
 
-    <!-- Top Bar -->
+    <!-- Top Bar (Floating Pill) -->
     <header id="nav-bar"
-        class="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-[150] safe-top pointer-events-none">
-        <div class="flex items-center gap-2 pointer-events-auto cursor-pointer" onclick="navigate('home')">
-            <div class="w-1 h-1 bg-nexus-orange rounded-full"></div>
-            <h1 class="text-xs font-black uppercase tracking-[0.4em] opacity-80">Release</h1>
-        </div>
-        <div class="flex items-center gap-1 pointer-events-auto">
-            <button type="button" onclick="toggleGlobalTheme()" aria-label="Toggle Theme" title="Toggle Theme"
-                id="ui-btn-theme"
-                class="w-8 h-8 flex items-center justify-center transition-all cursor-pointer relative z-[200] opacity-50 hover:opacity-100 shadow-sm">
-                <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
-            </button>
-            <button type="button" onclick="toggleFireAnimation()" aria-label="Toggle Fire Animation"
-                title="Toggle Fire Animation" id="ui-btn-fire"
-                class="w-8 h-8 flex items-center justify-center transition-all cursor-pointer relative z-[200] opacity-50 hover:opacity-100 shadow-sm">
-                <i id="fire-toggle-icon" class="fa-solid fa-fire-flame-curved text-xs"></i>
-            </button>
-            <button type="button" onclick="toggleWaitlist(true)"
-                class="waitlist-radial text-white px-2 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all cursor-pointer relative z-[200] shadow-[0_2px_10px_rgba(255,68,0,0.2)] hover:shadow-[0_4px_15px_rgba(255,68,0,0.4)] overflow-hidden shiny-button-fix w-24">
-                <div class="marquee-container">
-                    <div class="marquee-content">
-                        <span>Waitlist • Waitlist • Waitlist • Waitlist • </span>
-                    </div>
+        class="fixed top-4 left-1/2 -translate-x-1/2 z-[150] safe-top pointer-events-none transition-opacity duration-300 w-full px-4 md:px-8">
+
+        <div
+            class="glass-card rounded-full px-4 sm:px-6 py-1.5 sm:py-2 flex items-center justify-between gap-4 sm:gap-6 shadow-card-elevated pointer-events-auto border border-white/10 w-full max-w-5xl mx-auto">
+
+            <!-- Logo area -->
+            <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="navigate('home')">
+                <div class="w-1.5 h-1.5 bg-nexus-orange rounded-full animate-pulse shadow-[0_0_8px_rgba(255,68,0,0.6)]">
                 </div>
-            </button>
-            <button type="button" onclick="shareLink()" aria-label="Share" title="Share" id="ui-btn-share"
-                class="w-8 h-8 flex items-center justify-center glass-card border border-white/10 rounded-full hover:bg-white/10 transition-all cursor-pointer relative z-[200] shadow-[0_2px_8px_rgba(0,0,0,0.15)]">
-                <i class="fa-solid fa-arrow-up-from-bracket text-xs text-light"></i>
-            </button>
+                <h1 class="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] opacity-90 hidden sm:block">
+                    Release</h1>
+            </div>
+
+            <!-- Controls (Theme, Fire, Share) & CTA -->
+            <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+                <button type="button" onclick="toggleGlobalTheme()" aria-label="Toggle Theme" title="Toggle Theme"
+                    id="ui-btn-theme"
+                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent">
+                    <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+                </button>
+                <button type="button" onclick="toggleFireAnimation()" aria-label="Toggle Fire Animation"
+                    title="Toggle Fire Animation" id="ui-btn-fire"
+                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent">
+                    <i id="fire-toggle-icon" class="fa-solid fa-fire-flame-curved text-xs"></i>
+                </button>
+                <button type="button" onclick="shareLink()" aria-label="Share" title="Share" id="ui-btn-share"
+                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden sm:flex">
+                    <i class="fa-solid fa-arrow-up-from-bracket text-xs text-light"></i>
+                </button>
+
+                <!-- Separator -->
+                <div class="w-[1px] h-4 bg-white/20 mx-1 sm:mx-2 hidden sm:block"></div>
+
+                <!-- Action Button -->
+                <button type="button" onclick="toggleWaitlist(true)"
+                    class="waitlist-radial text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-[0_2px_10px_rgba(255,68,0,0.3)] hover:shadow-[0_4px_15px_rgba(255,68,0,0.5)] overflow-hidden shiny-button-fix w-20 sm:w-24 shrink-0 border border-white/20 whitespace-nowrap">
+                    <div class="marquee-container">
+                        <div class="marquee-content">
+                            <span>Waitlist • Waitlist • Waitlist • Waitlist • </span>
+                        </div>
+                    </div>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -124,7 +139,7 @@
                 <canvas id="bg-canvas"></canvas>
             </div>
 
-            <div class="scroll-wrapper items-center justify-center px-6 relative z-10">
+            <div class="scroll-wrapper items-center justify-center px-6 pt-20 sm:pt-24 relative z-10">
                 <div class="w-full max-w-2xl text-left my-auto py-12 px-2">
                     <p class="text-[10px] uppercase tracking-[0.5em] text-nexus-orange font-black mb-4">The Void</p>
                     <h1 class="text-[clamp(1.5rem,6vw,3.5rem)] font-thin tracking-tight leading-tight mb-6">Vent <span
@@ -202,7 +217,7 @@
         <!-- VIEW: ASH -->
         <section id="view-burn" class="view-container">
 
-            <div class="scroll-wrapper items-center pt-8 px-4 md:px-8 pb-6">
+            <div class="scroll-wrapper items-center pt-24 px-4 md:px-8 pb-6">
 
                 <div class="w-full max-w-5xl flex items-start gap-4 mb-8 relative z-10 px-0 mx-auto">
                     <button onclick="navigate('home')" aria-label="Back"
@@ -443,7 +458,7 @@
         </section>
 
         <section id="view-calm" class="view-container">
-            <div class="scroll-wrapper items-center pt-8 px-4 md:px-8 pb-6 text-black">
+            <div class="scroll-wrapper items-center pt-24 px-4 md:px-8 pb-6 text-black">
                 <!-- Main Breathing Area -->
                 <div class="w-full flex flex-col items-center relative z-10">
                     <div class="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
