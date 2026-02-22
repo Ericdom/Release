@@ -246,77 +246,84 @@
                         class="relative w-full max-w-5xl h-[45vh] md:h-[55vh] glass-card rounded-[40px] flex items-center justify-center p-6 transition-all duration-500 group/editor shadow-card-elevated overflow-hidden border-white/5 z-50">
 
                         <!-- Editor Controls (Relocated to Top-Right of Card) -->
-                        <div class="absolute top-4 right-4 z-[70] flex items-center gap-2 pointer-events-auto">
-                            <!-- Font Family Control -->
-                            <div id="ctrl-family-container" onclick="toggleControl('ctrl-family')"
-                                onmouseleave="toggleControl(null)"
-                                class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                <i id="ui-icon-family"
-                                    class="fa-solid fa-pen-nib text-xs text-white/50 hover:text-white/80 transition-colors"></i>
-                                <div id="ctrl-family"
-                                    class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
-                                    <button onclick="changeFontFamily(0); event.stopPropagation()"
-                                        class="text-[10px] font-sans font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Sans</button>
-                                    <button onclick="changeFontFamily(1); event.stopPropagation()"
-                                        class="text-[10px] font-serif font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Serif</button>
-                                    <button onclick="changeFontFamily(2); event.stopPropagation()"
-                                        class="text-[10px] font-mono font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Mono</button>
-                                </div>
-                            </div>
+                        <div class="absolute top-4 right-4 z-[70] flex flex-col items-end gap-2 pointer-events-auto">
+                            <!-- Mobile 3-Dots Menu Toggle -->
+                            <button id="btn-mobile-menu" onclick="toggleEditorMenu()"
+                                class="md:hidden flex items-center justify-center bg-white/5 rounded-full w-10 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                <i class="fa-solid fa-ellipsis-vertical text-xs text-white/50"></i>
+                            </button>
 
-                            <!-- Font Size Control -->
-                            <div id="ctrl-font-container" onclick="toggleControl('ctrl-font')"
-                                onmouseleave="toggleControl(null)"
-                                class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                <i id="ui-icon-font"
-                                    class="fa-solid fa-font text-xs text-white/50 hover:text-white/80 transition-colors"></i>
-                                <div id="ctrl-font"
-                                    class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center">
-                                    <input type="range" min="0" max="3" value="1" step="1"
-                                        oninput="changeTextSize(this.value)" onclick="event.stopPropagation()"
-                                        aria-label="Text Size"
-                                        class="w-24 h-1 ml-4 bg-white/10 rounded-lg appearance-none cursor-pointer accent-nexus-orange">
+                            <div id="editor-controls-group"
+                                class="hidden md:flex flex-col md:flex-row items-end md:items-center gap-2 transition-opacity duration-300 opacity-0 md:opacity-100">
+                                <!-- Font Family Control -->
+                                <div id="ctrl-family-container" onclick="toggleControl('ctrl-family')"
+                                    onmouseleave="toggleControl(null)"
+                                    class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                    <i id="ui-icon-family"
+                                        class="fa-solid fa-pen-nib text-xs text-white/50 hover:text-white/80 transition-colors"></i>
+                                    <div id="ctrl-family"
+                                        class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
+                                        <button onclick="changeFontFamily(0); event.stopPropagation()"
+                                            class="text-[10px] font-sans font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Sans</button>
+                                        <button onclick="changeFontFamily(1); event.stopPropagation()"
+                                            class="text-[10px] font-serif font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Serif</button>
+                                        <button onclick="changeFontFamily(2); event.stopPropagation()"
+                                            class="text-[10px] font-mono font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Mono</button>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Theme Control -->
-                            <div id="ctrl-theme-container" onclick="toggleControl('ctrl-theme')"
-                                onmouseleave="toggleControl(null)"
-                                class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                <i id="ui-icon-theme"
-                                    class="fa-solid fa-palette text-xs text-white/50 hover:text-white/80 transition-colors"></i>
-                                <div id="ctrl-theme"
-                                    class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
-                                    <!-- Black (Default) -->
-                                    <button onclick="changeThemeColor(0); event.stopPropagation()"
-                                        class="w-4 h-4 rounded-full bg-[var(--bg-deep)] border border-white/20 hover:scale-125 transition-transform"
-                                        title="Void"></button>
-                                    <!-- Ivory -->
-                                    <button onclick="changeThemeColor(1); event.stopPropagation()"
-                                        class="w-4 h-4 rounded-full bg-[#fff3e0] border border-white/10 hover:scale-125 transition-transform"
-                                        title="Ivory"></button>
-                                    <!-- Mist -->
-                                    <button onclick="changeThemeColor(2); event.stopPropagation()"
-                                        class="w-4 h-4 rounded-full bg-[#e5f3f8] border border-white/10 hover:scale-125 transition-transform"
-                                        title="Mist"></button>
-                                    <!-- Pewter -->
-                                    <button onclick="changeThemeColor(3); event.stopPropagation()"
-                                        class="w-4 h-4 rounded-full bg-[#dadecf] border border-white/10 hover:scale-125 transition-transform"
-                                        title="Pewter"></button>
-                                    <!-- Midnight -->
-                                    <button onclick="changeThemeColor(4); event.stopPropagation()"
-                                        class="w-4 h-4 rounded-full bg-[#191738] border border-white/10 hover:scale-125 transition-transform"
-                                        title="Midnight"></button>
+                                <!-- Font Size Control -->
+                                <div id="ctrl-font-container" onclick="toggleControl('ctrl-font')"
+                                    onmouseleave="toggleControl(null)"
+                                    class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                    <i id="ui-icon-font"
+                                        class="fa-solid fa-font text-xs text-white/50 hover:text-white/80 transition-colors"></i>
+                                    <div id="ctrl-font"
+                                        class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center">
+                                        <input type="range" min="0" max="3" value="1" step="1"
+                                            oninput="changeTextSize(this.value)" onclick="event.stopPropagation()"
+                                            aria-label="Text Size"
+                                            class="w-24 h-1 ml-4 bg-white/10 rounded-lg appearance-none cursor-pointer accent-nexus-orange">
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- Mobile Haptic Toggle (Icon Only) -->
-                            <div id="ctrl-haptic-mobile" onclick="toggleHaptics()"
-                                class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                <i class="fa-solid fa-vibration text-xs text-white/50"></i>
+
+                                <!-- Theme Control -->
+                                <div id="ctrl-theme-container" onclick="toggleControl('ctrl-theme')"
+                                    onmouseleave="toggleControl(null)"
+                                    class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                    <i id="ui-icon-theme"
+                                        class="fa-solid fa-palette text-xs text-white/50 hover:text-white/80 transition-colors"></i>
+                                    <div id="ctrl-theme"
+                                        class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
+                                        <!-- Black (Default) -->
+                                        <button onclick="changeThemeColor(0); event.stopPropagation()"
+                                            class="w-4 h-4 rounded-full bg-[var(--bg-deep)] border border-white/20 hover:scale-125 transition-transform"
+                                            title="Void"></button>
+                                        <!-- Ivory -->
+                                        <button onclick="changeThemeColor(1); event.stopPropagation()"
+                                            class="w-4 h-4 rounded-full bg-[#fff3e0] border border-white/10 hover:scale-125 transition-transform"
+                                            title="Ivory"></button>
+                                        <!-- Mist -->
+                                        <button onclick="changeThemeColor(2); event.stopPropagation()"
+                                            class="w-4 h-4 rounded-full bg-[#e5f3f8] border border-white/10 hover:scale-125 transition-transform"
+                                            title="Mist"></button>
+                                        <!-- Pewter -->
+                                        <button onclick="changeThemeColor(3); event.stopPropagation()"
+                                            class="w-4 h-4 rounded-full bg-[#dadecf] border border-white/10 hover:scale-125 transition-transform"
+                                            title="Pewter"></button>
+                                        <!-- Midnight -->
+                                        <button onclick="changeThemeColor(4); event.stopPropagation()"
+                                            class="w-4 h-4 rounded-full bg-[#191738] border border-white/10 hover:scale-125 transition-transform"
+                                            title="Midnight"></button>
+                                    </div>
+                                </div>
+                                <!-- Mobile Haptic Toggle (Icon Only) -->
+                                <div id="ctrl-haptic-mobile" onclick="toggleHaptics()"
+                                    class="editor-control flex md:hidden items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                    <i class="fa-solid fa-vibration text-xs text-white/50"></i>
+                                </div>
                             </div>
                         </div>
-
-
 
                         <textarea id="burn-area" autofocus
                             class="relative z-10 w-full h-full text-left text-xl md:text-3xl font-light bg-transparent border-none outline-none resize-none placeholder-text-light/10 leading-relaxed transition-opacity duration-300 pt-16 sm:pt-4"
@@ -2080,6 +2087,21 @@
 
             window.submitInlineWaitlist = submitInlineWaitlist;
 
+            function toggleEditorMenu() {
+                const group = document.getElementById('editor-controls-group');
+                if (group.classList.contains('hidden')) {
+                    group.classList.remove('hidden');
+                    // Small delay to allow CSS transition
+                    setTimeout(() => group.classList.remove('opacity-0'), 10);
+                } else {
+                    group.classList.add('opacity-0');
+                    setTimeout(() => {
+                        if (group.classList.contains('opacity-0')) group.classList.add('hidden');
+                    }, 300);
+                }
+            }
+            window.toggleEditorMenu = toggleEditorMenu;
+
             // --- PWA ---
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
@@ -2111,8 +2133,15 @@
 
             // Close controls when clicking elsewhere
             window.addEventListener('click', (e) => {
-                if (!e.target.closest('#ctrl-font-container') && !e.target.closest('#ctrl-theme-container') && !e.target.closest('#ctrl-family-container')) {
+                if (!e.target.closest('#ctrl-font-container') && !e.target.closest('#ctrl-theme-container') && !e.target.closest('#ctrl-family-container') && !e.target.closest('#btn-mobile-menu') && !e.target.closest('#editor-controls-group')) {
                     toggleControl(null);
+                    const group = document.getElementById('editor-controls-group');
+                    if (group && !group.classList.contains('hidden')) {
+                        group.classList.add('opacity-0');
+                        setTimeout(() => {
+                            if (group.classList.contains('opacity-0')) group.classList.add('hidden');
+                        }, 300);
+                    }
                 }
             });
 
