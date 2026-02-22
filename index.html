@@ -70,7 +70,6 @@
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@100;300;400&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body class="h-screen w-screen selection:bg-orange-500/30">
@@ -120,11 +119,6 @@
 
         <!-- VIEW: HOME -->
         <section id="view-home" class="view-container active">
-            <div class="aurora-wrapper">
-                <div class="aurora-container"></div>
-                <div class="aurora-noise"></div>
-                <div class="aurora-overlay"></div>
-            </div>
             <!-- Hero Background Media (Atmospheric Image) -->
             <div class="hero-bg-media">
                 <canvas id="bg-canvas"></canvas>
@@ -310,7 +304,7 @@
 
 
 
-                        <textarea id="burn-area" oninput="updateButtonState()"
+                        <textarea id="burn-area" autofocus
                             class="relative z-10 w-full h-full text-left text-xl md:text-3xl font-light bg-transparent border-none outline-none resize-none placeholder-text-light/10 leading-relaxed transition-opacity duration-300"
                             placeholder="Ash whatever's weighing you down"></textarea>
 
@@ -385,14 +379,14 @@
 
                                     <!-- Inner Content -->
                                     <div id="marketing-pill-inner"
-                                        class="bg-white rounded-full p-1.5 flex items-center relative z-10 border border-white/5">
+                                        class="bg-white rounded-full p-1 sm:p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center relative z-10 border border-white/5 gap-1 sm:gap-0">
                                         <input type="email" id="waitlist-email-inline" placeholder="Enter your email"
-                                            class="flex-1 bg-transparent px-8 py-3.5 text-sm font-light tracking-wide focus:outline-none text-black placeholder:text-black/40 border-none outline-none">
+                                            class="flex-1 bg-transparent px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 text-sm font-light tracking-wide focus:outline-none text-black placeholder:text-black/40 border-none outline-none text-center sm:text-left">
                                         <button type="button" onclick="submitInlineWaitlist()"
-                                            class="group/waitlist-btn bg-black text-white px-8 py-3.5 rounded-full text-base transition-all hover:bg-zinc-900 active:scale-[0.97] flex items-center gap-0 hover:gap-3">
+                                            class="group/waitlist-btn bg-black text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-sm sm:text-base transition-all hover:bg-zinc-900 active:scale-[0.97] flex items-center justify-center gap-0 hover:gap-2 sm:hover:gap-3">
                                             <span class="whitespace-nowrap">Join Waitlist</span>
                                             <i
-                                                class="fa-solid fa-arrow-right opacity-0 w-0 group-hover/waitlist-btn:opacity-100 group-hover/waitlist-btn:w-auto transition-all duration-300 text-xs"></i>
+                                                class="fa-solid fa-arrow-right opacity-0 w-0 group-hover/waitlist-btn:opacity-100 group-hover/waitlist-btn:w-auto transition-all duration-300 text-xs hidden sm:inline-block"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -452,7 +446,7 @@
             <div class="scroll-wrapper items-center pt-8 px-4 md:px-8 pb-6 text-black">
                 <!-- Main Breathing Area -->
                 <div class="w-full flex flex-col items-center relative z-10">
-                    <div class="relative w-80 h-80 flex items-center justify-center">
+                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 flex items-center justify-center">
                         <!-- Dynamic Physics Visualizer -->
                         <canvas id="calm-visualizer"
                             class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
@@ -499,22 +493,30 @@
                     </div>
 
                     <!-- Param Adjustments -->
-                    <div class="grid grid-cols-4 gap-4 text-black/60 border-t border-black/5 pt-4">
-                        <div class="flex flex-col items-center gap-2">
-                            <p class="text-[8px] uppercase tracking-widest font-black opacity-30">Inhale</p>
-                            <span id="display-inhale" class="text-lg font-light">4</span>
+                    <div class="grid grid-cols-4 gap-2 sm:gap-4 text-black/60 border-t border-black/5 pt-4">
+                        <div class="flex flex-col items-center gap-1 sm:gap-2">
+                            <p
+                                class="text-[7px] sm:text-[8px] uppercase tracking-wider sm:tracking-widest font-black opacity-30">
+                                Inhale</p>
+                            <span id="display-inhale" class="text-base sm:text-lg font-light">4</span>
                         </div>
-                        <div class="flex flex-col items-center gap-2 border-l border-black/5">
-                            <p class="text-[8px] uppercase tracking-widest font-black opacity-30">Hold</p>
-                            <span id="display-hold" class="text-lg font-light">4</span>
+                        <div class="flex flex-col items-center gap-1 sm:gap-2 border-l border-black/5">
+                            <p
+                                class="text-[7px] sm:text-[8px] uppercase tracking-wider sm:tracking-widest font-black opacity-30">
+                                Hold</p>
+                            <span id="display-hold" class="text-base sm:text-lg font-light">4</span>
                         </div>
-                        <div class="flex flex-col items-center gap-2 border-l border-black/5">
-                            <p class="text-[8px] uppercase tracking-widest font-black opacity-30">Exhale</p>
-                            <span id="display-exhale" class="text-lg font-light">4</span>
+                        <div class="flex flex-col items-center gap-1 sm:gap-2 border-l border-black/5">
+                            <p
+                                class="text-[7px] sm:text-[8px] uppercase tracking-wider sm:tracking-widest font-black opacity-30">
+                                Exhale</p>
+                            <span id="display-exhale" class="text-base sm:text-lg font-light">4</span>
                         </div>
-                        <div class="flex flex-col items-center gap-2 border-l border-black/5">
-                            <p class="text-[8px] uppercase tracking-widest font-black opacity-30">Rest</p>
-                            <span id="display-rest" class="text-lg font-light">4</span>
+                        <div class="flex flex-col items-center gap-1 sm:gap-2 border-l border-black/5">
+                            <p
+                                class="text-[7px] sm:text-[8px] uppercase tracking-wider sm:tracking-widest font-black opacity-30">
+                                Rest</p>
+                            <span id="display-rest" class="text-base sm:text-lg font-light">4</span>
                         </div>
                     </div>
                 </div>
@@ -745,8 +747,9 @@
 
                     <div class="space-y-6 mb-12">
                         <p class="text-base text-white/80 font-light leading-relaxed px-4">
-                            Welcome to <span class="text-nexus-orange font-normal">Nexus</span>, the future of digital
-                            empathy. Venting is temporary, being heard is healing.
+                            Welcome to the <span class="text-nexus-orange font-normal">Nexus</span>, the future of
+                            empathy.
+                            Venting is temporary, being heard is healing.
                         </p>
                         <p class="text-sm text-white/50 font-light leading-relaxed px-6">
                             Nexus is building a judgment-free zone where anonymity meets deep understanding. No records,
@@ -925,6 +928,13 @@
                         burnCanvas.style.display = 'block';
                         requestAnimationFrame(renderAtmos);
                     }
+                    // Auto-focus Ash area
+                    setTimeout(() => {
+                        const area = document.getElementById('burn-area');
+                        if (area && state.mode === 'text' && !state.isSubmittingBurn) {
+                            area.focus();
+                        }
+                    }, 100);
                 } else {
                     // Hide canvas on other pages
                     const burnCanvas = document.getElementById('burn-canvas');
@@ -1143,11 +1153,15 @@
                 state.isSubmittingBurn = true;
                 track('Ashed');
 
+                // Instant UI Feedback
+                btn.innerHTML = `<i class="fa-solid fa-fire animate-pulse mr-2"></i> Igniting...`;
+                btn.classList.add('scale-95');
+
                 if (state.hapticsEnabled && navigator.vibrate) {
                     navigator.vibrate(50);
                 }
 
-                // Capture the card
+                // Capture the card instantly without html2canvas
                 if (!state.burnGl) {
                     initBurnWebGL();
                 }
@@ -1156,38 +1170,89 @@
                 state.burnProgress = 0;
                 requestAnimationFrame(animateBurn);
 
-                html2canvas(state.el.editorCard, {
-                    backgroundColor: null,
-                    logging: false,
-                    useCORS: true,
-                    scale: 2
-                }).then(cardCanvas => {
-                    const gl = state.burnGl;
-                    const program = state.burnProgram;
-                    gl.useProgram(program);
+                // HIGH-SPEED CUSTOM TEXT RENDERER
+                // Bypasses the synchronous layout engine lag of html2canvas entirely
+                const dpr = window.devicePixelRatio || 1;
+                const rect = state.el.editorCard.getBoundingClientRect();
+                const areaRect = area.getBoundingClientRect();
 
-                    // Create texture
-                    if (state.burnTexture) gl.deleteTexture(state.burnTexture);
-                    state.burnTexture = gl.createTexture();
-                    gl.bindTexture(gl.TEXTURE_2D, state.burnTexture);
-                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cardCanvas);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                // Create offscreen canvas exactly the size of the editor card
+                const cardCanvas = document.createElement('canvas');
+                cardCanvas.width = rect.width * dpr;
+                cardCanvas.height = rect.height * dpr;
+                const ctx = cardCanvas.getContext('2d');
+                ctx.scale(dpr, dpr);
 
-                    // Get card position
-                    const dpr = window.devicePixelRatio || 1;
-                    const rect = state.el.editorCard.getBoundingClientRect();
-                    gl.uniform2f(state.uBurnCardSize, rect.width * dpr, rect.height * dpr);
-                    gl.uniform2f(state.uBurnCardPos, (rect.left + rect.width / 2) * dpr, (rect.top + rect.height / 2) * dpr);
-                    gl.uniform2f(state.uBurnResolution, state.canvas.width, state.canvas.height);
-                    gl.uniform1f(state.uBurnDpr, window.devicePixelRatio || 1);
-                    gl.uniform1f(state.uBurnSeed, Math.random() * 100.0);
+                // Get exact computed styles from the textarea to mimic it perfectly
+                const computed = window.getComputedStyle(area);
 
-                    // Hide original card
-                    state.el.editorCard.classList.add('is-burning');
+                // Draw text
+                ctx.font = `${computed.fontWeight} ${computed.fontSize} ${computed.fontFamily}`;
+                ctx.fillStyle = computed.color;
+                ctx.textBaseline = 'top';
+
+                // Calculate Exact Relative Coordinates
+                // Text starts at the exact pixel difference between the text area's edge and the parent card's edge
+                const fontSize = parseFloat(computed.fontSize);
+                const lineHeight = parseFloat(computed.lineHeight) || (fontSize * 1.5);
+
+                // In CSS, line-height adds "half-leading" to the top and bottom of every line. We must push the canvas down by this amount.
+                const halfLeading = (lineHeight - fontSize) / 2;
+                const textStartX = areaRect.left - rect.left + (parseFloat(computed.paddingLeft) || 0) - area.scrollLeft;
+                const textStartY = areaRect.top - rect.top + (parseFloat(computed.paddingTop) || 0) + halfLeading - area.scrollTop;
+
+                // Handle basic text wrapping (split by newlines, then by width)
+                const text = area.value;
+                const lines = text.split('\n');
+                let y = textStartY;
+                const x = textStartX;
+                const maxWidth = areaRect.width - (parseFloat(computed.paddingLeft) || 0) - (parseFloat(computed.paddingRight) || 0);
+
+                lines.forEach(line => {
+                    const words = line.split(' ');
+                    let currentLine = '';
+
+                    words.forEach(word => {
+                        const testLine = currentLine + word + ' ';
+                        const metrics = ctx.measureText(testLine);
+
+                        if (metrics.width > maxWidth && currentLine !== '') {
+                            ctx.fillText(currentLine, x, y);
+                            currentLine = word + ' ';
+                            y += lineHeight;
+                        } else {
+                            currentLine = testLine;
+                        }
+                    });
+                    ctx.fillText(currentLine, x, y);
+                    y += lineHeight;
                 });
+
+                // Send instant canvas to WebGL
+                const gl = state.burnGl;
+                const program = state.burnProgram;
+                gl.useProgram(program);
+
+                // Create texture
+                if (state.burnTexture) gl.deleteTexture(state.burnTexture);
+                state.burnTexture = gl.createTexture();
+                gl.bindTexture(gl.TEXTURE_2D, state.burnTexture);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cardCanvas);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+                // Set uniforms
+                gl.uniform2f(state.uBurnCardSize, rect.width * dpr, rect.height * dpr);
+                gl.uniform2f(state.uBurnCardPos, (rect.left + rect.width / 2) * dpr, (rect.top + rect.height / 2) * dpr);
+                gl.uniform2f(state.uBurnResolution, state.canvas.width, state.canvas.height);
+                gl.uniform1f(state.uBurnDpr, window.devicePixelRatio || 1);
+                gl.uniform1f(state.uBurnSeed, Math.random() * 100.0);
+
+                // Hide original card
+                state.el.editorCard.classList.add('is-burning');
+                btn.classList.remove('scale-95'); // Reset animation state
             }
 
             function animateBurn() {
@@ -1231,6 +1296,7 @@
                 // Lerp visual intensity here too
                 // Limit to Dark Mode + Animation Enabled (Bottom ONLY in Dark Mode)
                 const isFireActive = state.globalTheme === 'dark' && state.fireAnimationEnabled;
+                const targetIntensity = isFireActive ? Math.pow(0.9, state.burnCount) : 0.0;
                 state.visualIntensity += (targetIntensity - state.visualIntensity) * 0.05;
                 gl.uniform1f(state.uBurnIntensity, state.visualIntensity);
                 gl.uniform1f(state.uBurnDpr, window.devicePixelRatio || 1);
@@ -1589,6 +1655,7 @@
                     } else {
                         state.el.mainBtn.innerText = "RECORD";
                     }
+                    state.el.mainBtn.classList.remove('scale-95');
                     if (window.updateMainButtonOpacity) window.updateMainButtonOpacity();
 
                     // Reset Audio
@@ -2464,10 +2531,10 @@
                 const btn = document.getElementById('btn-main-action');
                 if (!btn) return;
                 if (style === 'secondary') {
-                    btn.classList.add('glass-card', 'text-text-light/30');
+                    btn.classList.add('glass-card', 'text-text-light/30', 'btn-secondary');
                     btn.classList.remove('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]', 'opacity-50');
                 } else {
-                    btn.classList.remove('glass-card', 'text-text-light/30', 'opacity-50');
+                    btn.classList.remove('glass-card', 'text-text-light/30', 'opacity-50', 'btn-secondary');
                     btn.classList.add('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
                 }
             }
