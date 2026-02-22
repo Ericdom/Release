@@ -1666,7 +1666,7 @@
 
                     // Reset Button Style & Text
                     if (state.mode === 'text') {
-                        state.el.mainBtn.innerHTML = `<span>Ash It</span> <kbd class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium lowercase pointer-events-none tracking-normal">Ctrl+Enter</kbd>`;
+                        state.el.mainBtn.innerHTML = `<span>Ash It</span> <kbd class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium pointer-events-none tracking-normal hidden md:inline-block">⌘ / Ctrl + ⏎</kbd>`;
                     } else {
                         state.el.mainBtn.innerText = "RECORD";
                     }
