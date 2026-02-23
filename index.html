@@ -95,27 +95,32 @@
                 <h1 class="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em] opacity-90">Release</h1>
             </div>
 
-            <!-- Controls (Theme, Fire, Share) & CTA -->
+            <!-- Controls (Links, Fire, Theme, CTA, Share) -->
             <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-                <button type="button" onclick="toggleGlobalTheme()" aria-label="Toggle Theme" title="Toggle Theme"
-                    id="ui-btn-theme"
-                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent">
-                    <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
-                </button>
+                <!-- Navigation Links -->
+                <div id="nav-links-container"
+                    class="hidden items-center gap-3 sm:gap-4 opacity-0 transition-opacity duration-300 mr-2">
+                    <button id="nav-link-air" onclick="navigate('calm')"
+                        class="hidden text-[9px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Air
+                        It</button>
+                    <button id="nav-link-ash" onclick="navigate('burn')"
+                        class="hidden text-[9px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Ash
+                        It</button>
+                </div>
+
                 <button type="button" onclick="toggleFireAnimation()" aria-label="Toggle Fire Animation"
                     title="Toggle Fire Animation" id="ui-btn-fire"
                     class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden">
                     <i id="fire-toggle-icon" class="fa-solid fa-fire-flame-curved text-xs"></i>
                 </button>
-                <button type="button" onclick="shareLink()" aria-label="Share" title="Share" id="ui-btn-share"
-                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden sm:flex">
-                    <i class="fa-solid fa-arrow-up-from-bracket text-xs text-light"></i>
+
+                <button type="button" onclick="toggleGlobalTheme()" aria-label="Toggle Theme" title="Toggle Theme"
+                    id="ui-btn-theme"
+                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent">
+                    <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
                 </button>
 
-                <!-- Separator -->
-                <div class="w-[1px] h-4 bg-white/20 mx-1 sm:mx-2 hidden sm:block"></div>
-
-                <!-- Action Button -->
+                <!-- Action Button (Waitlist) -->
                 <button type="button" onclick="toggleWaitlist(true)"
                     class="waitlist-radial text-white px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-[0_2px_10px_rgba(255,68,0,0.3)] hover:shadow-[0_4px_15px_rgba(255,68,0,0.5)] overflow-hidden shiny-button-fix w-20 sm:w-24 shrink-0 border border-white/20 whitespace-nowrap">
                     <div class="marquee-container">
@@ -123,6 +128,11 @@
                             <span>Waitlist • Waitlist • Waitlist • Waitlist • </span>
                         </div>
                     </div>
+                </button>
+
+                <button type="button" onclick="shareLink()" aria-label="Share" title="Share" id="ui-btn-share"
+                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden sm:flex">
+                    <i class="fa-solid fa-arrow-up-from-bracket text-xs text-light"></i>
                 </button>
             </div>
         </div>
@@ -254,22 +264,15 @@
                         <!-- Unified Editor Toolbar (Inside Card) -->
                         <div
                             class="absolute bottom-0 left-0 w-full p-4 md:p-6 flex justify-between items-end z-[70] pointer-events-none">
-                            <!-- Left: Editor Tools (Voice, Font, Theme, Mobile Menu) -->
+                            <!-- Left: Three Dots Menu -->
                             <div class="flex items-center gap-2 pointer-events-auto">
-                                <!-- Voice Toggle -->
-                                <button id="ui-btn-mode" onclick="toggleMode()" aria-label="Toggle Voice Mode"
-                                    class="h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-70 hover:opacity-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(255,68,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,68,0,0.2)]">
-                                    <i class="fa-solid fa-microphone"></i>
-                                    <span class="hidden sm:inline">Voice</span>
-                                </button>
-
-                                <!-- Mobile 3-Dots Menu Toggle -->
+                                <!-- Three-Dots Menu Toggle -->
                                 <button id="btn-mobile-menu" onclick="toggleEditorMenu()"
                                     class="md:hidden flex items-center justify-center bg-white/5 rounded-full w-10 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
                                     <i class="fa-solid fa-ellipsis-vertical text-xs text-white/50"></i>
                                 </button>
 
-                                <!-- Desktop/Expanded Controls -->
+                                <!-- Desktop/Expanded Controls (Hidden on mobile) -->
                                 <div id="editor-controls-group"
                                     class="hidden md:flex flex-col md:flex-row items-start md:items-center gap-2 transition-opacity duration-300 opacity-0 md:opacity-100 absolute bottom-16 left-4 md:static md:bottom-auto md:left-auto bg-black/40 md:bg-transparent backdrop-blur-md md:backdrop-blur-none p-3 md:p-0 rounded-2xl md:rounded-none border border-white/10 md:border-none">
                                     <!-- Font Family Control -->
@@ -338,8 +341,15 @@
                                 </div>
                             </div>
 
-                            <!-- Right: Primary Action (Ash It) -->
-                            <div class="pointer-events-auto">
+                            <!-- Right: Voice Toggle & Primary Action (Ash It) -->
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <!-- Voice Toggle NEXT to Ash It -->
+                                <button id="ui-btn-mode" onclick="toggleMode()" aria-label="Toggle Voice Mode"
+                                    class="h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-70 hover:opacity-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(255,68,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,68,0,0.2)]">
+                                    <i class="fa-solid fa-microphone"></i>
+                                    <span class="hidden sm:inline">Voice</span>
+                                </button>
+
                                 <button type="button" onclick="handleMainAction()" id="btn-main-action"
                                     class="h-10 px-6 sm:px-8 rounded-full uppercase tracking-[0.2em] text-[10px] sm:text-xs font-bold active:scale-95 transition-all bg-white/10 text-white hover:bg-white/20 flex items-center justify-center border border-white/20 shadow-lg backdrop-blur-md">
                                     <span>Ash It</span>
@@ -1001,6 +1011,11 @@
                 state.view = viewId;
                 if (window.updateFireBtnVisibility) window.updateFireBtnVisibility();
 
+                // Reset burn intensity when going home
+                if (viewId === 'home') {
+                    state.burnCount = 0;
+                }
+
                 // Header state - Dim secondary items, keep logo and waitlist bright
                 const nav = document.getElementById('nav-bar');
                 const navWaitlist = nav.querySelector('button[onclick*="toggleWaitlist"]');
@@ -1010,12 +1025,40 @@
                 if (viewId === 'home') {
                     nav.style.opacity = '1';
                     if (navShare) navShare.style.opacity = '1';
+
+                    // Hide navigation links
+                    const linkContainer = document.getElementById('nav-links-container');
+                    if (linkContainer) {
+                        linkContainer.classList.add('opacity-0');
+                        setTimeout(() => linkContainer.classList.add('hidden'), 300);
+                    }
                 } else {
                     // Overall header slightly dimmed but important items forced bright
                     nav.style.opacity = '1';
                     if (navLogo) navLogo.style.opacity = '0.6';
                     if (navShare) navShare.style.opacity = '1';
                     // Waitlist button stays 100%
+
+                    // Show correct navigation link
+                    const linkContainer = document.getElementById('nav-links-container');
+                    const linkAir = document.getElementById('nav-link-air');
+                    const linkAsh = document.getElementById('nav-link-ash');
+
+                    if (linkContainer) {
+                        linkContainer.classList.remove('hidden');
+                        setTimeout(() => linkContainer.classList.remove('opacity-0'), 10);
+
+                        if (viewId === 'burn') {
+                            linkAir.classList.remove('hidden');
+                            linkAsh.classList.add('hidden');
+                        } else if (viewId === 'calm') {
+                            linkAsh.classList.remove('hidden');
+                            linkAir.classList.add('hidden');
+                        } else {
+                            linkAir.classList.add('hidden');
+                            linkAsh.classList.add('hidden');
+                        }
+                    }
                 }
 
                 // Feature Inits
@@ -1435,7 +1478,7 @@
 
                 if (state.mode === 'text') {
                     state.mode = 'audio';
-                    btn.innerHTML = '<i class="fa-solid fa-align-left"></i><span>Text</span>';
+                    btn.innerHTML = '<i class="fa-solid fa-align-left"></i><span class="hidden sm:inline">Text</span>';
 
                     // Mode Visibility
                     fontCtrl.classList.add('hidden');
@@ -1461,7 +1504,7 @@
                     initAudio();
                 } else {
                     state.mode = 'text';
-                    btn.innerHTML = '<i class="fa-solid fa-microphone"></i><span>Voice</span>';
+                    btn.innerHTML = '<i class="fa-solid fa-microphone"></i><span class="hidden sm:inline">Voice</span>';
 
                     // Mode Visibility
                     fontCtrl.classList.remove('hidden');
@@ -1475,7 +1518,7 @@
                     btn.classList.add(isActualDark ? 'bg-white/5' : 'bg-black/5', 'opacity-70');
 
                     // Update Main Button for Text
-                    document.getElementById('btn-main-action').innerHTML = `<span>Ash It</span><kbd class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium lowercase pointer-events-none tracking-normal">Ctrl+Enter</kbd>`;
+                    document.getElementById('btn-main-action').innerHTML = `<span>Ash It</span><i class="fa-solid fa-fire ml-2 opacity-50"></i>`;
 
                     audioWrapper.classList.add('opacity-0');
                     setTimeout(() => {
@@ -1608,7 +1651,7 @@
 
                 clearInterval(state.timerInterval);
 
-                state.el.mainBtn.innerText = "ASH IT"; // Update Main Button
+                state.el.mainBtn.innerHTML = '<span>Ash It</span><i class="fa-solid fa-fire ml-2 opacity-50"></i>'; // Update Main Button
                 state.el.mainBtn.classList.remove('bg-red-600', 'animate-pulse');
 
                 state.el.status.innerText = "Ready to Burn";
@@ -1766,7 +1809,7 @@
 
                     // Reset Button Style & Text
                     if (state.mode === 'text') {
-                        state.el.mainBtn.innerHTML = `<span>Ash It</span> <kbd class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium pointer-events-none tracking-normal hidden md:inline-block">⌘ / Ctrl + ⏎</kbd>`;
+                        state.el.mainBtn.innerHTML = `<span>Ash It</span> <i class="fa-solid fa-fire ml-2 opacity-50"></i>`;
                     } else {
                         state.el.mainBtn.innerText = "RECORD";
                     }

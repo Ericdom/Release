@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v22'; // Breathing "Break" Phase Added
+const CACHE_NAME = 'release-cache-v26'; // Navbar reordered
 const ASSETS = [
     'index.html',
     'css/styles.css',
