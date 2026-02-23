@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v26'; // Navbar reordered
+const CACHE_NAME = 'release-cache-v28'; // Fix WebGL grid glitch on mobile
 const ASSETS = [
     'index.html',
     'css/styles.css',

@@ -97,21 +97,20 @@
 
             <!-- Controls (Links, Fire, Theme, CTA, Share) -->
             <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-                <!-- Navigation Links -->
                 <div id="nav-links-container"
                     class="hidden items-center gap-3 sm:gap-4 opacity-0 transition-opacity duration-300 mr-2">
                     <button id="nav-link-air" onclick="navigate('calm')"
-                        class="hidden text-[9px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Air
+                        class="hidden text-[11px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Air
                         It</button>
                     <button id="nav-link-ash" onclick="navigate('burn')"
-                        class="hidden text-[9px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Ash
+                        class="hidden text-[11px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Ash
                         It</button>
                 </div>
 
                 <button type="button" onclick="toggleFireAnimation()" aria-label="Toggle Fire Animation"
                     title="Toggle Fire Animation" id="ui-btn-fire"
                     class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden">
-                    <i id="fire-toggle-icon" class="fa-solid fa-fire-flame-curved text-xs"></i>
+                    <i id="fire-toggle-icon" class="fa-solid fa-fire-flame-curved text-xs fire-pulse"></i>
                 </button>
 
                 <button type="button" onclick="toggleGlobalTheme()" aria-label="Toggle Theme" title="Toggle Theme"
@@ -741,7 +740,7 @@
         float fbm(vec2 p) {
             float v = 0.0;
             float a = 0.5;
-            vec2 shift = vec2(100.0);
+            vec2 shift = vec2(7.0); // Reduced drastically from 100.0 to prevent mobile precision loss
             for (int i = 0; i < 5; i++) {
                 v += a * noise(p);
                 p = p * 2.0 + shift;
@@ -759,7 +758,10 @@
             vec2 uv = gl_FragCoord.xy / uResolution;
             float pixelX = gl_FragCoord.x;
             float pixelY = uResolution.y - gl_FragCoord.y;
-            vec2 noiseUv = uv * vec2(uResolution.x / uResolution.y, 1.0);
+            
+            // Normalize UV to prevent massive float values on high-DPR screens
+            float aspect = uResolution.x / uResolution.y;
+            vec2 noiseUv = uv * vec2(max(aspect, 1.0), max(1.0 / aspect, 1.0));
 
             // Original Fire Noise (Max Detail / High Frequency)
             float n = fbm(noiseUv * 5.0 - vec2(0.0, uTime * 0.8));
@@ -2921,6 +2923,9 @@
 
                 if (isBurnPage && isDarkMode) {
                     btn.classList.remove('hidden');
+                    // Enable fire animation by default when entering Ash It page
+                    state.fireAnimationEnabled = true;
+                    updateFireToggleUI();
                 } else {
                     btn.classList.add('hidden');
                 }

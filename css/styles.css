@@ -13,6 +13,24 @@
     --transition-speed: 0.3s;
 }
 
+@keyframes fire-pulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: scale(0.92);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+}
+
+.fire-pulse {
+    animation: fire-pulse 3s infinite ease-in-out;
+}
+
 .light-theme {
     --bg-deep: #ffffff;
     --text-light: #111111;
