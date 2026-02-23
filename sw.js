@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v29'; // Modern Simplex WebGL Shader
+const CACHE_NAME = 'release-cache-v30'; // Optimized 2D Value Noise Fire Shader
 const ASSETS = [
     'index.html',
     'css/styles.css',
