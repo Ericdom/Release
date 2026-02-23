@@ -148,7 +148,7 @@ body.light-theme .glass-card {
     position: absolute;
     inset: -1px;
     /* Cover the 1px hover border perfectly */
-    padding: 4px;
+    padding: 1px;
     /* Visual thickness of the border */
     border-radius: 33px;
     /* 32px + 1px inset offset */
@@ -173,33 +173,6 @@ body.light-theme .glass-card {
     /* Enhanced blurry-glass edge */
     will-change: transform, opacity;
     transition: opacity 0.3s ease;
-}
-
-/* Responsive Overrides for Modal Borders */
-@media (max-width: 768px) {
-
-    /* Mobile: Waitlist is minimal clean glass */
-    .white-glass-card::after {
-        display: none !important;
-    }
-
-    .white-glass-card {
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1) !important;
-    }
-
-    /* Mobile: Feedback is basically borderless / super clean */
-    #feedback-modal-content {
-        border-color: rgba(255, 255, 255, 0.03) !important;
-    }
-}
-
-@media (min-width: 769px) {
-
-    /* Desktop: Feedback gets a subtle visible border so it's not floating empty */
-    #feedback-modal-content {
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    }
 }
 
 /* Specific override for Waitlist Card (rounded-40px) */
