@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v36'; // WebGL timing and flame shift adjustments
+const CACHE_NAME = 'release-cache-v40'; // Adjusted ctrl+enter icon rotation and layout
 const ASSETS = [
     'index.html',
     'css/styles.css',

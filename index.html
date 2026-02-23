@@ -109,7 +109,7 @@
 
                 <button type="button" onclick="toggleFireAnimation()" aria-label="Toggle Fire Animation"
                     title="Toggle Fire Animation" id="ui-btn-fire"
-                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden">
+                    class="w-9 h-9 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-100 hover:opacity-80 hover:bg-white/5 bg-transparent hidden">
                     <i id="fire-toggle-icon" class="fa-solid fa-fire-flame-curved text-xs fire-pulse"></i>
                 </button>
 
@@ -351,8 +351,13 @@
 
                                 <button type="button" onclick="handleMainAction()" id="btn-main-action"
                                     class="h-10 px-6 sm:px-8 rounded-full uppercase tracking-[0.2em] text-[10px] sm:text-xs font-bold active:scale-95 transition-all bg-white/10 text-white hover:bg-white/20 flex items-center justify-center border border-white/20 shadow-lg backdrop-blur-md">
+                                    <i class="fa-solid fa-fire mr-2 opacity-80"></i>
                                     <span>Ash It</span>
-                                    <i class="fa-solid fa-fire ml-2 opacity-50"></i>
+                                    <span
+                                        class="hidden lg:inline-flex items-center opacity-100 mx-2 gap-1.5 translate-y-[1px]"><span
+                                            class="text-[12px] font-sans">⌘</span><i
+                                            class="fa-solid fa-plus text-[8px] opacity-70"></i><i
+                                            class="fa-solid fa-arrow-turn-down fa-rotate-90 text-[12px] translate-y-[2px]"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -1541,7 +1546,7 @@
                     btn.classList.add(isActualDark ? 'bg-white/5' : 'bg-black/5', 'opacity-70');
 
                     // Update Main Button for Text
-                    document.getElementById('btn-main-action').innerHTML = `<span>Ash It</span><i class="fa-solid fa-fire ml-2 opacity-50"></i>`;
+                    document.getElementById('btn-main-action').innerHTML = `<i class="fa-solid fa-fire mr-2 opacity-80"></i><span>Ash It</span><span class="hidden lg:inline-flex items-center opacity-100 mx-2 gap-1.5 translate-y-[1px]"><span class="text-[12px] font-sans">⌘</span><i class="fa-solid fa-plus text-[8px] opacity-70"></i><i class="fa-solid fa-arrow-turn-down fa-rotate-90 text-[12px] translate-y-[2px]"></i></span>`;
 
                     audioWrapper.classList.add('opacity-0');
                     setTimeout(() => {
@@ -1832,7 +1837,7 @@
 
                     // Reset Button Style & Text
                     if (state.mode === 'text') {
-                        state.el.mainBtn.innerHTML = `<span>Ash It</span> <i class="fa-solid fa-fire ml-2 opacity-50"></i>`;
+                        state.el.mainBtn.innerHTML = `<i class="fa-solid fa-fire mr-2 opacity-80"></i><span>Ash It</span><span class="hidden lg:inline-flex items-center opacity-100 mx-2 gap-1.5 translate-y-[1px]"><span class="text-[12px] font-sans">⌘</span><i class="fa-solid fa-plus text-[8px] opacity-70"></i><i class="fa-solid fa-arrow-turn-down fa-rotate-90 text-[12px] translate-y-[2px]"></i></span>`;
                     } else {
                         state.el.mainBtn.innerText = "RECORD";
                     }
