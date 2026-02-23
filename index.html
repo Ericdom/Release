@@ -776,8 +776,8 @@
             float n2 = fbm(noiseUv * 6.0 - vec2(0.0, t * 3.0)) * 2.0 - 1.0;
             
             // Atmospheric subtle flames at bottom
-            // Negative shift lifts the gradient threshold UP into the positive UV space of the screen
-            float vShift = -0.15 + (1.0 - uIntensity) * 0.15; 
+            // Pushing the gradient threshold DOWN into the UV space
+            float vShift = 0.15 + (1.0 - uIntensity) * 0.15; 
             float fireBase = smoothstep(0.4 * uIntensity, 0.0, uv.y + vShift + n * 0.3 * uIntensity);
             float fireCore = smoothstep(0.2 * uIntensity, 0.0, uv.y + vShift + n2 * 0.18 * uIntensity);
             float fireWhiteCore = smoothstep(0.05 * uIntensity, 0.0, uv.y + vShift + (n * n2) * 0.12 * uIntensity);
@@ -1443,8 +1443,8 @@
                 }
 
                 // Substantially reduce the completion threshold to avoid "blank screen" dead zones
-                // The card burns away visually completely by ~0.5.
-                if (state.burnProgress > 0.65) {
+                // The card burns away visually completely by ~0.55.
+                if (state.burnProgress > 0.55) {
                     const gl = state.burnGl;
                     state.isSubmittingBurn = false;
                     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -1458,9 +1458,12 @@
                     const footer = document.getElementById('ash-footer');
                     if (footer) footer.classList.add('hidden');
 
-                    setTimeout(() => {
-                        mkt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }, 500);
+                    // Focus the text area so the user can immediately continue typing
+                    if (state.mode === 'text' && state.el.area) {
+                        setTimeout(() => {
+                            state.el.area.focus();
+                        }, 100);
+                    }
                     return;
                 }
 
