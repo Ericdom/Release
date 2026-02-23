@@ -13,13 +13,23 @@ class LiquidBackground {
             return;
         }
 
-        this.images = this.shuffleArray([
+        const isMobile = window.innerWidth <= 768;
+        const landscapeImages = [
             'index/blue_butterfly.webp',
             'index/1 (1).webp',
             'index/1 (2).webp',
             'index/1 (3).webp',
             'index/1 (4).webp'
-        ]);
+        ];
+        const portraitImages = [
+            'index/916/blue_butterfly.jpg',
+            'index/916/1 (1).png',
+            'index/916/1 (2).png',
+            'index/916/1 (3).png',
+            'index/916/1 (4).png'
+        ];
+
+        this.images = this.shuffleArray(isMobile ? portraitImages : landscapeImages);
 
         this.currentIndex = 0;
         this.nextIndex = 1;

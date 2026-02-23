@@ -678,6 +678,7 @@ body.light-theme .tiles-container div {
 /* Mobile Optimizations for Backgrounds */
 @media (max-width: 768px) {
     #view-calm {
+        background-image: url('../index/916/blue_butterfly.jpg');
         background-position: center bottom !important;
         background-size: cover !important;
     }
@@ -686,25 +687,9 @@ body.light-theme .tiles-container div {
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        /* Let object-fit handle the viewport covering, don't force canvas dimensions which stretches it */
-        min-width: 100vw !important;
-        min-height: 100vh !important;
-        width: auto !important;
-        height: auto !important;
+        width: 100vw !important;
+        height: 100vh !important;
         object-fit: cover !important;
         object-position: center center !important;
-        /* Shift mask downwards so top text area is clear */
-        -webkit-mask-image: radial-gradient(ellipse at center 75%,
-                rgba(0, 0, 0, 1) 0%,
-                rgba(0, 0, 0, 1) 15%,
-                rgba(0, 0, 0, 0.7) 40%,
-                rgba(0, 0, 0, 0.2) 65%,
-                transparent 90%);
-        mask-image: radial-gradient(ellipse at center 75%,
-                rgba(0, 0, 0, 1) 0%,
-                rgba(0, 0, 0, 1) 15%,
-                rgba(0, 0, 0, 0.7) 40%,
-                rgba(0, 0, 0, 0.2) 65%,
-                transparent 90%);
     }
 }
