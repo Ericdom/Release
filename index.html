@@ -245,97 +245,107 @@
                     <div id="editor-card"
                         class="relative w-full max-w-5xl h-[45vh] md:h-[55vh] glass-card rounded-[40px] flex items-center justify-center p-6 transition-all duration-500 group/editor shadow-card-elevated overflow-hidden border-white/5 z-50">
 
-                        <!-- Editor Controls (Relocated to Top-Right of Card) -->
-                        <div class="absolute top-4 right-4 z-[70] flex flex-col items-end gap-2 pointer-events-auto">
-                            <!-- Mobile 3-Dots Menu Toggle -->
-                            <button id="btn-mobile-menu" onclick="toggleEditorMenu()"
-                                class="md:hidden flex items-center justify-center bg-white/5 rounded-full w-10 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                <i class="fa-solid fa-ellipsis-vertical text-xs text-white/50"></i>
-                            </button>
-
-                            <div id="editor-controls-group"
-                                class="hidden md:flex flex-col md:flex-row items-end md:items-center gap-2 transition-opacity duration-300 opacity-0 md:opacity-100">
-                                <!-- Font Family Control -->
-                                <div id="ctrl-family-container" onclick="toggleControl('ctrl-family')"
-                                    onmouseleave="toggleControl(null)"
-                                    class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                    <i id="ui-icon-family"
-                                        class="fa-solid fa-pen-nib text-xs text-white/50 hover:text-white/80 transition-colors"></i>
-                                    <div id="ctrl-family"
-                                        class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
-                                        <button onclick="changeFontFamily(0); event.stopPropagation()"
-                                            class="text-[10px] font-sans font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Sans</button>
-                                        <button onclick="changeFontFamily(1); event.stopPropagation()"
-                                            class="text-[10px] font-serif font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Serif</button>
-                                        <button onclick="changeFontFamily(2); event.stopPropagation()"
-                                            class="text-[10px] font-mono font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Mono</button>
-                                    </div>
-                                </div>
-
-                                <!-- Font Size Control -->
-                                <div id="ctrl-font-container" onclick="toggleControl('ctrl-font')"
-                                    onmouseleave="toggleControl(null)"
-                                    class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                    <i id="ui-icon-font"
-                                        class="fa-solid fa-font text-xs text-white/50 hover:text-white/80 transition-colors"></i>
-                                    <div id="ctrl-font"
-                                        class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center">
-                                        <input type="range" min="0" max="3" value="1" step="1"
-                                            oninput="changeTextSize(this.value)" onclick="event.stopPropagation()"
-                                            aria-label="Text Size"
-                                            class="w-24 h-1 ml-4 bg-white/10 rounded-lg appearance-none cursor-pointer accent-nexus-orange">
-                                    </div>
-                                </div>
-
-                                <!-- Theme Control -->
-                                <div id="ctrl-theme-container" onclick="toggleControl('ctrl-theme')"
-                                    onmouseleave="toggleControl(null)"
-                                    class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                    <i id="ui-icon-theme"
-                                        class="fa-solid fa-palette text-xs text-white/50 hover:text-white/80 transition-colors"></i>
-                                    <div id="ctrl-theme"
-                                        class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
-                                        <!-- Black (Default) -->
-                                        <button onclick="changeThemeColor(0); event.stopPropagation()"
-                                            class="w-4 h-4 rounded-full bg-[var(--bg-deep)] border border-white/20 hover:scale-125 transition-transform"
-                                            title="Void"></button>
-                                        <!-- Ivory -->
-                                        <button onclick="changeThemeColor(1); event.stopPropagation()"
-                                            class="w-4 h-4 rounded-full bg-[#fff3e0] border border-white/10 hover:scale-125 transition-transform"
-                                            title="Ivory"></button>
-                                        <!-- Mist -->
-                                        <button onclick="changeThemeColor(2); event.stopPropagation()"
-                                            class="w-4 h-4 rounded-full bg-[#e5f3f8] border border-white/10 hover:scale-125 transition-transform"
-                                            title="Mist"></button>
-                                        <!-- Pewter -->
-                                        <button onclick="changeThemeColor(3); event.stopPropagation()"
-                                            class="w-4 h-4 rounded-full bg-[#dadecf] border border-white/10 hover:scale-125 transition-transform"
-                                            title="Pewter"></button>
-                                        <!-- Midnight -->
-                                        <button onclick="changeThemeColor(4); event.stopPropagation()"
-                                            class="w-4 h-4 rounded-full bg-[#191738] border border-white/10 hover:scale-125 transition-transform"
-                                            title="Midnight"></button>
-                                    </div>
-                                </div>
-                                <!-- Mobile Haptic Toggle (Icon Only) -->
-                                <div id="ctrl-haptic-mobile" onclick="toggleHaptics()"
-                                    class="editor-control flex md:hidden items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                    <i class="fa-solid fa-vibration text-xs text-white/50"></i>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Editor Controls (Relocated to bottom toolbar) -->
 
                         <textarea id="burn-area" autofocus
-                            class="relative z-10 w-full h-full text-left text-xl md:text-3xl font-light bg-transparent border-none outline-none resize-none placeholder-text-light/10 leading-relaxed transition-opacity duration-300 pt-16 sm:pt-4"
+                            class="relative z-10 w-full h-full text-left text-xl md:text-3xl font-light bg-transparent border-none outline-none resize-none placeholder-text-light/10 leading-relaxed transition-opacity duration-300 pb-20"
                             placeholder="Ash whatever's weighing you down"></textarea>
 
-                        <!-- Mode Toggles (Bottom Right) -->
-                        <div class="absolute bottom-4 right-4 flex items-center gap-3 z-30 pointer-events-auto">
-                            <button id="ui-btn-mode" onclick="toggleMode()" aria-label="Toggle Voice Mode"
-                                class="h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-70 hover:opacity-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(255,68,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,68,0,0.2)]">
-                                <i class="fa-solid fa-microphone"></i>
-                                <span>Voice</span>
-                            </button>
+                        <!-- Unified Editor Toolbar (Inside Card) -->
+                        <div
+                            class="absolute bottom-0 left-0 w-full p-4 md:p-6 flex justify-between items-end z-[70] pointer-events-none">
+                            <!-- Left: Editor Tools (Voice, Font, Theme, Mobile Menu) -->
+                            <div class="flex items-center gap-2 pointer-events-auto">
+                                <!-- Voice Toggle -->
+                                <button id="ui-btn-mode" onclick="toggleMode()" aria-label="Toggle Voice Mode"
+                                    class="h-10 px-4 flex items-center justify-center gap-2 rounded-2xl border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.1em] opacity-70 hover:opacity-100 transition-all cursor-pointer shadow-[0_2px_8px_rgba(255,68,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,68,0,0.2)]">
+                                    <i class="fa-solid fa-microphone"></i>
+                                    <span class="hidden sm:inline">Voice</span>
+                                </button>
+
+                                <!-- Mobile 3-Dots Menu Toggle -->
+                                <button id="btn-mobile-menu" onclick="toggleEditorMenu()"
+                                    class="md:hidden flex items-center justify-center bg-white/5 rounded-full w-10 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                    <i class="fa-solid fa-ellipsis-vertical text-xs text-white/50"></i>
+                                </button>
+
+                                <!-- Desktop/Expanded Controls -->
+                                <div id="editor-controls-group"
+                                    class="hidden md:flex flex-col md:flex-row items-start md:items-center gap-2 transition-opacity duration-300 opacity-0 md:opacity-100 absolute bottom-16 left-4 md:static md:bottom-auto md:left-auto bg-black/40 md:bg-transparent backdrop-blur-md md:backdrop-blur-none p-3 md:p-0 rounded-2xl md:rounded-none border border-white/10 md:border-none">
+                                    <!-- Font Family Control -->
+                                    <div id="ctrl-family-container" onclick="toggleControl('ctrl-family')"
+                                        onmouseleave="toggleControl(null)"
+                                        class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                        <i id="ui-icon-family"
+                                            class="fa-solid fa-pen-nib text-xs text-white/50 hover:text-white/80 transition-colors"></i>
+                                        <div id="ctrl-family"
+                                            class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
+                                            <button onclick="changeFontFamily(0); event.stopPropagation()"
+                                                class="text-[10px] font-sans font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Sans</button>
+                                            <button onclick="changeFontFamily(1); event.stopPropagation()"
+                                                class="text-[10px] font-serif font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Serif</button>
+                                            <button onclick="changeFontFamily(2); event.stopPropagation()"
+                                                class="text-[10px] font-mono font-bold opacity-60 hover:opacity-100 hover:scale-110 transition-all uppercase">Mono</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Font Size Control -->
+                                    <div id="ctrl-font-container" onclick="toggleControl('ctrl-font')"
+                                        onmouseleave="toggleControl(null)"
+                                        class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                        <i id="ui-icon-font"
+                                            class="fa-solid fa-font text-xs text-white/50 hover:text-white/80 transition-colors"></i>
+                                        <div id="ctrl-font"
+                                            class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center">
+                                            <input type="range" min="0" max="3" value="1" step="1"
+                                                oninput="changeTextSize(this.value)" onclick="event.stopPropagation()"
+                                                aria-label="Text Size"
+                                                class="w-24 h-1 ml-4 bg-white/10 rounded-lg appearance-none cursor-pointer accent-nexus-orange">
+                                        </div>
+                                    </div>
+
+                                    <!-- Theme Control -->
+                                    <div id="ctrl-theme-container" onclick="toggleControl('ctrl-theme')"
+                                        onmouseleave="toggleControl(null)"
+                                        class="editor-control flex items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                        <i id="ui-icon-theme"
+                                            class="fa-solid fa-palette text-xs text-white/50 hover:text-white/80 transition-colors"></i>
+                                        <div id="ctrl-theme"
+                                            class="w-0 overflow-hidden transition-all duration-500 ease-out flex items-center gap-2 pl-0">
+                                            <button onclick="changeThemeColor(0); event.stopPropagation()"
+                                                class="w-4 h-4 rounded-full bg-[var(--bg-deep)] border border-white/20 hover:scale-125 transition-transform"
+                                                title="Void"></button>
+                                            <button onclick="changeThemeColor(1); event.stopPropagation()"
+                                                class="w-4 h-4 rounded-full bg-[#fff3e0] border border-white/10 hover:scale-125 transition-transform"
+                                                title="Ivory"></button>
+                                            <button onclick="changeThemeColor(2); event.stopPropagation()"
+                                                class="w-4 h-4 rounded-full bg-[#e5f3f8] border border-white/10 hover:scale-125 transition-transform"
+                                                title="Mist"></button>
+                                            <button onclick="changeThemeColor(3); event.stopPropagation()"
+                                                class="w-4 h-4 rounded-full bg-[#dadecf] border border-white/10 hover:scale-125 transition-transform"
+                                                title="Pewter"></button>
+                                            <button onclick="changeThemeColor(4); event.stopPropagation()"
+                                                class="w-4 h-4 rounded-full bg-[#191738] border border-white/10 hover:scale-125 transition-transform"
+                                                title="Midnight"></button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mobile Haptic Toggle -->
+                                    <div id="ctrl-haptic-mobile" onclick="toggleHaptics()"
+                                        class="editor-control flex md:hidden items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
+                                        <i class="fa-solid fa-vibration text-xs text-white/50"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: Primary Action (Ash It) -->
+                            <div class="pointer-events-auto">
+                                <button type="button" onclick="handleMainAction()" id="btn-main-action"
+                                    class="h-10 px-6 sm:px-8 rounded-full uppercase tracking-[0.2em] text-[10px] sm:text-xs font-bold active:scale-95 transition-all bg-white/10 text-white hover:bg-white/20 flex items-center justify-center border border-white/20 shadow-lg backdrop-blur-md">
+                                    <span>Ash It</span>
+                                    <i class="fa-solid fa-fire ml-2 opacity-50"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Audio Recorder Interface -->
@@ -362,20 +372,11 @@
                     </div>
                 </div>
 
-                <div id="burn-action"
-                    class="w-full max-w-5xl px-0 py-4 mx-auto transition-all duration-700 relative z-10">
-                    <button type="button" onclick="handleMainAction()" id="btn-main-action"
-                        class="w-full h-14 rounded-[40px] uppercase tracking-[0.4em] text-base active:scale-95 transition-all glass-card text-text-light/20 flex items-center justify-center">
-                        <span>Ash It</span>
-                        <kbd
-                            class="ml-2 opacity-50 text-[11px] border border-white/20 px-1.5 py-0.5 rounded font-medium pointer-events-none tracking-normal hidden md:inline-block">⌘
-                            / Ctrl + ⏎</kbd>
-                    </button>
-                </div>
+                <!-- Removed external #burn-action to consolidate buttons inside #editor-card -->
 
                 <!-- Marketing Card (Hidden) -->
                 <div id="burn-marketing"
-                    class="hidden w-full max-w-5xl pt-0 mx-auto animate-fly-top relative z-10 px-0">
+                    class="hidden w-full max-w-5xl pt-0 mt-8 md:mt-12 mx-auto animate-fly-top relative z-10 px-0">
                     <div
                         class="white-glass-card rounded-[40px] p-4 text-center space-y-4 relative overflow-hidden border-none">
                         <!-- Card Background Image -->
@@ -587,6 +588,95 @@
         </section>
 
     </main>
+
+    <!-- Global Feedback Button -->
+    <button onclick="toggleFeedbackModal(true)" id="btn-global-feedback"
+        class="fixed bottom-6 right-6 z-[100] w-12 h-12 rounded-full glass-card border border-white/10 flex items-center justify-center text-white/50 hover:text-white/90 hover:bg-white/10 hover:scale-110 active:scale-95 transition-all shadow-card-elevated backdrop-blur-md cursor-pointer group/feedback"
+        aria-label="Give Feedback" title="Give Feedback">
+        <i class="fa-regular fa-comment text-lg"></i>
+        <!-- Tooltip -->
+        <span
+            class="absolute right-[120%] mr-3 whitespace-nowrap bg-black/80 text-white text-[10px] uppercase tracking-wider font-bold py-1.5 px-3 rounded-lg opacity-0 group-hover/feedback:opacity-100 transition-opacity pointer-events-none hidden md:block border border-white/10">Feedback</span>
+    </button>
+
+    <!-- Feedback Modal -->
+    <div id="feedback-modal"
+        class="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
+            onclick="toggleFeedbackModal(false)"></div>
+
+        <!-- Modal Content -->
+        <div class="relative z-10 w-[90%] max-w-md mx-auto glass-card rounded-[32px] border border-white/10 p-6 md:p-8 transform scale-95 opacity-0 transition-all duration-300 shadow-2xl overflow-hidden pointer-events-auto"
+            id="feedback-modal-content">
+
+            <div class="flex justify-between items-start mb-6 pt-2">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-light tracking-tight text-white mb-1">Your Voice</h2>
+                    <p class="text-[9px] text-white/40 uppercase tracking-widest font-bold">Help shape the Void</p>
+                </div>
+                <button onclick="toggleFeedbackModal(false)"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors text-white/40 hover:text-white cursor-pointer">
+                    <i class="fa-solid fa-times text-xs"></i>
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Ash It Rating -->
+                <div class="flex flex-col gap-3">
+                    <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-nexus-orange opacity-90">Rate
+                        "Ash It" Experience</label>
+                    <div class="flex gap-2" id="rating-ash">
+                        <i class="fa-solid fa-star text-white/10 hover:text-nexus-orange/50 cursor-pointer transition-colors text-xl"
+                            data-value="1" onclick="setRating('ash', 1)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-nexus-orange/50 cursor-pointer transition-colors text-xl"
+                            data-value="2" onclick="setRating('ash', 2)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-nexus-orange/50 cursor-pointer transition-colors text-xl"
+                            data-value="3" onclick="setRating('ash', 3)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-nexus-orange/50 cursor-pointer transition-colors text-xl"
+                            data-value="4" onclick="setRating('ash', 4)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-nexus-orange/50 cursor-pointer transition-colors text-xl"
+                            data-value="5" onclick="setRating('ash', 5)"></i>
+                    </div>
+                </div>
+
+                <!-- Air It Rating -->
+                <div class="flex flex-col gap-3">
+                    <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-calm-blue opacity-90">Rate "Air
+                        It" Experience</label>
+                    <div class="flex gap-2" id="rating-air">
+                        <i class="fa-solid fa-star text-white/10 hover:text-calm-blue/50 cursor-pointer transition-colors text-xl"
+                            data-value="1" onclick="setRating('air', 1)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-calm-blue/50 cursor-pointer transition-colors text-xl"
+                            data-value="2" onclick="setRating('air', 2)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-calm-blue/50 cursor-pointer transition-colors text-xl"
+                            data-value="3" onclick="setRating('air', 3)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-calm-blue/50 cursor-pointer transition-colors text-xl"
+                            data-value="4" onclick="setRating('air', 4)"></i>
+                        <i class="fa-solid fa-star text-white/10 hover:text-calm-blue/50 cursor-pointer transition-colors text-xl"
+                            data-value="5" onclick="setRating('air', 5)"></i>
+                    </div>
+                </div>
+
+                <!-- General Feedback -->
+                <div class="flex flex-col gap-3">
+                    <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-white/50">Any other
+                        thoughts?</label>
+                    <textarea id="feedback-text" rows="3" placeholder="Tell us what you love, hate, or wish existed..."
+                        class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-sm font-light text-white placeholder-white/20 focus:outline-none focus:border-white/20 resize-none transition-colors"></textarea>
+                </div>
+
+                <!-- Submit Action -->
+                <button onclick="submitFeedback()" id="btn-submit-feedback"
+                    class="w-full h-12 rounded-[16px] bg-white/10 hover:bg-white/20 text-white text-[10px] uppercase tracking-[0.2em] font-bold transition-all border border-white/10 mt-2 shadow-[0_4px_20px_rgba(255,255,255,0.05)] cursor-pointer">
+                    Send Feedback
+                </button>
+                <div id="feedback-success-msg"
+                    class="h-12 flex items-center justify-center text-xs text-nexus-orange font-bold uppercase tracking-widest opacity-0 transition-opacity hidden">
+                    Message Received</div>
+            </div>
+        </div>
+    </div>
 
     <!-- UI Overlays -->
     <canvas id="burn-canvas" class="fixed inset-0 pointer-events-none z-[999999]"></canvas>
@@ -878,11 +968,11 @@
             ];
 
             const themeColors = [
-                { isCardDark: true, bgClass: 'bg-bg-deep', cardBg: 'bg-text-light/5', textClass: 'text-text-light', dotColor: 'var(--dot-color)', shadowColor: 'rgba(0,0,0,0.05)', uiBg: 'bg-text-light/5', uiBorder: 'border-text-light/5', uiTextMain: 'text-text-light', uiTextDim: 'text-text-light/50' }, // Void
-                { isCardDark: false, bgClass: '!bg-[#fff3e0]/80', cardBg: '!bg-[#fff3e0]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Ivory
-                { isCardDark: false, bgClass: '!bg-[#e5f3f8]/80', cardBg: '!bg-[#e5f3f8]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Mist
-                { isCardDark: false, bgClass: '!bg-[#dadecf]/80', cardBg: '!bg-[#dadecf]', textClass: 'text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Pewter
-                { isCardDark: true, bgClass: '!bg-[#191738]', cardBg: '!bg-white/5', textClass: 'text-gray-200', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.4)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }  // Midnight
+                { isCardDark: true, bgClass: 'bg-bg-deep', cardBg: 'bg-text-light/5', textClass: '!text-white', dotColor: 'var(--dot-color)', shadowColor: 'rgba(0,0,0,0.05)', uiBg: 'bg-text-light/5', uiBorder: 'border-text-light/5', uiTextMain: 'text-text-light', uiTextDim: 'text-text-light/50' }, // Void
+                { isCardDark: false, bgClass: '!bg-[#fff3e0]/80', cardBg: '!bg-[#fff3e0]', textClass: '!text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Ivory
+                { isCardDark: false, bgClass: '!bg-[#e5f3f8]/80', cardBg: '!bg-[#e5f3f8]', textClass: '!text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Mist
+                { isCardDark: false, bgClass: '!bg-[#dadecf]/80', cardBg: '!bg-[#dadecf]', textClass: '!text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Pewter
+                { isCardDark: true, bgClass: '!bg-[#191738]', cardBg: '!bg-white/5', textClass: '!text-white', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.4)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }  // Midnight
             ];
 
             const fontFamilies = [
@@ -937,6 +1027,9 @@
                     initCalmPresets();
                     runCalmLoop();
                 }
+                const toolbar = document.querySelector('#editor-card > .absolute.bottom-0');
+                if (toolbar) toolbar.classList.remove('opacity-0', 'pointer-events-none');
+
                 if (viewId === 'burn') {
                     setupCanvas();
                     // Always show canvas on burn page for scraping effect
@@ -1153,13 +1246,10 @@
                         const footer = document.getElementById('ash-footer');
                         if (footer) footer.classList.add('hidden');
 
-                        // Sync scroll with fly-in
-                        const wrapper = mkt.closest('.scroll-wrapper');
-                        if (wrapper) {
-                            setTimeout(() => {
-                                wrapper.scrollTo({ top: wrapper.scrollHeight, behavior: 'smooth' });
-                            }, 500);
-                        }
+                        // Sync scroll with fly-in safely
+                        setTimeout(() => {
+                            mkt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 500);
                     }, 1000);
                     return;
                 }
@@ -1186,6 +1276,10 @@
                 // Start animation loop immediately for flare
                 state.burnProgress = 0;
                 requestAnimationFrame(animateBurn);
+
+                // Hide inner toolbar during burn
+                const toolbar = document.querySelector('#editor-card > .absolute.bottom-0');
+                if (toolbar) toolbar.classList.add('opacity-0', 'pointer-events-none');
 
                 // HIGH-SPEED CUSTOM TEXT RENDERER
                 // Bypasses the synchronous layout engine lag of html2canvas entirely
@@ -1294,12 +1388,9 @@
                     const footer = document.getElementById('ash-footer');
                     if (footer) footer.classList.add('hidden');
 
-                    const wrapper = mkt.closest('.scroll-wrapper');
-                    if (wrapper) {
-                        setTimeout(() => {
-                            wrapper.scrollTo({ top: wrapper.scrollHeight, behavior: 'smooth' });
-                        }, 500);
-                    }
+                    setTimeout(() => {
+                        mkt.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 500);
                     return;
                 }
 
@@ -1685,10 +1776,10 @@
                     state.el.editorCard.classList.remove('is-burning');
 
                     // Re-apply current settings to ensure consistency
-                    changeTextSize(state.textSizeIndex);
-                    changeThemeColor(state.themeColorIndex);
-                    document.getElementById('burn-action').classList.remove('hidden');
-                    document.getElementById('burn-action').style.opacity = '1';
+                    const toolbar = document.querySelector('#editor-card > .absolute.bottom-0');
+                    if (toolbar) {
+                        toolbar.classList.remove('opacity-0', 'pointer-events-none');
+                    }
                     document.getElementById('burn-marketing').classList.add('hidden');
                     const footer = document.getElementById('ash-footer');
                     if (footer) footer.classList.remove('hidden');
@@ -2089,14 +2180,19 @@
 
             function toggleEditorMenu() {
                 const group = document.getElementById('editor-controls-group');
+                // Ensure the 'flex' class is added on mobile when not hidden
                 if (group.classList.contains('hidden')) {
                     group.classList.remove('hidden');
+                    group.classList.add('flex');
                     // Small delay to allow CSS transition
                     setTimeout(() => group.classList.remove('opacity-0'), 10);
                 } else {
                     group.classList.add('opacity-0');
                     setTimeout(() => {
-                        if (group.classList.contains('opacity-0')) group.classList.add('hidden');
+                        if (group.classList.contains('opacity-0')) {
+                            group.classList.add('hidden');
+                            group.classList.remove('flex');
+                        }
                     }, 300);
                 }
             }
@@ -2281,7 +2377,6 @@
                 // Remove current classes
                 view.classList.remove(themeColors[state.themeColorIndex].bgClass);
                 card.classList.remove(themeColors[state.themeColorIndex].cardBg);
-                area.classList.remove(themeColors[state.themeColorIndex].textClass);
 
                 // Card no longer has theme bg directly (it's glass now)
 
@@ -2295,7 +2390,6 @@
                 // Add new classes
                 view.classList.add(themeColors[state.themeColorIndex].bgClass);
                 card.classList.add(themeColors[state.themeColorIndex].cardBg);
-                area.classList.add(themeColors[state.themeColorIndex].textClass);
 
                 // Update CSS Variable for dot pattern and shadow
                 view.style.setProperty('--dot-color', themeColors[state.themeColorIndex].dotColor);
@@ -2313,6 +2407,9 @@
                 }
 
                 // Adaptive properties based on actual darkness
+                // Adaptive properties based on actual darkness
+                document.body.setAttribute('data-theme-context', isActualDark ? 'dark' : 'light');
+
                 const activeUiBg = isActualDark ? 'bg-white/5' : 'bg-black/5';
                 const activeUiBorder = isActualDark ? 'border-white/5' : 'border-black/5';
                 const activeHover = isActualDark ? 'hover:bg-white/10' : 'hover:bg-black/10';
@@ -2335,6 +2432,7 @@
 
                 const textNodes = [
                     document.getElementById('ui-text-project'),
+                    document.getElementById('burn-area'),
                     ...document.querySelectorAll('#view-burn h1, #view-burn h1 span, #view-burn p')
                 ];
 
@@ -2365,10 +2463,10 @@
                 // 3. Main UI Text
                 textNodes.forEach(el => {
                     if (!el) return;
-                    el.classList.remove('text-white', 'text-black', 'text-text-light');
+                    el.classList.remove('text-white', 'text-black', 'text-text-light', '!text-white', '!text-gray-900', '!text-gray-200');
                     el.classList.add(activeTextMain);
-                    // Force high contrast for headings and paragraphs
-                    if (el.tagName === 'H1' || el.tagName === 'P' || el.tagName === 'SPAN') {
+                    // Force high contrast for headings, paragraphs, and textareas
+                    if (el.tagName === 'H1' || el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'TEXTAREA') {
                         el.style.color = isActualDark ? 'rgba(255,255,255,0.95)' : 'rgba(0,0,0,0.95)';
                         // Handle shiny tagline gradient override
                         if (el.id === 'shiny-tagline-burn') {
@@ -2570,10 +2668,11 @@
                 const btn = document.getElementById('btn-main-action');
                 if (!btn) return;
                 if (style === 'secondary') {
-                    btn.classList.add('glass-card', 'text-text-light/30', 'btn-secondary');
-                    btn.classList.remove('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]', 'opacity-50');
+                    btn.classList.add('glass-card', 'btn-secondary', 'opacity-50', 'bg-white/10', 'hover:bg-white/20');
+                    btn.classList.remove('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]', 'text-black', 'text-white/80', 'text-black/80');
                 } else {
-                    btn.classList.remove('glass-card', 'text-text-light/30', 'opacity-50', 'btn-secondary');
+                    btn.classList.remove('glass-card', 'opacity-50', 'btn-secondary', 'bg-white/10', 'hover:bg-white/20');
+                    // Text color is explicitly white for primary orange button
                     btn.classList.add('bg-nexus-orange', 'text-white', 'shadow-[0_0_30px_rgba(255,68,0,0.3)]', 'hover:shadow-[0_0_50px_rgba(255,68,0,0.5)]');
                 }
             }
@@ -2641,6 +2740,75 @@
             window.resetMode = resetMode;
             window.stopRecording = stopRecording;
             window.state = state;
+
+            // --- FEEDBACK LOGIC ---
+            const stateRatings = { ash: 0, air: 0 };
+
+            function toggleFeedbackModal(show) {
+                const modal = document.getElementById('feedback-modal');
+                const content = document.getElementById('feedback-modal-content');
+                if (show) {
+                    modal.classList.remove('hidden');
+                    // Force reflow
+                    void modal.offsetWidth;
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                } else {
+                    modal.classList.add('opacity-0');
+                    content.classList.remove('scale-100', 'opacity-100');
+                    content.classList.add('scale-95', 'opacity-0');
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300);
+                }
+            }
+            window.toggleFeedbackModal = toggleFeedbackModal;
+
+            function setRating(tool, value) {
+                stateRatings[tool] = value;
+                const stars = document.querySelectorAll(`#rating-${tool} i`);
+                const activeColor = tool === 'ash' ? 'text-nexus-orange' : 'text-calm-blue';
+                stars.forEach((star, index) => {
+                    if (index < value) {
+                        star.classList.remove('text-white/10');
+                        star.classList.add(activeColor);
+                        star.style.textShadow = `0 0 10px var(--${tool === 'ash' ? 'nexus-orange' : 'calm-blue'})`;
+                        star.classList.add('scale-110');
+                    } else {
+                        star.classList.remove(activeColor, 'scale-110');
+                        star.classList.add('text-white/10');
+                        star.style.textShadow = 'none';
+                    }
+                });
+            }
+            window.setRating = setRating;
+
+            function submitFeedback() {
+                const btn = document.getElementById('btn-submit-feedback');
+                const msg = document.getElementById('feedback-success-msg');
+                const text = document.getElementById('feedback-text').value;
+
+                // Pretending it is submitting via API
+                console.log("Feedback submitted:", { ratings: stateRatings, text });
+
+                btn.classList.add('hidden');
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.remove('opacity-0'), 10);
+
+                setTimeout(() => {
+                    toggleFeedbackModal(false);
+                    // Reset modal state
+                    setTimeout(() => {
+                        setRating('ash', 0);
+                        setRating('air', 0);
+                        document.getElementById('feedback-text').value = '';
+                        btn.classList.remove('hidden');
+                        msg.classList.add('opacity-0', 'hidden');
+                    }, 300);
+                }, 2000);
+            }
+            window.submitFeedback = submitFeedback;
 
             // --- END CORE ---
 

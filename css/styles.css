@@ -513,6 +513,14 @@ body.light-theme textarea::placeholder {
     opacity: 0.25;
 }
 
+body[data-theme-context="light"] textarea::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+body[data-theme-context="dark"] textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
 input::placeholder {
     color: var(--text-dim);
     opacity: 0.4;
@@ -596,6 +604,65 @@ body:not(.light-theme) #waitlist-email-inline::placeholder {
 .shiny-button-fix {
     position: relative;
     overflow: hidden;
+}
+
+/* Fix Editor Controls Visibility based on contextual background */
+body[data-theme-context="light"] .editor-control i,
+body[data-theme-context="light"] .editor-control button,
+body[data-theme-context="light"] #ui-btn-mode,
+body[data-theme-context="light"] #ui-btn-mode i,
+body[data-theme-context="light"] #btn-mobile-menu i {
+    color: rgba(0, 0, 0, 0.6) !important;
+}
+
+body[data-theme-context="light"] .editor-control:hover i,
+body[data-theme-context="light"] .editor-control button:hover,
+body[data-theme-context="light"] #ui-btn-mode:hover,
+body[data-theme-context="light"] #btn-mobile-menu:hover i {
+    color: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Fix main "Ash It" button text color based on actual card background context */
+body[data-theme-context="light"] #btn-main-action.btn-secondary {
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+
+body[data-theme-context="light"] #btn-main-action:not(.btn-secondary) {
+    color: #ffffff !important;
+}
+
+body[data-theme-context="dark"] #btn-main-action.btn-secondary {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+body[data-theme-context="dark"] #btn-main-action:not(.btn-secondary) {
+    color: #ffffff !important;
+}
+
+/* Context specific border/bg for small buttons in editor */
+body[data-theme-context="light"] .editor-control,
+body[data-theme-context="light"] #ui-btn-mode,
+body[data-theme-context="light"] #btn-mobile-menu {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body[data-theme-context="light"] .editor-control:hover,
+body[data-theme-context="light"] #ui-btn-mode:hover,
+body[data-theme-context="light"] #btn-mobile-menu:hover {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Fix Feedback Icon Visibility in Light Mode */
+body[data-theme-context="light"] #btn-global-feedback {
+    color: rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body[data-theme-context="light"] #btn-global-feedback:hover {
+    color: rgba(0, 0, 0, 0.9) !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 .shiny-button-fix::after {
