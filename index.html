@@ -672,8 +672,14 @@
                     Send Feedback
                 </button>
                 <div id="feedback-success-msg"
-                    class="h-12 flex items-center justify-center text-xs text-nexus-orange font-bold uppercase tracking-widest opacity-0 transition-opacity hidden">
-                    Message Received</div>
+                    class="h-[80px] flex flex-col items-center justify-center gap-3 opacity-0 transition-opacity hidden mt-2">
+                    <div class="text-xs text-nexus-orange font-bold uppercase tracking-widest"><i
+                            class="fa-solid fa-check mr-2"></i> Received. Thank you.</div>
+                    <button onclick="toggleFeedbackModal(false); toggleWaitlist(true);"
+                        class="text-[10px] uppercase tracking-[0.2em] font-normal text-white/50 hover:text-white transition-colors border-b border-white/20 hover:border-white pb-1">
+                        Join the Waitlist
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -2784,29 +2790,56 @@
             }
             window.setRating = setRating;
 
+            // -- GOOGLE SHEETS SETUP --
+            // Replace this URL with your custom Google Apps Script Web App URL
+            const GOOGLE_SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwmNf40Qhoyg5Izs8fZ8XeAU6heN6NkIkYgqkcY7Bk6YromeJeMIrvDgGVtf2tLpzWT/exec";
+
             function submitFeedback() {
                 const btn = document.getElementById('btn-submit-feedback');
                 const msg = document.getElementById('feedback-success-msg');
                 const text = document.getElementById('feedback-text').value;
 
-                // Pretending it is submitting via API
-                console.log("Feedback submitted:", { ratings: stateRatings, text });
+                btn.innerText = "Sending...";
+                btn.style.opacity = 0.5;
+                btn.disabled = true;
 
-                btn.classList.add('hidden');
-                msg.classList.remove('hidden');
-                setTimeout(() => msg.classList.remove('opacity-0'), 10);
+                // Create a FormData object to send to Apps Script
+                const formData = new FormData();
+                formData.append('date', new Date().toISOString());
+                formData.append('ash_rating', stateRatings['ash']);
+                formData.append('air_rating', stateRatings['air']);
+                formData.append('feedback_text', text);
 
-                setTimeout(() => {
-                    toggleFeedbackModal(false);
-                    // Reset modal state
+                // Send silently in background
+                fetch(GOOGLE_SHEETS_WEBAPP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Bypasses CORS issues
+                    body: formData
+                }).then(() => {
+                    // Show success
+                    btn.classList.add('hidden');
+                    msg.classList.remove('hidden');
+                    setTimeout(() => msg.classList.remove('opacity-0'), 10);
+
+                    // We no longer auto-close the modal so they can click the Waitlist button
+                    // But we still reset the form state secretly in the background after 5 seconds just in case they reopen it later
                     setTimeout(() => {
                         setRating('ash', 0);
                         setRating('air', 0);
                         document.getElementById('feedback-text').value = '';
                         btn.classList.remove('hidden');
+                        btn.innerText = "Send Feedback";
+                        btn.style.opacity = 1;
+                        btn.disabled = false;
                         msg.classList.add('opacity-0', 'hidden');
-                    }, 300);
-                }, 2000);
+                    }, 10000); // Reset behind the scenes after 10 seconds
+                }).catch(error => {
+                    console.error("Error submitting feedback:", error);
+                    // Reset on error so they can try again
+                    btn.innerText = "Send Feedback";
+                    btn.style.opacity = 1;
+                    btn.disabled = false;
+                });
             }
             window.submitFeedback = submitFeedback;
 
