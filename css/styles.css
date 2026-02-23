@@ -284,6 +284,50 @@ body.light-theme .hero-bg-media canvas {
             transparent 60%);
 }
 
+@media (max-width: 768px) {
+    .hero-bg-media canvas {
+        top: 45% !important;
+        /* Slightly higher base positioning */
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 90vw !important;
+        /* Slightly inset from edges */
+        height: 75vh !important;
+        /* Significantly reduce the height footprint */
+        object-fit: contain !important;
+        /* Fit everything without cropping */
+        object-position: center bottom !important;
+        /* Steeper fade out on top/bottom to match reduced height */
+        -webkit-mask-image: radial-gradient(ellipse 90% 80% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.5) 45%,
+                rgba(0, 0, 0, 0.1) 65%,
+                transparent 80%);
+        mask-image: radial-gradient(ellipse 90% 80% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.5) 45%,
+                rgba(0, 0, 0, 0.1) 65%,
+                transparent 80%);
+    }
+
+    body.light-theme .hero-bg-media canvas {
+        -webkit-mask-image: radial-gradient(ellipse 90% 80% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.4) 40%,
+                rgba(0, 0, 0, 0.1) 60%,
+                transparent 75%);
+        mask-image: radial-gradient(ellipse 90% 80% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.4) 40%,
+                rgba(0, 0, 0, 0.1) 60%,
+                transparent 75%);
+    }
+}
+
 /* Interactive Controls */
 .editor-control {
     cursor: pointer !important;
