@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v40'; // Adjusted ctrl+enter icon rotation and layout
+const CACHE_NAME = 'release-cache-v41'; // Refined mobile waitlist and icon orientations
 const ASSETS = [
     'index.html',
     'css/styles.css',
