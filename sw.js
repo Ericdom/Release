@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v44'; // Enhanced Navbar links, waitlist validation, and added CSP headers
+const CACHE_NAME = 'release-cache-v45'; // Added PWA Install UI modal, navbar button, and beforeinstallprompt logic
 const ASSETS = [
     'index.html',
     'css/styles.css',

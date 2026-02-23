@@ -117,6 +117,10 @@
                     <button id="nav-link-ash" onclick="navigate('burn')"
                         class="hidden text-[11px] font-black uppercase tracking-[0.2em] text-nexus-orange opacity-70 hover:opacity-100 transition-all cursor-pointer">Ash
                         It</button>
+                    <button id="nav-btn-install" onclick="promptInstall()"
+                        class="hidden text-[10px] font-black uppercase tracking-[0.2em] bg-white text-black px-3 py-1.5 rounded-full hover:bg-gray-200 transition-all cursor-pointer shadow-[0_2px_10px_rgba(255,255,255,0.2)] sm:ml-2 border border-black/10">
+                        Install
+                    </button>
                 </div>
 
                 <button type="button" onclick="toggleFireAnimation()" aria-label="Toggle Fire Animation"
@@ -717,6 +721,47 @@
                     </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Install Modal -->
+    <div id="install-modal"
+        class="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
+            onclick="toggleInstallModal(false)"></div>
+
+        <!-- Modal Content -->
+        <div class="relative z-10 w-[90%] max-w-sm mx-auto white-glass-card rounded-[40px] p-6 md:p-8 transform scale-95 opacity-0 transition-all duration-300 shadow-2xl overflow-hidden pointer-events-auto text-center"
+            id="install-modal-content">
+
+            <div class="flex justify-between items-start absolute top-6 right-6 z-50">
+                <button onclick="toggleInstallModal(false)"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors text-white/40 hover:text-white cursor-pointer">
+                    <i class="fa-solid fa-times text-xs"></i>
+                </button>
+            </div>
+
+            <div class="mb-6 mt-2 relative z-10">
+                <div
+                    class="w-16 h-16 mx-auto bg-black rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-white/10 overflow-hidden">
+                    <i class="fa-solid fa-mobile-screen text-2xl text-white/80"></i>
+                </div>
+                <h2 class="text-xl md:text-2xl font-light tracking-tight text-white mb-2">Install Release</h2>
+                <p class="text-[9px] text-white/40 uppercase tracking-widest font-bold mb-4">A faster, immersive void
+                </p>
+                <p class="text-sm text-white/60 font-light leading-relaxed">Add Release to your home screen for instant
+                    access, offline support, and a distraction-free experience.</p>
+            </div>
+
+            <button onclick="promptInstall()"
+                class="w-full h-12 rounded-[16px] bg-white text-black hover:bg-gray-200 text-[10px] uppercase tracking-[0.2em] font-black transition-all mt-4 shadow-[0_4px_20px_rgba(255,255,255,0.2)] cursor-pointer">
+                Install Now
+            </button>
+            <button onclick="toggleInstallModal(false)"
+                class="w-full h-10 mt-2 text-[9px] uppercase tracking-[0.2em] font-normal text-white/40 hover:text-white transition-colors cursor-pointer">
+                Maybe Later
+            </button>
         </div>
     </div>
 
@@ -2329,6 +2374,66 @@
                     }
                 });
             }
+
+            // --- PWA Installation Modal & Logic ---
+            let deferredPrompt;
+            const installModal = document.getElementById('install-modal');
+            const installModalContent = document.getElementById('install-modal-content');
+
+            function toggleInstallModal(show) {
+                if (show) {
+                    installModal.classList.remove('hidden');
+                    installModal.classList.add('pointer-events-auto');
+                    // Small delay to allow CSS transition
+                    setTimeout(() => {
+                        installModal.classList.remove('opacity-0');
+                        installModalContent.classList.remove('scale-95', 'opacity-0');
+                    }, 10);
+                    track('Install Modal Viewed');
+                } else {
+                    installModal.classList.remove('pointer-events-auto');
+                    installModal.classList.add('opacity-0');
+                    installModalContent.classList.add('scale-95', 'opacity-0');
+                    setTimeout(() => installModal.classList.add('hidden'), 300);
+                }
+            }
+            window.toggleInstallModal = toggleInstallModal;
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent the mini-infobar from appearing on mobile
+                e.preventDefault();
+                // Stash the event so it can be triggered later.
+                deferredPrompt = e;
+
+                // Show the Install button in the navbar
+                const navBtn = document.getElementById('nav-btn-install');
+                if (navBtn) {
+                    navBtn.classList.remove('hidden');
+                }
+
+                // Automatically show the popup on first visit
+                if (!localStorage.getItem('release-install-prompted')) {
+                    setTimeout(() => {
+                        toggleInstallModal(true);
+                        localStorage.setItem('release-install-prompted', 'true');
+                    }, 3500); // Wait 3.5s before interrupting
+                }
+            });
+
+            async function promptInstall() {
+                if (deferredPrompt) {
+                    toggleInstallModal(false);
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    track(`Install Prompt Result: ${outcome}`);
+                    deferredPrompt = null;
+                    const navBtn = document.getElementById('nav-btn-install');
+                    if (navBtn && outcome === 'accepted') {
+                        navBtn.classList.add('hidden');
+                    }
+                }
+            }
+            window.promptInstall = promptInstall;
 
             // Resize handler
             window.addEventListener('resize', setupCanvas);
