@@ -776,10 +776,11 @@
             float n2 = fbm(noiseUv * 6.0 - vec2(0.0, t * 3.0)) * 2.0 - 1.0;
             
             // Atmospheric subtle flames at bottom
-            float vShift = 0.15 + (1.0 - uIntensity) * 0.1; 
-            float fireBase = smoothstep(0.4 * uIntensity, 0.0, uv.y + vShift + n * 0.25 * uIntensity);
-            float fireCore = smoothstep(0.2 * uIntensity, 0.0, uv.y + vShift + n2 * 0.15 * uIntensity);
-            float fireWhiteCore = smoothstep(0.05 * uIntensity, 0.0, uv.y + vShift + (n * n2) * 0.1 * uIntensity);
+            // Increased baseline shift and intensity multiplier to lift flames higher on the screen
+            float vShift = 0.40 + (1.0 - uIntensity) * 0.15; 
+            float fireBase = smoothstep(0.4 * uIntensity, 0.0, uv.y + vShift + n * 0.3 * uIntensity);
+            float fireCore = smoothstep(0.2 * uIntensity, 0.0, uv.y + vShift + n2 * 0.18 * uIntensity);
+            float fireWhiteCore = smoothstep(0.05 * uIntensity, 0.0, uv.y + vShift + (n * n2) * 0.12 * uIntensity);
             
             // Modern, vibrant, non-washed color palette
             vec3 fireRed = vec3(0.95, 0.1, 0.02);    // Visceral tight red
@@ -1430,7 +1431,7 @@
 
                 // Only increment progress if we have a texture (capture complete)
                 if (state.burnTexture) {
-                    state.burnProgress += 0.016; // Increment faster to avoid lagging
+                    state.burnProgress += 0.013; // Slower than 0.016 previously, faster than original 0.012 for the safe "sweet spot"
                 }
 
                 // Substantially reduce the completion threshold to avoid "blank screen" dead zones

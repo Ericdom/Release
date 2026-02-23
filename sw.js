@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v31'; // Fire visibility and timing fixes
+const CACHE_NAME = 'release-cache-v32'; // WebGL timing and flame shift adjustments
 const ASSETS = [
     'index.html',
     'css/styles.css',
