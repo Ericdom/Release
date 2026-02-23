@@ -335,7 +335,15 @@
                                     <!-- Mobile Haptic Toggle -->
                                     <div id="ctrl-haptic-mobile" onclick="toggleHaptics()"
                                         class="editor-control flex md:hidden items-center bg-white/5 rounded-full px-3.5 h-10 border border-white/5 backdrop-blur-md transition-all duration-300 hover:bg-white/10 cursor-pointer">
-                                        <i class="fa-solid fa-wave-square text-xs text-white/50"></i>
+                                        <svg id="icon-haptic-mobile" width="14" height="14" viewBox="0 0 24 24"
+                                            fill="none" class="text-white/50 transition-colors duration-300"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <rect x="7" y="2" width="10" height="20" rx="3"></rect>
+                                            <path d="M10 18h4"></path>
+                                            <path d="M 4 8 Q 2 10 4 12 Q 6 14 4 16"></path>
+                                            <path d="M 20 8 Q 22 10 20 12 Q 18 14 20 16"></path>
+                                        </svg>
                                     </div>
                                 </div>
                             </div>
@@ -416,7 +424,8 @@
                                             class="flex-1 bg-transparent px-4 sm:px-6 md:px-8 py-2 sm:py-3.5 text-xs sm:text-sm font-light tracking-wide focus:outline-none text-black placeholder:text-black/40 border-none outline-none text-left">
                                         <button type="button" onclick="submitInlineWaitlist()"
                                             class="group/waitlist-btn bg-black text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-base transition-all hover:bg-zinc-900 active:scale-[0.97] flex items-center justify-center gap-0 hover:gap-2 sm:hover:gap-3 shrink-0">
-                                            <span class="whitespace-nowrap">Join Waitlist</span>
+                                            <span class="whitespace-nowrap hidden sm:inline">Join Waitlist</span>
+                                            <span class="whitespace-nowrap sm:hidden">Join</span>
                                             <i
                                                 class="fa-solid fa-arrow-right opacity-0 w-0 group-hover/waitlist-btn:opacity-100 group-hover/waitlist-btn:w-auto transition-all duration-300 text-[10px] sm:text-xs hidden sm:inline-block"></i>
                                         </button>
@@ -1546,7 +1555,7 @@
                     btn.classList.add(isActualDark ? 'bg-white/5' : 'bg-black/5', 'opacity-70');
 
                     // Update Main Button for Text
-                    document.getElementById('btn-main-action').innerHTML = `<i class="fa-solid fa-fire mr-2 opacity-80"></i><span>Ash It</span><span class="hidden lg:inline-flex items-center opacity-100 mx-2 gap-1.5 translate-y-[1px]"><span class="text-[12px] font-sans">⌘</span><i class="fa-solid fa-plus text-[8px] opacity-70"></i><i class="fa-solid fa-arrow-turn-down fa-rotate-270 text-[12px] translate-y-[2px]"></i></span>`;
+                    document.getElementById('btn-main-action').innerHTML = `<i class="fa-solid fa-fire mr-2 opacity-80"></i><span>Ash It</span><span class="hidden lg:inline-flex items-center opacity-100 mx-2 gap-1.5 translate-y-[1px]"><span class="text-[12px] font-sans">⌘</span><i class="fa-solid fa-plus text-[8px] opacity-70"></i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" class="translate-y-[1px]" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 10l-5 5 5 5"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg></span>`;
 
                     audioWrapper.classList.add('opacity-0');
                     setTimeout(() => {
@@ -1837,7 +1846,7 @@
 
                     // Reset Button Style & Text
                     if (state.mode === 'text') {
-                        state.el.mainBtn.innerHTML = `<i class="fa-solid fa-fire mr-2 opacity-80"></i><span>Ash It</span><span class="hidden lg:inline-flex items-center opacity-100 mx-2 gap-1.5 translate-y-[1px]"><span class="text-[12px] font-sans">⌘</span><i class="fa-solid fa-plus text-[8px] opacity-70"></i><i class="fa-solid fa-arrow-turn-down fa-rotate-270 text-[12px] translate-y-[2px]"></i></span>`;
+                        state.el.mainBtn.innerHTML = `<i class="fa-solid fa-fire mr-2 opacity-80"></i><span>Ash It</span><span class="hidden lg:inline-flex items-center opacity-100 mx-2 gap-1.5 translate-y-[1px]"><span class="text-[12px] font-sans">⌘</span><i class="fa-solid fa-plus text-[8px] opacity-70"></i><svg width="11" height="11" viewBox="0 0 24 24" fill="none" class="translate-y-[1px]" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 10l-5 5 5 5"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg></span>`;
                     } else {
                         state.el.mainBtn.innerText = "RECORD";
                     }
@@ -2390,14 +2399,31 @@
 
             function toggleHaptics() {
                 state.hapticsEnabled = !state.hapticsEnabled;
+
+                // Update new mobile haptic icon
+                const iconMobile = document.getElementById('icon-haptic-mobile');
+                if (iconMobile) {
+                    if (state.hapticsEnabled) {
+                        iconMobile.classList.remove('text-white/50');
+                        iconMobile.classList.add('text-white', 'drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]');
+                        if (navigator.vibrate) navigator.vibrate(50);
+                    } else {
+                        iconMobile.classList.add('text-white/50');
+                        iconMobile.classList.remove('text-white', 'drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]');
+                    }
+                }
+
+                // Legacy button
                 const btn = document.getElementById('ui-btn-haptic');
-                if (state.hapticsEnabled) {
-                    btn.classList.add('opacity-100');
-                    btn.classList.remove('opacity-40');
-                    if (navigator.vibrate) navigator.vibrate(50);
-                } else {
-                    btn.classList.remove('opacity-100');
-                    btn.classList.add('opacity-40');
+                if (btn) {
+                    if (state.hapticsEnabled) {
+                        btn.classList.add('opacity-100');
+                        btn.classList.remove('opacity-40');
+                        if (navigator.vibrate && !iconMobile) navigator.vibrate(50);
+                    } else {
+                        btn.classList.remove('opacity-100');
+                        btn.classList.add('opacity-40');
+                    }
                 }
                 track(`Haptics Toggled: ${state.hapticsEnabled}`);
             }

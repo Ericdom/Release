@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v41'; // Refined mobile waitlist and icon orientations
+const CACHE_NAME = 'release-cache-v43'; // Replaced mobile Haptic icon with custom SVG and added toggle highlight
 const ASSETS = [
     'index.html',
     'css/styles.css',
