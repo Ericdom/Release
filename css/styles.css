@@ -142,18 +142,6 @@ body.light-theme .glass-card {
     box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* Forced Theme Variants for Feedback Modal */
-.white-glass-card-dark {
-    background: rgba(0, 0, 0, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-.white-glass-card-light {
-    background: rgba(255, 255, 255, 0.85) !important;
-    border: 1px solid rgba(0, 0, 0, 0.12) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
-}
-
 /* Animated Gradient Border Layer */
 .white-glass-card::after {
     content: "";
@@ -178,13 +166,40 @@ body.light-theme .glass-card {
     mask-composite: exclude;
     pointer-events: none;
     animation: flow-border 20s linear infinite;
-    opacity: 0.58;
-    /* Reduced to ~58% for elegant integration */
+    opacity: 0.50;
+    /* Reduced to 50% for elegant integration */
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     /* Enhanced blurry-glass edge */
     will-change: transform, opacity;
     transition: opacity 0.3s ease;
+}
+
+/* Responsive Overrides for Modal Borders */
+@media (max-width: 768px) {
+
+    /* Mobile: Waitlist is minimal clean glass */
+    .white-glass-card::after {
+        display: none !important;
+    }
+
+    .white-glass-card {
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Mobile: Feedback is basically borderless / super clean */
+    #feedback-modal-content {
+        border-color: rgba(255, 255, 255, 0.03) !important;
+    }
+}
+
+@media (min-width: 769px) {
+
+    /* Desktop: Feedback gets a subtle visible border so it's not floating empty */
+    #feedback-modal-content {
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
 }
 
 /* Specific override for Waitlist Card (rounded-40px) */
