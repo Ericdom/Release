@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v28'; // Fix WebGL grid glitch on mobile
+const CACHE_NAME = 'release-cache-v29'; // Modern Simplex WebGL Shader
 const ASSETS = [
     'index.html',
     'css/styles.css',

@@ -720,30 +720,78 @@
         uniform float uDpr;
         varying vec2 vUv;
 
-        float hash(vec2 p) {
-            vec3 p3  = fract(vec3(p.xyx) * 0.1031);
-            p3 += dot(p3, p3.yzx + 33.33);
-            return fract((p3.x + p3.y) * p3.z);
+        // Modern 3D Simplex noise for organic, non-pixelated flow
+        vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+        vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+        float snoise(vec3 v) {
+            const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+            const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+
+            vec3 i  = floor(v + dot(v, C.yyy));
+            vec3 x0 = v - i + dot(i, C.xxx);
+
+            vec3 g = step(x0.yzx, x0.xyz);
+            vec3 l = 1.0 - g;
+            vec3 i1 = min(g.xyz, l.zxy);
+            vec3 i2 = max(g.xyz, l.zxy);
+
+            vec3 x1 = x0 - i1 + C.xxx;
+            vec3 x2 = x0 - i2 + C.yyy;
+            vec3 x3 = x0 - D.yyy;
+
+            i = mod289(i);
+            vec4 p = permute(permute(permute(
+                        i.z + vec4(0.0, i1.z, i2.z, 1.0))
+                      + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+                      + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+
+            float n_ = 0.142857142857;
+            vec3  ns = n_ * D.wyz - D.xzx;
+
+            vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+
+            vec4 x_ = floor(j * ns.z);
+            vec4 y_ = floor(j - 7.0 * x_);
+
+            vec4 x = x_ *ns.x + ns.yyyy;
+            vec4 y = y_ *ns.x + ns.yyyy;
+            vec4 h = 1.0 - abs(x) - abs(y);
+
+            vec4 b0 = vec4(x.xy, y.xy);
+            vec4 b1 = vec4(x.zw, y.zw);
+
+            vec4 s0 = floor(b0)*2.0 + 1.0;
+            vec4 s1 = floor(b1)*2.0 + 1.0;
+            vec4 sh = -step(h, vec4(0.0));
+
+            vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+            vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+
+            vec3 p0 = vec3(a0.xy, h.x);
+            vec3 p1 = vec3(a0.zw, h.y);
+            vec3 p2 = vec3(a1.xy, h.z);
+            vec3 p3 = vec3(a1.zw, h.w);
+
+            vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+            p0 *= norm.x;
+            p1 *= norm.y;
+            p2 *= norm.z;
+            p3 *= norm.w;
+
+            vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+            m = m * m;
+            return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
         }
 
-        float noise(vec2 p) {
-            vec2 i = floor(p);
-            vec2 f = fract(p);
-            f = f * f * (3.0 - 2.0 * f);
-            float a = hash(i);
-            float b = hash(i + vec2(1.0, 0.0));
-            float c = hash(i + vec2(0.0, 1.0));
-            float d = hash(i + vec2(1.0, 1.0));
-            return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-        }
-
-        float fbm(vec2 p) {
+        float fbm(vec3 p) {
             float v = 0.0;
             float a = 0.5;
-            vec2 shift = vec2(7.0); // Reduced drastically from 100.0 to prevent mobile precision loss
-            for (int i = 0; i < 5; i++) {
-                v += a * noise(p);
-                p = p * 2.0 + shift;
+            for (int i = 0; i < 4; i++) {
+                v += a * snoise(p);
+                p *= 2.0;
                 a *= 0.5;
             }
             return v;
@@ -759,43 +807,42 @@
             float pixelX = gl_FragCoord.x;
             float pixelY = uResolution.y - gl_FragCoord.y;
             
-            // Normalize UV to prevent massive float values on high-DPR screens
+            // Normalize UV mapping for consistent scale
             float aspect = uResolution.x / uResolution.y;
             vec2 noiseUv = uv * vec2(max(aspect, 1.0), max(1.0 / aspect, 1.0));
 
-            // Original Fire Noise (Max Detail / High Frequency)
-            float n = fbm(noiseUv * 5.0 - vec2(0.0, uTime * 0.8));
-            float n2 = fbm(noiseUv * 10.0 - vec2(0.0, uTime * 2.0));
+            // Time parameters for flow
+            float t = uTime * 0.5;
             
-            // Multi-layered Atmospheric flames (Bottom) - Shrinks and dims slowly
-            float vShift = 0.10 + (1.0 - uIntensity) * 0.05; 
-            float fireBase = smoothstep(0.35 * uIntensity, 0.05 * uIntensity, uv.y + vShift + (n2 - 0.5) * 0.2 * uIntensity);
-            float fireCore = smoothstep(0.2 * uIntensity, 0.0, uv.y + vShift + (n2 - 0.5) * 0.12 * uIntensity);
-            float fireWhiteCore = smoothstep(0.1 * uIntensity, 0.0, uv.y + vShift + (n2 - 0.5) * 0.08 * uIntensity);
+            // Smooth, fluid noise fields
+            float n = fbm(vec3(noiseUv * 3.0 - vec2(0.0, t * 1.5), t * 0.5));
+            float n2 = fbm(vec3(noiseUv * 6.0 - vec2(0.0, t * 3.0), t));
             
-            // Contrast-Adaptive Fire Palette (Vibrant in both modes)
-            vec3 fireRed = vec3(1.0, 0.0, 0.0);
-            vec3 fireOrange = vec3(1.0, 0.3, 0.0);
-            vec3 fireYellow = vec3(1.0, 0.75, 0.0); // Deep Gold/Yellow
-            vec3 fireWhite = vec3(1.0, 0.9, 0.5);  // Peach/White (Warm)
+            // Atmospheric subtle flames at bottom
+            float vShift = 0.15 + (1.0 - uIntensity) * 0.1; 
+            float fireBase = smoothstep(0.4 * uIntensity, 0.0, uv.y + vShift + n * 0.25 * uIntensity);
+            float fireCore = smoothstep(0.2 * uIntensity, 0.0, uv.y + vShift + n2 * 0.15 * uIntensity);
+            float fireWhiteCore = smoothstep(0.05 * uIntensity, 0.0, uv.y + vShift + (n * n2) * 0.1 * uIntensity);
             
-            // Adjust fire colors slightly for light mode if atmospheric intensity is low
+            // Modern, vibrant, non-washed color palette
+            vec3 fireRed = vec3(0.95, 0.1, 0.02);    // Visceral tight red
+            vec3 fireOrange = vec3(1.0, 0.4, 0.0);   // Glowing thick orange
+            vec3 fireYellow = vec3(1.0, 0.85, 0.1);  // Vivid gold core
+            vec3 fireWhite = vec3(1.0, 0.98, 0.8);   // Pure heat white
+            
             if (uIntensity < 0.1) {
-                fireRed = vec3(1.0, 0.1, 0.1);
-                fireOrange = vec3(1.0, 0.4, 0.0);
+                fireRed = vec3(0.9, 0.05, 0.0);
+                fireOrange = vec3(0.95, 0.3, 0.0);
             }
             
             vec3 atmosColor = mix(fireRed, fireOrange, fireBase);
             atmosColor = mix(atmosColor, fireYellow, fireCore);
-            atmosColor = mix(atmosColor, fireWhite, fireWhiteCore * 0.3); // Very little white
+            atmosColor = mix(atmosColor, fireWhite, fireWhiteCore);
             
-            // Intensity calculation - Consistently diminished based on uIntensity
-            float atmosIntensity = clamp(fireBase * 1.5 + fireCore * 0.5 + fireWhiteCore * 0.3, 0.0, 1.0) * uIntensity;
-
-            // Base Atmosphere (The static tips at the bottom - NOT affected by uProgress)
+            float atmosIntensity = clamp(fireBase * 1.2 + fireCore * 0.8 + fireWhiteCore * 0.5, 0.0, 1.0) * uIntensity;
             vec4 colorAtmosBase = vec4(atmosColor, atmosIntensity);
 
-            // Rounded Card Masking (40px radius)
+            // Card masking
             vec2 p = vec2(pixelX, pixelY) - uCardPos;
             vec2 b = uCardSize / 2.0;
             float d = sdRoundedBox(p, b, 40.0 * uDpr);
@@ -805,34 +852,38 @@
                 vec2 textureUv = (p + b) / uCardSize;
                 vec4 texColor = texture2D(uTexture, textureUv);
                 
-                // Randomized Card Burn (Synced with Gallery logic)
-                float cardNoise = fbm(textureUv * 6.0 + uSeed); 
-                float burnThreshold = uProgress * 1.5;
+                // Fluid burn pattern over card
+                float cardNoise = fbm(vec3(textureUv * 3.5 + uSeed, t * 0.8)); 
+                // Sharpen noise to avoid blurry mush
+                cardNoise = smoothstep(-0.2, 0.8, cardNoise) * 0.5 + 0.5; 
                 
-                // Use multiple threshold levels for Red -> Orange -> Yellow
-                float edgeRed = smoothstep(burnThreshold - 0.25, burnThreshold - 0.1, 1.0 - cardNoise);
-                float edgeOrange = smoothstep(burnThreshold - 0.15, burnThreshold - 0.05, 1.0 - cardNoise);
-                float edgeYellow = smoothstep(burnThreshold - 0.05, burnThreshold, 1.0 - cardNoise);
+                float burnThreshold = uProgress * 2.0; // Faster scale to clear
+                float edgeVal = 1.0 - cardNoise;
                 
-                if (1.0 - cardNoise < burnThreshold) {
-                    // Constant Card Intensity (0.9 as per user request)
-                    float cardIntensity = 0.9;
-
-                    // Fire colors for the card burn - Multi-layered Vibrant Mix
-                    vec3 burnFireColor = mix(fireRed, fireOrange, edgeOrange);
-                    burnFireColor = mix(burnFireColor, fireYellow, edgeYellow);
-                    burnFireColor = mix(burnFireColor, fireWhite, smoothstep(0.9, 1.0, edgeYellow) * 0.4);
+                // Tight, crisp edges for the real paper-burn look
+                float burnThickness = 0.15;
+                float edgeRed = smoothstep(burnThreshold - burnThickness, burnThreshold, edgeVal);
+                float edgeOrange = smoothstep(burnThreshold - burnThickness * 0.6, burnThreshold, edgeVal);
+                float edgeYellow = smoothstep(burnThreshold - burnThickness * 0.2, burnThreshold, edgeVal);
+                
+                if (edgeVal < burnThreshold) {
+                    float cardIntensity = 0.95;
                     
-                    // Higher Alpha for Light Mode readability
+                    vec3 burnFireColor = mix(fireRed * 0.5, fireRed, edgeRed); // Darker red charring
+                    burnFireColor = mix(burnFireColor, fireOrange, edgeOrange);
+                    burnFireColor = mix(burnFireColor, fireYellow, edgeYellow);
+                    burnFireColor = mix(burnFireColor, fireWhite, smoothstep(0.9, 1.0, edgeYellow));
+                    
                     float alphaBoost = (uIntensity < 0.1) ? 1.5 : 1.0;
                     float finalAlpha = clamp(atmosIntensity + edgeRed * cardIntensity * alphaBoost, 0.0, 1.0);
 
-                    // Embers at the randomized edge
-                    float emberEdge = smoothstep(burnThreshold - 0.1, burnThreshold, 1.0 - cardNoise) - edgeYellow;
-                    vec3 emberColor = vec3(1.5, 0.4, 0.1) * emberEdge * cardIntensity;
+                    // Hot crisp glowing embers along the extreme edge boundary
+                    float emberEdge = smoothstep(burnThreshold - 0.03, burnThreshold, edgeVal) - smoothstep(burnThreshold, burnThreshold + 0.01, edgeVal);
+                    vec3 emberColor = vec3(1.5, 0.5, 0.1) * emberEdge * 3.0 * cardIntensity; // Overdriven glowing orange
 
-                    // Boost saturation for Light Mode
-                    vec3 finalFireCol = (burnFireColor * (1.2 + edgeYellow * 0.6) + emberColor * 2.0);
+                    vec3 finalFireCol = mix(burnFireColor, texColor.rgb, clamp(1.0 - edgeRed * 2.0, 0.0, 1.0)); // Fade out original image
+                    finalFireCol = finalFireCol + emberColor;
+                    
                     if (uIntensity < 0.1) finalFireCol *= 1.2;
 
                     gl_FragColor = vec4(finalFireCol * cardIntensity, finalAlpha);
@@ -840,7 +891,6 @@
                     gl_FragColor = texColor;
                 }
             } else {
-                // Background stays as the static atmosphere (only the tips)
                 gl_FragColor = colorAtmosBase;
             }
         }
