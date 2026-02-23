@@ -674,3 +674,43 @@ body.light-theme .tiles-container div {
     position: relative;
     z-index: 20;
 }
+
+/* Mobile Optimizations for Backgrounds */
+@media (max-width: 768px) {
+    #view-calm {
+        background-position: center bottom;
+    }
+
+    .hero-bg-media canvas {
+        top: 50%;
+        width: 100vw;
+        height: 100vh;
+        -webkit-mask-image: radial-gradient(ellipse at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 20%,
+                rgba(0, 0, 0, 0.8) 45%,
+                rgba(0, 0, 0, 0.4) 65%,
+                transparent 90%);
+        mask-image: radial-gradient(ellipse at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 20%,
+                rgba(0, 0, 0, 0.8) 45%,
+                rgba(0, 0, 0, 0.4) 65%,
+                transparent 90%);
+    }
+
+    body.light-theme .hero-bg-media canvas {
+        -webkit-mask-image: radial-gradient(ellipse at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 20%,
+                rgba(0, 0, 0, 0.7) 45%,
+                rgba(0, 0, 0, 0.3) 65%,
+                transparent 90%);
+        mask-image: radial-gradient(ellipse at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 20%,
+                rgba(0, 0, 0, 0.7) 45%,
+                rgba(0, 0, 0, 0.3) 65%,
+                transparent 90%);
+    }
+}
