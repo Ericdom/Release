@@ -104,7 +104,7 @@
                 </button>
                 <button type="button" onclick="toggleFireAnimation()" aria-label="Toggle Fire Animation"
                     title="Toggle Fire Animation" id="ui-btn-fire"
-                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent">
+                    class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden">
                     <i id="fire-toggle-icon" class="fa-solid fa-fire-flame-curved text-xs"></i>
                 </button>
                 <button type="button" onclick="shareLink()" aria-label="Share" title="Share" id="ui-btn-share"
@@ -607,7 +607,7 @@
             onclick="toggleFeedbackModal(false)"></div>
 
         <!-- Modal Content -->
-        <div class="relative z-10 w-[90%] max-w-md mx-auto glass-card rounded-[32px] p-6 md:p-8 transform scale-95 opacity-0 transition-all duration-300 shadow-2xl overflow-hidden pointer-events-auto"
+        <div class="relative z-10 w-[90%] max-w-md mx-auto white-glass-card rounded-[40px] p-6 md:p-8 transform scale-95 opacity-0 transition-all duration-300 shadow-2xl overflow-hidden pointer-events-auto"
             id="feedback-modal-content">
 
             <div class="flex justify-between items-start mb-6 pt-2">
@@ -999,6 +999,7 @@
                 const target = document.getElementById(`view-${viewId}`);
                 target.classList.add('active');
                 state.view = viewId;
+                if (window.updateFireBtnVisibility) window.updateFireBtnVisibility();
 
                 // Header state - Dim secondary items, keep logo and waitlist bright
                 const nav = document.getElementById('nav-bar');
@@ -2667,6 +2668,7 @@
 
                 // Refresh Ash page theme if it exists
                 if (typeof changeThemeColor === 'function') changeThemeColor(state.themeColorIndex);
+                if (window.updateFireBtnVisibility) window.updateFireBtnVisibility();
             }
             window.applyGlobalTheme = applyGlobalTheme;
 
@@ -2868,11 +2870,26 @@
                 }
             }
 
+            function updateFireBtnVisibility() {
+                const btn = document.getElementById('ui-btn-fire');
+                if (!btn) return;
+                const isBurnPage = state.view === 'burn';
+                const isDarkMode = state.globalTheme === 'dark';
+
+                if (isBurnPage && isDarkMode) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+
             window.toggleFireAnimation = toggleFireAnimation;
+            window.updateFireBtnVisibility = updateFireBtnVisibility;
 
             // Initialize UI states
             document.addEventListener('DOMContentLoaded', () => {
                 updateFireToggleUI();
+                updateFireBtnVisibility();
             });
         </script>
         <script src="js/liquid-bg.js"></script>

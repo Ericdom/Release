@@ -109,7 +109,7 @@ body.light-theme .nav-glass {
     background: var(--glass-bg);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
-    border: 1.5px solid var(--glass-border);
+    border: 1px solid var(--glass-border);
     transition: all var(--transition-speed) ease;
 }
 
@@ -148,7 +148,7 @@ body.light-theme .glass-card {
     position: absolute;
     inset: -1px;
     /* Cover the 1px hover border perfectly */
-    padding: 1px;
+    padding: 4px;
     /* Visual thickness of the border */
     border-radius: 33px;
     /* 32px + 1px inset offset */
@@ -175,8 +175,8 @@ body.light-theme .glass-card {
     transition: opacity 0.3s ease;
 }
 
-/* Specific override for Waitlist Card (rounded-40px) */
-#burn-marketing .white-glass-card::after {
+#burn-marketing .white-glass-card::after,
+#feedback-modal-content::after {
     border-radius: 41px;
 }
 
@@ -769,6 +769,10 @@ body.light-theme .tiles-container div {
         background-image: url('../index/916/blue_butterfly.jpg');
         background-position: center bottom !important;
         background-size: cover !important;
+    }
+
+    .white-glass-card::after {
+        padding: 1px !important;
     }
 
     .hero-bg-media canvas {
