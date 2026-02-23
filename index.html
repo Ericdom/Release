@@ -14,6 +14,18 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
 
+    <!-- Security Policies -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://assets.mixkit.co; media-src 'self' https://assets.mixkit.co; connect-src 'self' https://formspree.io; object-src 'none'; base-uri 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="theme-color" content="#050505">
+    <meta name="msapplication-navbutton-color" content="#050505">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <!-- Theme Initialization -->
     <script>
         (function () {
@@ -100,10 +112,10 @@
                 <div id="nav-links-container"
                     class="hidden items-center gap-3 sm:gap-4 opacity-0 transition-opacity duration-300 mr-2">
                     <button id="nav-link-air" onclick="navigate('calm')"
-                        class="hidden text-[11px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Air
+                        class="hidden text-[11px] font-black uppercase tracking-[0.2em] text-[#3b82f6] opacity-70 hover:opacity-100 transition-all cursor-pointer">Air
                         It</button>
                     <button id="nav-link-ash" onclick="navigate('burn')"
-                        class="hidden text-[11px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all cursor-pointer">Ash
+                        class="hidden text-[11px] font-black uppercase tracking-[0.2em] text-nexus-orange opacity-70 hover:opacity-100 transition-all cursor-pointer">Ash
                         It</button>
                 </div>
 
@@ -421,6 +433,7 @@
                                     <div id="marketing-pill-inner"
                                         class="bg-white rounded-full p-[4px] sm:p-1.5 flex items-center relative z-10 border border-white/5 gap-1 sm:gap-0">
                                         <input type="email" id="waitlist-email-inline" placeholder="Enter your email"
+                                            required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                                             class="flex-1 bg-transparent px-4 sm:px-6 md:px-8 py-2 sm:py-3.5 text-xs sm:text-sm font-light tracking-wide focus:outline-none text-black placeholder:text-black/40 border-none outline-none text-left">
                                         <button type="button" onclick="submitInlineWaitlist()"
                                             class="group/waitlist-btn bg-black text-white px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-base transition-all hover:bg-zinc-900 active:scale-[0.97] flex items-center justify-center gap-0 hover:gap-2 sm:hover:gap-3 shrink-0">
@@ -908,7 +921,8 @@
                     </div>
 
                     <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST" class="space-y-4">
-                        <input type="email" name="email" required placeholder="name@email.com"
+                        <input type="email" name="email" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                            placeholder="name@email.com"
                             class="w-full bg-white/[0.03] border border-white/30 rounded-2xl p-5 text-sm outline-none focus:border-nexus-orange transition-all placeholder:opacity-60">
                         <button type="submit" onclick="track('Waitlist Joined')"
                             class="w-full bg-nexus-orange text-white h-14 rounded-2xl uppercase tracking-[0.4em] text-[14px] shadow-2xl shadow-nexus-orange/30">
@@ -2245,10 +2259,15 @@
 
             function submitInlineWaitlist() {
                 const input = document.getElementById('waitlist-email-inline');
-                const email = input.value.trim();
-                if (!email || !email.includes('@')) {
-                    input.classList.add('border-red-500/50');
-                    setTimeout(() => input.classList.remove('border-red-500/50'), 2000);
+                let email = input.value.trim();
+
+                // Sanitization and Strict Validation
+                email = email.replace(/[<>]/g, ''); // Basic injection defense
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!email || !emailRegex.test(email)) {
+                    input.classList.add('border-red-500/50', 'text-red-500');
+                    setTimeout(() => input.classList.remove('border-red-500/50', 'text-red-500'), 2000);
                     return;
                 }
 
