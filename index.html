@@ -776,8 +776,8 @@
             float n2 = fbm(noiseUv * 6.0 - vec2(0.0, t * 3.0)) * 2.0 - 1.0;
             
             // Atmospheric subtle flames at bottom
-            // Increased baseline shift and intensity multiplier to lift flames higher on the screen
-            float vShift = 0.40 + (1.0 - uIntensity) * 0.15; 
+            // Negative shift lifts the gradient threshold UP into the positive UV space of the screen
+            float vShift = -0.15 + (1.0 - uIntensity) * 0.15; 
             float fireBase = smoothstep(0.4 * uIntensity, 0.0, uv.y + vShift + n * 0.3 * uIntensity);
             float fireCore = smoothstep(0.2 * uIntensity, 0.0, uv.y + vShift + n2 * 0.18 * uIntensity);
             float fireWhiteCore = smoothstep(0.05 * uIntensity, 0.0, uv.y + vShift + (n * n2) * 0.12 * uIntensity);
@@ -1041,6 +1041,14 @@
                     if (linkContainer) {
                         linkContainer.classList.add('opacity-0');
                         setTimeout(() => linkContainer.classList.add('hidden'), 300);
+                    }
+
+                    // Mobile explicit handling: restore background liquid mask
+                    if (window.innerWidth <= 768) {
+                        const bgCanvas = document.getElementById('bg-canvas');
+                        if (bgCanvas && bgCanvas.parentElement) {
+                            bgCanvas.parentElement.style.opacity = '1';
+                        }
                     }
                 } else {
                     // Overall header slightly dimmed but important items forced bright

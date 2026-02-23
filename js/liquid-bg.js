@@ -13,7 +13,7 @@ class LiquidBackground {
             return;
         }
 
-        const isMobile = window.innerWidth <= 768;
+        this.isMobile = window.innerWidth <= 768;
         const landscapeImages = [
             'index/blue_butterfly.webp',
             'index/1 (1).webp',
@@ -29,7 +29,7 @@ class LiquidBackground {
             'index/916/1 (4).png'
         ];
 
-        this.images = this.shuffleArray(isMobile ? portraitImages : landscapeImages);
+        this.images = this.shuffleArray(this.isMobile ? portraitImages : landscapeImages);
 
         this.currentIndex = 0;
         this.nextIndex = 1;
@@ -45,8 +45,21 @@ class LiquidBackground {
         const vs = `
             attribute vec2 position;
             varying vec2 vUv;
+            uniform vec2 uResolution;
+            uniform vec2 uImageResolution;
+
             void main() {
-                vUv = position * 0.5 + 0.5;
+                float screenRatio = uResolution.x / uResolution.y;
+                float imageRatio = uImageResolution.x / uImageResolution.y;
+                
+                vec2 scale = vec2(1.0, 1.0);
+                if (screenRatio > imageRatio) {
+                    scale.y = imageRatio / screenRatio;
+                } else {
+                    scale.x = screenRatio / imageRatio;
+                }
+                
+                vUv = position * 0.5 * scale + 0.5;
                 vUv.y = 1.0 - vUv.y;
                 gl_Position = vec4(position, 0.0, 1.0);
             }
@@ -75,6 +88,9 @@ class LiquidBackground {
 
         this.program = this.createProgram(vs, fs);
         this.gl.useProgram(this.program);
+
+        this.uResolutionLoc = this.gl.getUniformLocation(this.program, 'uResolution');
+        this.uImageResLoc = this.gl.getUniformLocation(this.program, 'uImageResolution');
 
         // Buffers
         const vertices = new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]);
@@ -145,6 +161,10 @@ class LiquidBackground {
         this.canvas.width = this.canvas.clientWidth * window.devicePixelRatio;
         this.canvas.height = this.canvas.clientHeight * window.devicePixelRatio;
         this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+
+        this.gl.useProgram(this.program);
+        this.gl.uniform2f(this.uResolutionLoc, this.canvas.width, this.canvas.height);
+        this.gl.uniform2f(this.uImageResLoc, this.isMobile ? 9.0 : 16.0, this.isMobile ? 16.0 : 9.0);
     }
 
     next() {
