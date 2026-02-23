@@ -713,5 +713,33 @@ body.light-theme .tiles-container div {
         object-fit: contain !important;
         /* Ensure proportions are kept */
         object-position: center bottom !important;
+        /* Custom spacious oval mask to counter elongated portrait screens */
+        -webkit-mask-image: radial-gradient(ellipse 110% 65% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.7) 40%,
+                rgba(0, 0, 0, 0.2) 65%,
+                transparent 85%);
+        mask-image: radial-gradient(ellipse 110% 65% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.7) 40%,
+                rgba(0, 0, 0, 0.2) 65%,
+                transparent 85%);
+    }
+
+    body.light-theme .hero-bg-media canvas {
+        -webkit-mask-image: radial-gradient(ellipse 110% 65% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.6) 35%,
+                rgba(0, 0, 0, 0.15) 60%,
+                transparent 80%);
+        mask-image: radial-gradient(ellipse 110% 65% at center,
+                rgba(0, 0, 0, 1) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 0.6) 35%,
+                rgba(0, 0, 0, 0.15) 60%,
+                transparent 80%);
     }
 }
