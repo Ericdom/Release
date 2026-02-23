@@ -771,8 +771,9 @@
             float t = uTime * 0.5;
             
             // Smooth, fluid noise fields using strictly 2D operations + Y scrolling
-            float n = fbm(noiseUv * 3.0 - vec2(0.0, t * 1.5));
-            float n2 = fbm(noiseUv * 6.0 - vec2(0.0, t * 3.0));
+            // Map 2D noise [0, 1] back to [-1, 1] to correctly center ambient flames
+            float n = fbm(noiseUv * 3.0 - vec2(0.0, t * 1.5)) * 2.0 - 1.0;
+            float n2 = fbm(noiseUv * 6.0 - vec2(0.0, t * 3.0)) * 2.0 - 1.0;
             
             // Atmospheric subtle flames at bottom
             float vShift = 0.15 + (1.0 - uIntensity) * 0.1; 
@@ -1429,10 +1430,12 @@
 
                 // Only increment progress if we have a texture (capture complete)
                 if (state.burnTexture) {
-                    state.burnProgress += 0.012;
+                    state.burnProgress += 0.016; // Increment faster to avoid lagging
                 }
 
-                if (state.burnProgress > 1.1) {
+                // Substantially reduce the completion threshold to avoid "blank screen" dead zones
+                // The card burns away visually completely by ~0.5.
+                if (state.burnProgress > 0.65) {
                     const gl = state.burnGl;
                     state.isSubmittingBurn = false;
                     gl.clear(gl.COLOR_BUFFER_BIT);

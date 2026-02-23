@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v30'; // Optimized 2D Value Noise Fire Shader
+const CACHE_NAME = 'release-cache-v31'; // Fire visibility and timing fixes
 const ASSETS = [
     'index.html',
     'css/styles.css',
