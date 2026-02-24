@@ -16,15 +16,9 @@
 
     <!-- Security Policies -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://assets.mixkit.co; media-src 'self' https://assets.mixkit.co; connect-src 'self' https://formspree.io; object-src 'none'; base-uri 'self';">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://assets.mixkit.co; media-src 'self' https://assets.mixkit.co; connect-src 'self' https://script.google.com; object-src 'none'; base-uri 'self';">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta name="theme-color" content="#050505">
-    <meta name="msapplication-navbutton-color" content="#050505">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
 
     <!-- Theme Initialization -->
     <script>
@@ -965,15 +959,29 @@
                         </p>
                     </div>
 
-                    <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST" class="space-y-4">
-                        <input type="email" name="email" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                    <div class="space-y-4" id="waitlist-modal-form">
+                        <input type="email" id="waitlist-email-modal" required pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
                             placeholder="name@email.com"
                             class="w-full bg-white/[0.03] border border-white/30 rounded-2xl p-5 text-sm outline-none focus:border-nexus-orange transition-all placeholder:opacity-60">
-                        <button type="submit" onclick="track('Waitlist Joined')"
-                            class="w-full bg-nexus-orange text-white h-14 rounded-2xl uppercase tracking-[0.4em] text-[14px] shadow-2xl shadow-nexus-orange/30">
+                        <button type="button" id="btn-submit-modal-waitlist" onclick="submitWaitlistModal()"
+                            class="w-full bg-nexus-orange text-white h-14 rounded-2xl uppercase tracking-[0.4em] text-[14px] shadow-2xl shadow-nexus-orange/30 transition-all hover:bg-orange-600 active:scale-95 cursor-pointer">
                             Join Waitlist
                         </button>
-                    </form>
+                    </div>
+                    <!-- Success Message (Hidden by default) -->
+                    <div id="waitlist-modal-success"
+                        class="hidden mt-6 flex-col items-center justify-center gap-3 animate-fade">
+                        <div class="w-12 h-12 rounded-full bg-nexus-orange/20 flex items-center justify-center mb-2">
+                            <i class="fa-solid fa-check text-nexus-orange text-xl"></i>
+                        </div>
+                        <h5 class="text-xl font-light tracking-tight text-white mb-1">You're on the list.</h5>
+                        <p class="text-sm text-white/50 font-light text-center">We will notify you when the void opens.
+                        </p>
+                        <button type="button" onclick="toggleWaitlist(false)"
+                            class="mt-6 text-[10px] uppercase tracking-[0.2em] font-normal text-white/40 hover:text-white transition-colors cursor-pointer border-b border-white/20 pb-1">
+                            Close
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1069,7 +1077,7 @@
             const themeColors = [
                 { isCardDark: true, bgClass: 'bg-bg-deep', cardBg: 'bg-text-light/5', textClass: '!text-white', dotColor: 'var(--dot-color)', shadowColor: 'rgba(0,0,0,0.05)', uiBg: 'bg-text-light/5', uiBorder: 'border-text-light/5', uiTextMain: 'text-text-light', uiTextDim: 'text-text-light/50' }, // Void
                 { isCardDark: false, bgClass: '!bg-[#fff3e0]/80', cardBg: '!bg-[#fff3e0]', textClass: '!text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Ivory
-                { isCardDark: false, bgClass: '!bg-[#e5f3f8]/80', cardBg: '!bg-[#e5f3f8]', textClass: '!text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Mist
+                { isCardDark: false, bgClass: '!bg-[#e5f3e8]/80', cardBg: '!bg-[#e5f3e8]', textClass: '!text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Mist
                 { isCardDark: false, bgClass: '!bg-[#dadecf]/80', cardBg: '!bg-[#dadecf]', textClass: '!text-gray-900', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.1)', uiBg: 'bg-black/5', uiBorder: 'border-black/10', uiTextMain: 'text-black', uiTextDim: 'text-black/50' }, // Pewter
                 { isCardDark: true, bgClass: '!bg-[#191738]', cardBg: '!bg-white/5', textClass: '!text-white', dotColor: 'rgba(255,255,255,0.15)', shadowColor: 'rgba(0,0,0,0.4)', uiBg: 'bg-white/5', uiBorder: 'border-white/5', uiTextMain: 'text-white', uiTextDim: 'text-white/50' }  // Midnight
             ];
@@ -2316,18 +2324,108 @@
                     return;
                 }
 
-                track(`Inline Waitlist Join: ${email}`);
-
-                // Show Success State
+                track(`Inline Waitlist Join Attempt`);
                 const container = input.parentElement;
+
+                // Keep original HTML to restore on error
+                const originalHTML = container.innerHTML;
+
+                // Loading State
                 container.innerHTML = `
-                    <div class="w-full py-2 text-nexus-orange font-black uppercase tracking-[0.2em] text-[10px] animate-fade">
-                        <i class="fa-solid fa-check mr-2"></i> You're on the list
+                    <div class="w-full py-2 flex items-center justify-center text-black/50 font-black uppercase tracking-[0.2em] text-[10px] animate-pulse">
+                        <i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Adding...
                     </div>
                 `;
+
+                // Post to Google Sheets
+                const formData = new FormData();
+                formData.append('date', new Date().toISOString());
+                formData.append('email', email);
+                formData.append('source', 'inline');
+
+                fetch(GOOGLE_SHEETS_WEBAPP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                }).then(() => {
+                    track(`Waitlist Joined: Inline`);
+                    // Show Success State
+                    container.innerHTML = `
+                        <div class="w-full py-2 flex items-center justify-center text-nexus-orange font-black uppercase tracking-[0.2em] text-[10px] animate-fade">
+                            <i class="fa-solid fa-check mr-2"></i> You're on the list
+                        </div>
+                    `;
+                }).catch(err => {
+                    console.error("Waitlist Error:", err);
+                    container.innerHTML = `<div class="w-full py-2 text-red-500 font-bold text-xs text-center">Error. Try again.</div>`;
+                    setTimeout(() => container.innerHTML = originalHTML, 3000);
+                });
+            }
+
+            function submitWaitlistModal() {
+                const input = document.getElementById('waitlist-email-modal');
+                const btn = document.getElementById('btn-submit-modal-waitlist');
+                const formSection = document.getElementById('waitlist-modal-form');
+                const successSection = document.getElementById('waitlist-modal-success');
+                let email = input.value.trim();
+
+                email = email.replace(/[<>]/g, '');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!email || !emailRegex.test(email)) {
+                    input.classList.add('border-red-500/70', 'text-red-300');
+                    setTimeout(() => input.classList.remove('border-red-500/70', 'text-red-300'), 2000);
+                    return;
+                }
+
+                track(`Modal Waitlist Join Attempt`);
+
+                // Loading State
+                const originalBtnText = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Securing Spot...`;
+                btn.style.opacity = 0.5;
+                btn.disabled = true;
+
+                // Post to Google Sheets
+                const formData = new FormData();
+                formData.append('date', new Date().toISOString());
+                formData.append('email', email);
+                formData.append('source', 'modal');
+
+                fetch(GOOGLE_SHEETS_WEBAPP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                }).then(() => {
+                    track(`Waitlist Joined: Modal`);
+                    formSection.classList.add('hidden');
+                    successSection.classList.remove('hidden');
+                    successSection.classList.add('flex');
+
+                    // Reset behind the scenes after closing
+                    setTimeout(() => {
+                        input.value = '';
+                        btn.innerHTML = originalBtnText;
+                        btn.style.opacity = 1;
+                        btn.disabled = false;
+                        formSection.classList.remove('hidden');
+                        successSection.classList.add('hidden');
+                        successSection.classList.remove('flex');
+                    }, 10000);
+
+                }).catch(err => {
+                    console.error("Waitlist Error:", err);
+                    btn.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> Error. Try again.`;
+                    setTimeout(() => {
+                        btn.innerHTML = originalBtnText;
+                        btn.style.opacity = 1;
+                        btn.disabled = false;
+                    }, 3000);
+                });
             }
 
             window.submitInlineWaitlist = submitInlineWaitlist;
+            window.submitWaitlistModal = submitWaitlistModal;
 
             function toggleEditorMenu() {
                 const group = document.getElementById('editor-controls-group');

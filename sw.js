@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v45'; // Added PWA Install UI modal, navbar button, and beforeinstallprompt logic
+const CACHE_NAME = 'release-cache-v46'; // Integrated Waitlist with Google Sheets via Apps Script and updated CSP
 const ASSETS = [
     'index.html',
     'css/styles.css',
