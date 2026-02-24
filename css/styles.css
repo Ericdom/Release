@@ -75,11 +75,15 @@ body {
 }
 
 #view-calm {
-    background-image: url('../index/white.webp');
+    background-image: url('../index/white.jpeg');
     background-size: cover;
-    background-position: center -15vh;
-    /* Lifted up */
+    background-position: center;
     background-repeat: no-repeat;
+}
+
+body.light-theme #view-calm {
+    background-image: url('../index/blue_butterfly.webp');
+    background-position: center -15vh;
 }
 
 .view-container.active {
@@ -95,7 +99,6 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -584,6 +587,10 @@ body.light-theme .btn-secondary:hover {
 }
 
 /* Dark Mode Opposite Card Aesthetic */
+#marketing-beam {
+    background: conic-gradient(from 0deg, transparent 0%, #ff6633 10%, transparent 20%);
+}
+
 body:not(.light-theme) .white-glass-card {
     background: rgba(0, 0, 0, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -784,9 +791,13 @@ body.light-theme .tiles-container div {
 /* Mobile Optimizations for Backgrounds */
 @media (max-width: 768px) {
     #view-calm {
-        background-image: url('../index/916/blue_butterfly.jpg');
+        background-image: url('../index/916/white.jpeg');
         background-position: center bottom !important;
         background-size: cover !important;
+    }
+
+    body.light-theme #view-calm {
+        background-image: url('../index/916/blue_butterfly.webp');
     }
 
     .white-glass-card::after {
@@ -831,4 +842,184 @@ body.light-theme .tiles-container div {
                 rgba(0, 0, 0, 0.15) 60%,
                 transparent 80%);
     }
+}
+
+/* Utility Styles */
+.hidden-iframe {
+    display: none !important;
+}
+
+/* Focus Mode for Breathing */
+.focused-breathing #nav-bar,
+.focused-breathing #calm-presets-list,
+.focused-breathing #btn-global-feedback,
+.focused-breathing #active-technique-name,
+.focused-breathing [id^="display-"],
+.focused-breathing [id^="display-"] + p,
+.focused-breathing #view-calm .scroll-wrapper > div:last-child {
+    opacity: 0.3 !important;
+    pointer-events: none;
+    transition: opacity 1s ease;
+}
+
+/* Ensure controls remain bright and handle Light Mode White Palette */
+.focused-breathing #btn-calm-pause,
+.focused-breathing #btn-calm-pause i,
+.focused-breathing button[onclick="finishCalm()"],
+.focused-breathing #calm-visualizer,
+.focused-breathing #calm-timer-countdown,
+.focused-breathing #breathing-txt {
+    opacity: 1 !important;
+    pointer-events: auto;
+}
+
+body.light-theme #view-calm .text-black,
+body.light-theme #view-calm #calm-timer-countdown,
+body.light-theme #view-calm #breathing-txt,
+body.light-theme #view-calm #active-technique-name,
+body.light-theme #view-calm #display-inhale,
+body.light-theme #view-calm #display-hold,
+body.light-theme #view-calm #display-exhale,
+body.light-theme #view-calm #display-rest,
+body.light-theme #view-calm .text-black\/60,
+body.light-theme #view-calm .text-black\/70,
+body.light-theme #view-calm .text-black\/80 {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Active Session Button Highlighting (White) */
+.focused-breathing #btn-calm-pause {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.focused-breathing #btn-calm-pause i {
+    color: #ffffff !important;
+}
+
+.focused-breathing button[onclick="finishCalm()"] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: var(--calm-blue) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Remove thick border from Calm card */
+#calm-controls-card::after {
+    display: none !important;
+}
+
+.focused-breathing #calm-controls-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(8px);
+    box-shadow: none !important;
+    transition: all 1s ease;
+}
+
+/* Force Feedback button to white in Light Mode on Air It page */
+body.light-theme.view-active-calm #btn-global-feedback i {
+    color: #ffffff !important;
+    opacity: 0.8 !important;
+}
+
+/* Play Button UX Cue */
+@keyframes play-pulse {
+    0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 0px rgba(255, 255, 255, 0);
+    }
+    50% { 
+        transform: scale(1.1);
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.3) !important;
+    }
+}
+
+.play-cue {
+    animation: play-pulse 2s infinite ease-in-out;
+    background: rgba(255, 255, 255, 0.25) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    z-index: 30;
+}
+
+/* Browser Tab Styles */
+.browser-tab {
+    padding: 10px 24px 14px;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border-radius: 16px 16px 0 0;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none;
+    backdrop-filter: blur(12px);
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.browser-tab.active-tab {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    padding-bottom: 20px;
+    transform: translateY(4px);
+    z-index: 10;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Light Theme Browser Tabs */
+body.light-theme .browser-tab {
+    background: rgba(255, 255, 255, 0.4);
+    color: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+body.light-theme .browser-tab.active-tab {
+    background: rgba(255, 255, 255, 0.7);
+    color: #000000;
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Dim tabs during focused breathing session */
+.focused-breathing .browser-tab {
+    opacity: 0.3 !important;
+    pointer-events: none;
+}
+.focused-breathing .browser-tab.active-tab {
+    opacity: 1 !important;
+    pointer-events: auto;
+}
+
+/* Custom Stepper Buttons */
+.custom-step-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.custom-step-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.custom-step-btn:active {
+    scale: 0.9;
+}
+
+.focused-breathing .white-glass-card {
+    /* Keep the card itself visible but child elements might be dimmed */
+    border-color: rgba(255, 255, 255, 0.1);
 }

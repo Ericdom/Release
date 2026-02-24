@@ -22,11 +22,11 @@ class LiquidBackground {
             'index/1 (4).webp'
         ];
         const portraitImages = [
-            'index/916/blue_butterfly.jpg',
-            'index/916/1 (1).png',
-            'index/916/1 (2).png',
-            'index/916/1 (3).png',
-            'index/916/1 (4).png'
+            'index/916/blue_butterfly.webp',
+            'index/916/1 (1).webp',
+            'index/916/1 (2).webp',
+            'index/916/1 (3).webp',
+            'index/916/1 (4).webp'
         ];
 
         this.images = this.shuffleArray(this.isMobile ? portraitImages : landscapeImages);
