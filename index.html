@@ -2526,6 +2526,10 @@
           // Finish the flow
           state.burnCount++;
           resetMode("burn");
+          
+          // Hide editor card completely to lift the marketing card up
+          state.el.editorCard.classList.add("hidden");
+          
           const mkt = document.getElementById("burn-marketing");
           mkt.classList.remove("hidden");
 
@@ -3006,7 +3010,7 @@
             "opacity-0",
             "scale-90",
           );
-          state.el.editorCard.classList.remove("is-burning");
+          state.el.editorCard.classList.remove("is-burning", "hidden");
 
           // Re-apply current settings to ensure consistency
           const toolbar = document.querySelector(
@@ -3569,6 +3573,13 @@
 
       function submitInlineWaitlist() {
         const input = document.getElementById("waitlist-email-inline");
+        
+        // Native HTML5 Validation tooltip
+        if (!input.checkValidity()) {
+          input.reportValidity();
+          return;
+        }
+
         let email = input.value.trim();
 
         // Sanitization and Strict Validation
@@ -3581,6 +3592,11 @@
             () => input.classList.remove("border-red-500/50", "text-red-500"),
             2000,
           );
+          // Also set custom validity to definitively show the tooltip if regex fails but native passes
+          input.setCustomValidity("Please enter a valid email address.");
+          input.reportValidity();
+          // Reset custom validity immediately so the user can type again
+          setTimeout(() => input.setCustomValidity(""), 2000);
           return;
         }
 
