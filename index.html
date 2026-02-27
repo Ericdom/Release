@@ -1709,10 +1709,35 @@
                   })
                   .catch((err) => {
                     console.error("Waitlist Error:", err);
-                    // Fallback to showing success even on error (since no-cors hides response)
                     document.getElementById("waitlist-modal-form").classList.add("hidden");
-                    document.getElementById("modal-waitlist-success").classList.remove("hidden");
-                    document.getElementById("modal-waitlist-share-btn").classList.remove("hidden");
+                    
+                    // Modify the success modal visually to represent an error
+                    const successDiv = document.getElementById("modal-waitlist-success");
+                    successDiv.innerHTML = `
+                      <div class="flex flex-col items-center text-center">
+                        <div class="text-red-500 font-black uppercase tracking-[0.2em] text-[15px]">
+                          Error
+                        </div>
+                        <div class="text-red-400 font-bold tracking-wide text-[11px] mt-2">
+                          <i class="fa-solid fa-xmark mr-1.5"></i> Connection failed.
+                        </div>
+                        <div class="opacity-40 text-white font-light lowercase tracking-normal text-[10px] mt-2">
+                          Please try again later.
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onclick="toggleWaitlist(false)"
+                        class="group/back flex items-center justify-center px-6 py-2 border border-white/10 rounded-full mx-auto transition-all hover:bg-white/5 hover:border-white/30"
+                      >
+                        <span class="text-[10px] uppercase tracking-[0.2em] opacity-60 text-white font-bold group-hover/back:opacity-100 transition-opacity">
+                          Close
+                        </span>
+                      </button>
+                    `;
+                    successDiv.classList.remove("hidden");
+                    
+                    document.getElementById("modal-waitlist-share-btn").classList.add("hidden");
                   });
               }
 
@@ -3510,16 +3535,25 @@
         const modal = document.getElementById("waitlist-modal");
         const nav = document.getElementById("nav-bar");
         const shareBtn = document.getElementById("modal-waitlist-share-btn");
+        const successModal = document.getElementById("modal-waitlist-success");
+        const alreadyModal = document.getElementById("modal-waitlist-already");
         
         modal.classList.toggle("hidden", !show);
         if (nav) nav.classList.toggle("hidden", show);
         
-        // Hide share button by default when toggling modal
-        if (shareBtn) shareBtn.classList.add("hidden");
-
         if (show) {
+          // If the modal is already in the success or already joined state, keep the share button visible
+          if ((successModal && !successModal.classList.contains("hidden")) || 
+              (alreadyModal && !alreadyModal.classList.contains("hidden"))) {
+            if (shareBtn) shareBtn.classList.remove("hidden");
+          } else {
+            if (shareBtn) shareBtn.classList.add("hidden");
+          }
           if (state.view !== "home") navigate("home");
           track("Waitlist Overlay Viewed");
+        } else {
+          // Hide share button when closing modal
+          if (shareBtn) shareBtn.classList.add("hidden");
         }
       }
 
@@ -3550,6 +3584,17 @@
           return;
         }
 
+        const joinedEmails = JSON.parse(localStorage.getItem("nexus_joined_emails") || "[]");
+        if (joinedEmails.includes(email)) {
+          const container = input.parentElement;
+          container.innerHTML = `
+                    <div class="w-full py-2 text-nexus-orange font-black uppercase tracking-[0.2em] text-[10px] animate-fade pl-4">
+                        <i class="fa-solid fa-circle-info mr-2"></i> Already joined
+                    </div>
+                `;
+          return;
+        }
+
         input.disabled = true;
 
         const params = new URLSearchParams();
@@ -3563,6 +3608,8 @@
           body: params,
         })
           .then(() => {
+            joinedEmails.push(email);
+            localStorage.setItem("nexus_joined_emails", JSON.stringify(joinedEmails));
             track(`Waitlist Joined: ${email}`);
             const container = input.parentElement;
             container.innerHTML = `
@@ -3576,10 +3623,11 @@
             // Show success anyway as no-cors might block actual success signal
             const container = input.parentElement;
             container.innerHTML = `
-                      <div class="w-full py-2 text-nexus-orange font-black uppercase tracking-[0.2em] text-[10px] animate-fade pl-4">
-                          <i class="fa-solid fa-check mr-2"></i> You're on the list
+                      <div class="w-full py-2 text-red-500 font-bold tracking-wide text-[10px] animate-fade pl-4">
+                          <i class="fa-solid fa-xmark mr-2"></i> Connection error. Please try again later.
                       </div>
                   `;
+            input.disabled = false;
           });
       }
 
@@ -4483,9 +4531,40 @@
           })
           .catch((err) => {
             console.error("Feedback Error:", err);
-            // Fallback
+            // Show error message
+            msg.innerHTML = `
+              <div class="text-xs text-red-500 font-bold tracking-widest">
+                <i class="fa-solid fa-xmark mr-2"></i> Connection Failed.
+              </div>
+            `;
             btn.classList.add("hidden");
             msg.classList.remove("hidden");
+            setTimeout(() => msg.classList.remove("opacity-0"), 10);
+
+            setTimeout(() => {
+              btn.classList.remove("hidden");
+              btn.innerText = "Send Feedback";
+              btn.style.opacity = 1;
+              btn.disabled = false;
+              msg.classList.add("opacity-0", "hidden");
+              // Restore original success message HTML for future use
+              setTimeout(() => {
+                msg.innerHTML = `
+                  <div class="text-xs text-nexus-orange font-bold uppercase tracking-widest">
+                    <i class="fa-solid fa-check mr-2"></i> Received. Thank you.
+                  </div>
+                  <button
+                    onclick="
+                      toggleFeedbackModal(false);
+                      toggleWaitlist(true);
+                    "
+                    class="text-[10px] uppercase tracking-[0.2em] font-normal text-white/50 hover:text-white transition-colors border-b border-white/20 hover:border-white pb-1"
+                  >
+                    Join the Waitlist
+                  </button>
+                `;
+              }, 300);
+            }, 5000);
           });
       }
       window.submitFeedback = submitFeedback;
