@@ -198,12 +198,13 @@ class LiquidBackground {
     }
 
     render() {
-        // Only render if we are on the home view to save CPU/GPU resources
+        // Stop the loop entirely if not on home view to save CPU/GPU resources
         if (window.state && window.state.view !== 'home') {
-            requestAnimationFrame(() => this.render());
+            this.loopActive = false;
             return;
         }
 
+        this.loopActive = true;
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
         const tex1Loc = this.gl.getUniformLocation(this.program, 'texture1');
@@ -225,9 +226,14 @@ class LiquidBackground {
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
         requestAnimationFrame(() => this.render());
     }
+
+    start() {
+        if (this.loopActive) return;
+        this.render();
+    }
 }
 
 // Initialize when DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    new LiquidBackground();
+    window.liquidBg = new LiquidBackground();
 });

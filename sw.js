@@ -1,17 +1,39 @@
-const CACHE_NAME = 'release-cache-v45'; // Added PWA Install UI modal, navbar button, and beforeinstallprompt logic
+const CACHE_NAME = 'release-cache-v47'; // Incremented version
 const ASSETS = [
+    '/',
     'index.html',
     'css/styles.css',
+    'js/liquid-bg.js',
     'manifest.json',
-    'https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;900&display=swap',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+    'https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@100;300;400&display=swap',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+    'index/waitlist.webp',
+    'index/white.jpeg',
+    'index/blue_butterfly.webp',
+    'index/1 (1).webp',
+    'index/1 (2).webp',
+    'index/1 (3).webp',
+    'index/1 (4).webp',
+    'index/916/white.jpeg',
+    'index/916/blue_butterfly.webp',
+    'index/916/1 (1).webp',
+    'index/916/1 (2).webp',
+    'index/916/1 (3).webp',
+    'index/916/1 (4).webp'
 ];
 
 self.addEventListener('install', (event) => {
-    self.skipWaiting(); // Force update
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(ASSETS);
+            // Individual caching to prevent failure if one asset is missing
+            return Promise.allSettled(
+                ASSETS.map(asset => {
+                    return cache.add(asset).catch(err => {
+                        console.warn(`[SW] Failed to cache asset: ${asset}`, err);
+                    });
+                })
+            );
         })
     );
 });

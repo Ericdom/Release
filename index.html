@@ -88,6 +88,15 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
+    
+    <!-- Resource Preloading -->
+    <link rel="preload" href="css/styles.css" as="style" />
+    <link rel="preload" href="js/liquid-bg.js" as="script" />
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" />
+    <link rel="preload" href="index/white.jpeg" as="image" />
+    <link rel="preload" href="index/blue_butterfly.webp" as="image" />
+    <link rel="preload" href="index/916/white.jpeg" as="image" />
+    <link rel="preload" href="index/916/blue_butterfly.webp" as="image" />
   </head>
 
   <body class="h-screen w-screen selection:bg-orange-500/30">
@@ -194,7 +203,7 @@
             aria-label="Share"
             title="Share"
             id="ui-btn-share"
-            class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent hidden sm:flex"
+            class="w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer opacity-50 hover:opacity-100 hover:bg-white/5 bg-transparent"
           >
             <i class="fa-solid fa-arrow-up-from-bracket text-xs text-light"></i>
           </button>
@@ -1049,40 +1058,59 @@
           <!-- Marketing Card (Hidden) -->
           <div
             id="calm-marketing"
-            class="hidden absolute inset-0 z-50 bg-white/95 backdrop-blur-2xl flex flex-col items-center justify-center p-8 text-center"
+            class="hidden absolute inset-0 z-50 bg-black/20 backdrop-blur-3xl flex flex-col items-center justify-center p-4"
           >
-            <div class="max-w-xs space-y-12 animate-slide">
-              <p class="text-3xl font-thin italic text-calm-blue leading-tight">
-                Hold onto this
-                <span class="font-bold underline underline-offset-8"
-                  >peace.</span
-                >
-              </p>
-              <div class="space-y-4">
-                <p
-                  class="text-[10px] tracking-widest uppercase opacity-40 font-black"
-                >
-                  Find deep connection on Nexus.
-                </p>
+            <!-- Card Container -->
+            <div class="w-full max-w-lg white-glass-card rounded-[32px] relative shadow-2xl group">
+              <!-- Inner Content Wrapper (for clipping shine/blobs without clipping border) -->
+              <div class="relative w-full h-full p-8 md:p-12 overflow-hidden rounded-[32px]">
                 <button
                   type="button"
-                  onclick="toggleWaitlist(true)"
-                  class="text-nexus-orange text-[10px] font-black uppercase tracking-[0.2em] underline underline-offset-8"
+                  onclick="document.getElementById('calm-marketing').classList.add('hidden')"
+                  aria-label="Close"
+                  class="absolute top-6 right-6 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-xl opacity-40 hover:opacity-100 hover:bg-white/10 transition-all cursor-pointer z-50"
                 >
-                  Join Nexus Waitlist
+                  <i class="fa-solid fa-xmark text-xs"></i>
                 </button>
+                
+                <div class="relative z-10 text-center space-y-8">
+                  <p class="text-3xl font-thin italic text-white/95 leading-tight">
+                    Hold onto this
+                    <span class="font-bold underline underline-offset-8 decoration-calm-blue/50 decoration-[1px]"
+                      >peace.</span
+                    >
+                  </p>
+                  
+                  <div class="space-y-4">
+                    <p
+                      class="text-[10px] tracking-[0.3em] uppercase opacity-70 text-white font-black"
+                    >
+                      Deep connection awaits.
+                    </p>
+                    <button
+                      type="button"
+                      onclick="toggleWaitlist(true)"
+                      class="group/btn relative inline-flex items-center justify-center px-8 py-3 bg-nexus-orange rounded-full text-white text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 hover:scale-110 active:scale-95 shadow-[0_4px_20px_rgba(255,68,0,0.4)] hover:shadow-[0_8px_30px_rgba(255,68,0,0.6)]"
+                    >
+                      Join Nexus Waitlist
+                    </button>
+                  </div>
+
+                  <button
+                    type="button"
+                    onclick="navigate('home')"
+                    class="group/back flex items-center justify-center px-6 py-2 border border-white/10 rounded-full mx-auto transition-all hover:bg-white/5 hover:border-white/30"
+                  >
+                    <span class="text-[10px] uppercase tracking-[0.2em] opacity-60 text-white font-bold group-hover/back:opacity-100 transition-opacity">
+                      Back to the void
+                    </span>
+                  </button>
+                </div>
               </div>
-              <button
-                type="button"
-                onclick="navigate('home')"
-                class="text-[9px] uppercase tracking-widest opacity-40 hover:opacity-100 font-bold border-b border-black/10 pb-1"
-              >
-                Back to the void
-              </button>
             </div>
           </div>
-        </div>
-      </section>
+      </div>
+    </section>
     </main>
 
     <!-- Invisible Iframe for Form Submissions -->
@@ -1505,23 +1533,25 @@
         class="w-full max-w-lg white-glass-card rounded-[32px] relative shadow-2xl group"
       >
         <!-- Inner Content Wrapper (for clipping shine/blobs without clipping border) -->
-        <div class="relative w-full h-full p-12 overflow-hidden rounded-[32px]">
+        <div class="relative w-full h-full p-6 sm:p-12 overflow-hidden rounded-[32px]">
+          <!-- Share Button (Universal) -->
+          <button 
+            id="modal-waitlist-share-btn"
+            onclick="shareLink()"
+            class="hidden absolute top-4 right-4 sm:top-8 sm:right-8 p-3 text-white/90 hover:text-white transition-colors z-[100]"
+            title="Share Nexus"
+          >
+            <i class="fa-solid fa-arrow-up-from-bracket text-[13px] sm:text-[14px]"></i>
+          </button>
+
           <!-- Keep existing blob or remove? User wants Ash It style. Ash It has specific icon. I'll keep the blob as it fits the modal content better than a fire icon. -->
           <div
             class="absolute -top-20 -right-20 w-40 h-40 bg-nexus-orange/10 blur-3xl rounded-full"
           ></div>
 
-          <button
-            type="button"
-            onclick="toggleWaitlist(false)"
-            aria-label="Close"
-            class="absolute top-8 right-8 w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-2xl opacity-40 hover:opacity-100 hover:bg-white/10 transition-all cursor-pointer z-50"
-          >
-            <i class="fa-solid fa-xmark text-sm"></i>
-          </button>
 
           <div class="relative z-10 text-center">
-            <h4 class="text-4xl font-thin tracking-tighter uppercase mb-2">
+            <h4 class="text-3xl sm:text-4xl font-thin tracking-tighter uppercase mb-2">
               The <span class="text-nexus-orange font-bold">Nexus</span>
             </h4>
             <p
@@ -1530,7 +1560,7 @@
               The Future of Empathy
             </p>
 
-            <div class="space-y-6 mb-12">
+            <div class="space-y-6 mb-6">
               <p
                 class="text-base text-white/80 font-light leading-relaxed px-4"
               >
@@ -1570,22 +1600,88 @@
               >
                 Join Waitlist
               </button>
+
+              <!-- Social Proof Section -->
+              <div class="flex items-center justify-center gap-3 pt-6 border-t border-white/5 mt-8">
+                <div class="flex -space-x-3">
+                  <img src="index/avatars/avatar1.png" class="w-8 h-8 rounded-full border-2 border-[#0a0a0a] object-cover" alt="User Avatar">
+                  <img src="index/avatars/avatar2.png" class="w-8 h-8 rounded-full border-2 border-[#0a0a0a] object-cover" alt="User Avatar">
+                  <img src="index/avatars/avatar3.png" class="w-8 h-8 rounded-full border-2 border-[#0a0a0a] object-cover" alt="User Avatar">
+                </div>
+                <p class="text-[11px] uppercase tracking-[0.1em] text-white/40">
+                  <span class="text-white font-black">5k+</span> joined already
+                </p>
+              </div>
             </form>
+
             <div
               id="modal-waitlist-success"
-              class="hidden text-nexus-orange font-black uppercase tracking-[0.2em] text-[10px] animate-fade pt-4 relative z-10"
+              class="hidden flex flex-col items-center gap-6 animate-fade relative z-10"
             >
-              <i class="fa-solid fa-check mr-2"></i> You're on the list
+              <div class="flex flex-col items-center text-center">
+                <div class="text-nexus-orange font-black uppercase tracking-[0.2em] text-[15px]">
+                  Thank you
+                </div>
+                <div class="text-nexus-orange/80 font-bold uppercase tracking-[0.1em] text-[11px] mt-1">
+                  <i class="fa-solid fa-check mr-1.5"></i> You're on the list
+                </div>
+              </div>
+              
+              <button
+                type="button"
+                onclick="toggleWaitlist(false)"
+                class="group/back flex items-center justify-center px-6 py-2 border border-white/10 rounded-full mx-auto transition-all hover:bg-white/5 hover:border-white/30"
+              >
+                <span class="text-[10px] uppercase tracking-[0.2em] opacity-60 text-white font-bold group-hover/back:opacity-100 transition-opacity">
+                  Back to the void
+                </span>
+              </button>
+            </div>
+
+            <!-- Already Joined Message -->
+            <div
+              id="modal-waitlist-already"
+              class="hidden flex flex-col items-center gap-6 animate-fade relative z-10"
+            >
+              <div class="flex flex-col items-center text-center">
+                <div class="text-nexus-orange font-black uppercase tracking-[0.2em] text-[15px]">
+                  Thank you
+                </div>
+                <div class="text-nexus-orange/80 font-bold uppercase tracking-[0.1em] text-[11px] mt-1">
+                  <i class="fa-solid fa-circle-info mr-1.5"></i> You are already on the waitlist
+                </div>
+                <div class="opacity-40 text-white font-light lowercase tracking-normal text-[10px] mt-2">
+                  We'll reach out to you soon
+                </div>
+              </div>
+              
+              <button
+                type="button"
+                onclick="toggleWaitlist(false)"
+                class="group/back flex items-center justify-center px-6 py-2 border border-white/10 rounded-full mx-auto transition-all hover:bg-white/5 hover:border-white/30"
+              >
+                <span class="text-[10px] uppercase tracking-[0.2em] opacity-60 text-white font-bold group-hover/back:opacity-100 transition-opacity">
+                  Back to the void
+                </span>
+              </button>
             </div>
 
             <script>
               function handleWaitlistSubmit(e) {
                 if (e) e.preventDefault();
 
+                const emailInput = document.getElementById("modal-waitlist-email");
+                const email = emailInput.value.trim();
                 const btn = document.getElementById("modal-waitlist-btn");
-                const email = document.getElementById(
-                  "modal-waitlist-email",
-                ).value;
+
+                // Check local storage
+                const joinedEmails = JSON.parse(localStorage.getItem("nexus_joined_emails") || "[]");
+                if (joinedEmails.includes(email)) {
+                  document.getElementById("waitlist-modal-form").classList.add("hidden");
+                  document.getElementById("modal-waitlist-already").classList.remove("hidden");
+                  document.getElementById("modal-waitlist-share-btn").classList.remove("hidden");
+                  return;
+                }
 
                 btn.innerText = "Joining...";
                 btn.style.opacity = 0.5;
@@ -1602,24 +1698,39 @@
                   body: params,
                 })
                   .then(() => {
-                    document
-                      .getElementById("waitlist-modal-form")
-                      .classList.add("hidden");
-                    document
-                      .getElementById("modal-waitlist-success")
-                      .classList.remove("hidden");
+                    // Update local storage
+                    joinedEmails.push(email);
+                    localStorage.setItem("nexus_joined_emails", JSON.stringify(joinedEmails));
+
+                    document.getElementById("waitlist-modal-form").classList.add("hidden");
+                    document.getElementById("modal-waitlist-success").classList.remove("hidden");
+                    document.getElementById("modal-waitlist-share-btn").classList.remove("hidden");
                     track(`Waitlist Modal Joined: ${email}`);
                   })
                   .catch((err) => {
                     console.error("Waitlist Error:", err);
                     // Fallback to showing success even on error (since no-cors hides response)
-                    document
-                      .getElementById("waitlist-modal-form")
-                      .classList.add("hidden");
-                    document
-                      .getElementById("modal-waitlist-success")
-                      .classList.remove("hidden");
+                    document.getElementById("waitlist-modal-form").classList.add("hidden");
+                    document.getElementById("modal-waitlist-success").classList.remove("hidden");
+                    document.getElementById("modal-waitlist-share-btn").classList.remove("hidden");
                   });
+              }
+
+              function shareNexus() {
+                const shareData = {
+                  title: 'Nexus',
+                  text: 'Join the waitlist for Nexus - the future of empathy.',
+                  url: window.location.href
+                };
+
+                if (navigator.share) {
+                  navigator.share(shareData).catch(err => console.error('Error sharing:', err));
+                } else {
+                  // Fallback: Copy to clipboard
+                  navigator.clipboard.writeText(shareData.url).then(() => {
+                    alert('Link copied to clipboard!');
+                  }).catch(err => console.error('Error copying link:', err));
+                }
               }
             </script>
           </div>
@@ -1857,6 +1968,12 @@
         const target = document.getElementById(`view-${viewId}`);
         target.classList.add("active");
 
+        // Hide marketing overlays when navigating
+        const calmMarketing = document.getElementById("calm-marketing");
+        if (calmMarketing) calmMarketing.classList.add("hidden");
+        const burnMarketing = document.getElementById("burn-marketing");
+        if (burnMarketing) burnMarketing.classList.add("hidden");
+
         // Remove old view classes and add current one
         document.body.classList.remove(
           "view-active-home",
@@ -1872,6 +1989,7 @@
         // Reset burn intensity when going home
         if (viewId === "home") {
           state.burnCount = 0;
+          if (window.liquidBg) window.liquidBg.start();
         }
 
         // Header state - Dim secondary items, keep logo and waitlist bright
@@ -1993,6 +2111,11 @@
       let lastCanvasWidth = 0;
       let lastCanvasHeight = 0;
       function setupCanvas() {
+        // Throttle resize events: skip if change is small or happened too recently
+        const now = performance.now();
+        if (state.lastResizeTime && now - state.lastResizeTime < 100) return;
+        state.lastResizeTime = now;
+
         const widthChanged = Math.abs(window.innerWidth - lastCanvasWidth) > 10;
         const heightChanged =
           Math.abs(window.innerHeight - lastCanvasHeight) > 100;
@@ -2089,9 +2212,12 @@
 
       function renderAtmos() {
         if (state.view !== "burn") {
-          requestAnimationFrame(renderAtmos);
+          state.atmosActive = false;
           return;
         }
+
+        if (state.atmosActive && !arguments[0]) return; // Avoid double loops
+        state.atmosActive = true;
 
         // If we are burning the card, the card animation loop takes over
         if (!state.isSubmittingBurn) {
@@ -2105,8 +2231,7 @@
 
             // Lerp visual intensity for smooth transitions
             // Limit to Dark Mode + Animation Enabled (Bottom ONLY in Dark Mode)
-            const isFireActive =
-              state.globalTheme === "dark" && state.fireAnimationEnabled;
+            const isFireActive = state.fireAnimationEnabled;
             const targetIntensity = isFireActive
               ? Math.pow(0.9, state.burnCount)
               : 0.0;
@@ -2200,7 +2325,7 @@
           state.burnComplete = true;
 
           setTimeout(() => {
-            if (state.globalTheme === "dark") state.burnCount++;
+            state.burnCount++;
             resetMode("burn");
             const mkt = document.getElementById("burn-marketing");
             mkt.classList.remove("hidden");
@@ -2374,7 +2499,7 @@
           gl.clear(gl.COLOR_BUFFER_BIT);
 
           // Finish the flow
-          if (state.globalTheme === "dark") state.burnCount++;
+          state.burnCount++;
           resetMode("burn");
           const mkt = document.getElementById("burn-marketing");
           mkt.classList.remove("hidden");
@@ -2400,8 +2525,7 @@
 
         // Lerp visual intensity here too
         // Limit to Dark Mode + Animation Enabled (Bottom ONLY in Dark Mode)
-        const isFireActive =
-          state.globalTheme === "dark" && state.fireAnimationEnabled;
+        const isFireActive = state.fireAnimationEnabled;
         const targetIntensity = isFireActive
           ? Math.pow(0.9, state.burnCount)
           : 0.0;
@@ -3385,8 +3509,14 @@
       function toggleWaitlist(show) {
         const modal = document.getElementById("waitlist-modal");
         const nav = document.getElementById("nav-bar");
+        const shareBtn = document.getElementById("modal-waitlist-share-btn");
+        
         modal.classList.toggle("hidden", !show);
         if (nav) nav.classList.toggle("hidden", show);
+        
+        // Hide share button by default when toggling modal
+        if (shareBtn) shareBtn.classList.add("hidden");
+
         if (show) {
           if (state.view !== "home") navigate("home");
           track("Waitlist Overlay Viewed");
@@ -4392,9 +4522,8 @@
         const btn = document.getElementById("ui-btn-fire");
         if (!btn) return;
         const isBurnPage = state.view === "burn";
-        const isDarkMode = state.globalTheme === "dark";
 
-        if (isBurnPage && isDarkMode) {
+        if (isBurnPage) {
           btn.classList.remove("hidden");
           // Enable fire animation by default when entering Ash It page
           state.fireAnimationEnabled = true;
@@ -4421,5 +4550,19 @@
       style="display: none"
     ></iframe>
     <script src="js/liquid-bg.js"></script>
+    <!-- Immediate Image Preloading -->
+    <script>
+      (function() {
+        const isMobile = window.innerWidth <= 768;
+        const criticalImages = isMobile ? 
+          ['index/916/white.jpeg', 'index/916/blue_butterfly.webp'] : 
+          ['index/white.jpeg', 'index/blue_butterfly.webp'];
+        
+        criticalImages.forEach(src => {
+          const img = new Image();
+          img.src = src;
+        });
+      })();
+    </script>
   </body>
 </html>

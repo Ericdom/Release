@@ -113,9 +113,9 @@ body.light-theme #view-calm {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 100px;
     z-index: 50;
-    transition: all var(--transition-speed) ease;
+    transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, opacity var(--transition-speed) ease;
     box-shadow: none !important;
-    /* Removed glow/shadow */
+    will-change: background-color, border-color, opacity;
 }
 
 body.light-theme .nav-glass {
@@ -131,7 +131,8 @@ body.light-theme .nav-glass {
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
-    transition: all var(--transition-speed) ease;
+    transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease, backdrop-filter var(--transition-speed) ease;
+    will-change: background-color, border-color, backdrop-filter;
 }
 
 body.light-theme .glass-card {
@@ -225,7 +226,8 @@ body.light-theme .glass-card {
 .glass-icon-white {
     color: rgba(255, 255, 255, 0.25) !important;
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: color, filter, transform;
 }
 
 .group:hover .glass-icon-white {
