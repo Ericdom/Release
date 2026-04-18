@@ -1,4 +1,7 @@
-const CACHE_NAME = 'release-cache-v47'; // Incremented version
+const CACHE_NAME = 'release-cache-v51'; // Squaring Logo for PWA
+
+
+
 const ASSETS = [
     '/',
     'index.html',
@@ -19,8 +22,13 @@ const ASSETS = [
     'index/916/1 (1).webp',
     'index/916/1 (2).webp',
     'index/916/1 (3).webp',
-    'index/916/1 (4).webp'
+    'index/916/1 (4).webp',
+    'index/Logo.png',
+    'app-logo-192.png',
+    'app-logo-512.png',
+    'favicon.ico'
 ];
+
 
 self.addEventListener('install', (event) => {
     self.skipWaiting();

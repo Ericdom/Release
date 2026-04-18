@@ -1,0 +1,12 @@
+{
+  "name": "burn-pwa",
+  "version": "1.0.0",
+  "description": "Burn PWA - Into the Void",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
