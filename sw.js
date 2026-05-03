@@ -1,4 +1,4 @@
-const CACHE_NAME = 'release-cache-v51'; // Squaring Logo for PWA
+const CACHE_NAME = 'release-cache-v52'; // Squaring Logo for PWA
 
 
 
@@ -6,7 +6,9 @@ const ASSETS = [
     '/',
     'index.html',
     'css/styles.css',
+    'css/tailwind.css',
     'js/liquid-bg.js',
+    'js/main.js',
     'manifest.json',
     'https://fonts.googleapis.com/css2?family=Outfit:wght@100;300;400;600;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@100;300;400&display=swap',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
