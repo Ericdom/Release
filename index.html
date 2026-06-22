@@ -950,7 +950,7 @@
                 <button
                   id="btn-calm-pause"
                   onclick="toggleCalmPause()"
-                  class="flex-1 h-9 sm:h-[40px] flex items-center justify-center gap-2 rounded-full border-[1.5px] border-white/40 bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/20 hover:border-white/60 text-white transition-all hover:scale-[1.03] active:scale-[0.98]"
+                  class="flex-1 h-9 sm:h-[40px] flex items-center justify-center gap-2 rounded-full border-[1.5px] transition-all hover:scale-[1.03] active:scale-[0.98]"
                 >
                   <svg class="w-[12px] h-[12px] fill-current" viewBox="0 0 24 24">
                     <path id="calm-btn-icon-path" d="M5 3l16 9-16 9V3z" />
@@ -2108,8 +2108,9 @@
             const label = document.getElementById("calm-btn-label");
             if (iconPath) iconPath.setAttribute("d", "M5 3l16 9-16 9V3z");
             if (label) label.innerText = "Start";
-            pauseBtn.style.borderColor = "rgba(255, 255, 255, 0.4)";
-            pauseBtn.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+            pauseBtn.style.borderColor = "";
+            pauseBtn.style.backgroundColor = "";
+            pauseBtn.style.color = "";
           }
         }
         const toolbar = document.querySelector(
@@ -3422,8 +3423,9 @@
           if (iconPath) iconPath.setAttribute("d", "M5 3l16 9-16 9V3z");
           if (label) label.innerText = "Start";
           if (btn) {
-            btn.style.borderColor = "rgba(255, 255, 255, 0.4)";
-            btn.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+            btn.style.borderColor = "";
+            btn.style.backgroundColor = "";
+            btn.style.color = "";
           }
           if (countdownEl) countdownEl.classList.add("hidden");
         } else {
@@ -3432,6 +3434,7 @@
           if (btn) {
             btn.style.borderColor = "rgba(239, 68, 68, 0.4)";
             btn.style.backgroundColor = "rgba(239, 68, 68, 0.1)";
+            btn.style.color = "rgba(239, 68, 68, 0.9)";
           }
           if (countdownEl) countdownEl.classList.remove("hidden");
           runCalmLoop(state.currentCalmPhase, state.currentCalmTimeLeft);
