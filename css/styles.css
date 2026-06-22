@@ -944,10 +944,25 @@ body.light-theme .tiles-container div {
 .focused-breathing #active-technique-name,
 .focused-breathing [id^="display-"],
 .focused-breathing #calm-params-grid p,
+.focused-breathing #btn-calm-back,
 .focused-breathing #view-calm .scroll-wrapper > div:last-child {
   opacity: 0.3 !important;
   pointer-events: none;
   transition: opacity 1s ease;
+}
+
+/* Dim card interior except active interactive breathing items */
+.focused-breathing #calm-controls-card * {
+  opacity: 0.3;
+  transition: opacity 1s ease;
+}
+
+.focused-breathing #calm-controls-card #btn-calm-pause,
+.focused-breathing #calm-controls-card #btn-calm-pause *,
+.focused-breathing #calm-controls-card #btn-auto-21,
+.focused-breathing #calm-controls-card #btn-auto-21 * {
+  opacity: 1 !important;
+  pointer-events: auto;
 }
 
 /* Ensure controls remain bright and handle Light Mode White Palette */
@@ -978,8 +993,8 @@ body.light-theme #view-calm .text-black\/80 {
 
 /* Active Session Button Highlighting (White) */
 .focused-breathing #btn-calm-pause {
-  background: rgba(255, 255, 255, 0.2) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .focused-breathing #btn-calm-pause i {
