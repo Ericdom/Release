@@ -332,9 +332,20 @@ const fontFamilies = [
   { class: "font-mono", label: "Mono" },
 ];
 
-function track(event) {
-  console.log(`[POSTHOG DUMMY] ${event}`);
-  // if(typeof posthog !== 'undefined') posthog.capture(event);
+function track(event, properties = {}) {
+  console.log(`[Analytics] ${event}`, properties);
+  if (typeof posthog !== 'undefined') {
+    posthog.capture(event, properties);
+    
+    // Send a virtual pageview to PostHog for clean funnel/pageview tracking on view change
+    if (event.startsWith("App ") && event.endsWith(" Opened")) {
+      const viewName = event.substring(4, event.length - 7);
+      posthog.capture('$pageview', {
+        $current_url: window.location.origin + window.location.pathname + '#' + viewName.toLowerCase(),
+        view: viewName.toLowerCase()
+      });
+    }
+  }
 }
 
 // --- NAVIGATION ---
@@ -1456,8 +1467,8 @@ function setCalmMode(mode, silent = false) {
   const presetsBtn = document.getElementById("btn-tab-presets");
   const customBtn = document.getElementById("btn-tab-custom");
 
-  const presetsView = document.getElementById("calm-presets-view");
-  const customView = document.getElementById("calm-custom-view");
+  const presetsViews = document.querySelectorAll(".calm-presets-view, .calm-presets-hold, .calm-presets-exhale, .calm-presets-rest");
+  const customViews = document.querySelectorAll(".calm-custom-view, .calm-custom-hold, .calm-custom-exhale, .calm-custom-rest");
 
   if (mode === "custom") {
     presetsBtn.classList.remove("text-black", "dark:text-white");
@@ -1465,20 +1476,14 @@ function setCalmMode(mode, silent = false) {
     customBtn.classList.remove("text-[#666]", "dark:text-[#aaa]");
     customBtn.classList.add("text-black", "dark:text-white");
 
-    if (presetsView) {
-      presetsView.classList.replace("opacity-100", "opacity-0");
-      presetsView.classList.replace(
-        "pointer-events-auto",
-        "pointer-events-none",
-      );
-    }
-    if (customView) {
-      customView.classList.replace("opacity-0", "opacity-100");
-      customView.classList.replace(
-        "pointer-events-none",
-        "pointer-events-auto",
-      );
-    }
+    presetsViews.forEach(el => {
+      el.classList.add("hidden");
+      el.classList.remove("flex");
+    });
+    customViews.forEach(el => {
+      el.classList.remove("hidden");
+      el.classList.add("flex");
+    });
 
     // Load custom values into active state
     state.calmBaseTime = state.customBreathing.inhale;
@@ -1491,20 +1496,14 @@ function setCalmMode(mode, silent = false) {
     presetsBtn.classList.remove("text-[#666]", "dark:text-[#aaa]");
     presetsBtn.classList.add("text-black", "dark:text-white");
 
-    if (customView) {
-      customView.classList.replace("opacity-100", "opacity-0");
-      customView.classList.replace(
-        "pointer-events-auto",
-        "pointer-events-none",
-      );
-    }
-    if (presetsView) {
-      presetsView.classList.replace("opacity-0", "opacity-100");
-      presetsView.classList.replace(
-        "pointer-events-none",
-        "pointer-events-auto",
-      );
-    }
+    customViews.forEach(el => {
+      el.classList.add("hidden");
+      el.classList.remove("flex");
+    });
+    presetsViews.forEach(el => {
+      el.classList.remove("hidden");
+      el.classList.add("flex");
+    });
 
     if (!silent) {
       const tech = state.calmTechniques[state.activeTechniqueIndex];

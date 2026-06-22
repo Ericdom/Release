@@ -27,7 +27,7 @@
     <!-- Security Policies -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' blob: data: https://assets.mixkit.co; media-src 'self' blob: https://assets.mixkit.co; connect-src 'self' https://formspree.io https://script.google.com https://script.googleusercontent.com; form-action 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self';"
+      content="upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://us-assets.i.posthog.com https://eu-assets.i.posthog.com https://cdn.posthog.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' blob: data: https://assets.mixkit.co; media-src 'self' blob: https://assets.mixkit.co; connect-src 'self' https://formspree.io https://script.google.com https://script.googleusercontent.com https://us.i.posthog.com https://eu.i.posthog.com; form-action 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self';"
     />
 
 
@@ -103,6 +103,51 @@
     <link rel="preload" href="index/blue_butterfly.webp" as="image" />
     <link rel="preload" href="index/916/white.jpeg" as="image" />
     <link rel="preload" href="index/916/blue_butterfly.webp" as="image" />
+
+    <!-- PostHog Analytics Integration -->
+    <script>
+      // Fallback in case js/config.js doesn't exist
+      window.ENV = window.ENV || {
+        POSTHOG_API_KEY: "YOUR_POSTHOG_API_KEY",
+        POSTHOG_HOST: "https://us.i.posthog.com"
+      };
+    </script>
+    <script src="js/config.js" onerror="console.log('Local config.js not found, running with defaults')"></script>
+    <script>
+      (function() {
+        if (window.ENV && window.ENV.POSTHOG_API_KEY && window.ENV.POSTHOG_API_KEY !== "YOUR_POSTHOG_API_KEY") {
+          !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getPercentiles get_property getSessionRecordingProperties triggerSurvey getGroups get_group_class".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1.0)}(document,window.posthog||[]);
+          
+          posthog.init(window.ENV.POSTHOG_API_KEY, {
+            api_host: window.ENV.POSTHOG_HOST || 'https://us.i.posthog.com',
+            person_profiles: 'identified_only',
+            capture_pageview: false,
+            loaded: function(ph) {
+              // Track initial page load pageview manually
+              ph.capture('$pageview', {
+                $current_url: window.location.origin + window.location.pathname + '#home',
+                view: 'home'
+              });
+              
+              // Apply A/B testing when feature flags are loaded
+              ph.onFeatureFlags(() => {
+                const variant = ph.getFeatureFlag('home-tagline-ab-test');
+                const taglineEl = document.getElementById('shiny-tagline-home');
+                if (taglineEl) {
+                  if (variant === 'variant-a') {
+                    taglineEl.textContent = 'into the void.';
+                  } else if (variant === 'variant-b') {
+                    taglineEl.textContent = 'to start fresh.';
+                  } else {
+                    taglineEl.textContent = 'without judgment.';
+                  }
+                }
+              });
+            }
+          });
+        }
+      })();
+    </script>
   </head>
 
   <body class="h-screen w-screen selection:bg-orange-500/30">
@@ -1978,9 +2023,20 @@
         { class: "font-mono", label: "Mono" },
       ];
 
-      function track(event) {
-        console.log(`[POSTHOG DUMMY] ${event}`);
-        // if(typeof posthog !== 'undefined') posthog.capture(event);
+      function track(event, properties = {}) {
+        console.log(`[Analytics] ${event}`, properties);
+        if (typeof posthog !== 'undefined') {
+          posthog.capture(event, properties);
+          
+          // Send a virtual pageview to PostHog for clean funnel/pageview tracking on view change
+          if (event.startsWith("App ") && event.endsWith(" Opened")) {
+            const viewName = event.substring(4, event.length - 7);
+            posthog.capture('$pageview', {
+              $current_url: window.location.origin + window.location.pathname + '#' + viewName.toLowerCase(),
+              view: viewName.toLowerCase()
+            });
+          }
+        }
       }
 
       // --- NAVIGATION ---

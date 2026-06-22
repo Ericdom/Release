@@ -4,7 +4,8 @@
   "description": "Burn PWA - Into the Void",
   "main": "index.html",
   "scripts": {
-    "dev": "npx serve ."
+    "dev": "npx serve .",
+    "build": "node build-config.js"
   },
   "keywords": [],
   "author": "",
